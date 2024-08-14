@@ -1,17 +1,13 @@
 import React from 'react';
+import { capitalize } from 'src/utils/General';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({list}) => {
   const location = useLocation();
-  const list = ['dashboard', 'container', 'truck', 'daily', 'clamping', 'invoicing', 'payment', 'maintainer', 'analysis', 'order'];
-
-  const capitalize = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 
   return (
     <nav>
-      <ul className='flex justify-center gap-20 items-center w-full h-[50px]'>
+      <ul className='flex justify-evenly items-center'>
         {list.map((item, index) => (
           <NavLink key={index} to={`/${item}`} className={ location.pathname === `/${item}` ? 'text-colorLink' : ''}>{capitalize(item)}</NavLink>
         ))}

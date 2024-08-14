@@ -1,35 +1,63 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { ThemeContext } from 'src/components/Theme';
 import Navbar from 'src/components/Navbar';
 import LogoMenu from 'src/components/menu/LogoMenu';
-import { SunOutlined, MoonOutlined } from '@ant-design/icons';
+import { SunOutlined, MoonOutlined, MenuOutlined } from '@ant-design/icons';
+import { Drawer } from 'antd';
+import { capitalize } from 'src/utils/General';
+
+const list = ['dashboard', 'container', 'truck', 'daily', 'clamping', 'invoicing', 'payment', 'maintainer', 'analysis', 'order'];
 
 const Header = () => {
   const navigate = useNavigate();
   const { userName } = useSelector(state => state.user);
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <div className='header flex justify-between gap-5 px-10 items-center py-2'>
-      <div className='flex flex-grow items-center'>
+    <div className='flex justify-between items-center h-full px-4 lg:px-10 max-w-[1440px] m-auto'>
+      <div className='flex-none'>
         <button onClick={() => navigate('/dashboard')}>
-          <img src='/logo.png' className='h-[45px] pr-20'/>
+          <img src='/logo.png' className='h-[45px]' />
         </button>
-        <Navbar />
       </div>
-      <div className='flex items-center gap-3'>
+      <div className='flex-grow hidden md:block'>
+        <Navbar list={list} />
+      </div>
+      <div className='flex items-center gap-4 lg:gap-10'>
         <button shape="circle" className='flex justify-center items-center w-[40px] h-[40px] bg-base-100' onClick={toggleTheme}>
-          {theme === 'light' ? <SunOutlined className='text-[30px] text-colorPrimary'/> : <MoonOutlined className='text-[30px] text-colorPrimary'/>}
+          {theme === 'light' ? <SunOutlined className='text-[30px] text-text-100' /> : <MoonOutlined className='text-[30px] text-text-100' />}
         </button>
-        <LogoMenu>
-          <div className='flex items-center gap-2'>
-            <img src='/user/man.png' className='w-[30px] rounded-full'/>
-            <p>{userName}</p>
-          </div>
-        </LogoMenu>
+        <div className='flex-none'>
+          <LogoMenu>
+            <div className='flex items-center gap-2'>
+              <img src='/user/man.png' className='w-[30px] rounded-full' />
+            </div>
+          </LogoMenu>
+        </div>
+        <button onClick={showDrawer} className='md:hidden'>
+          <MenuOutlined className='text-[30px]' />
+        </button>
       </div>
+      <Drawer title="Menu" onClose={onClose} open={open}>
+        <nav>
+          <ul className='flex flex-col justify-center text-xl gap-2'>
+            {list.map((item, index) => (
+              <NavLink onClick={onClose} key={index} to={`/${item}`} className={location.pathname === `/${item}` ? 'text-colorLink' : ''}>{capitalize(item)}</NavLink>
+            ))}
+          </ul>
+        </nav>
+      </Drawer>
     </div>
   );
 }

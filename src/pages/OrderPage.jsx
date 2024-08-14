@@ -51,60 +51,60 @@ const SeaComponent = () => {
 
   }
   return (
-    <div className='flex h-[500px] overflow-y-auto'>
-      <Form layout='vertical' className='w-[50%]'>
-        <Form.Item label={"請求日"} className='mb-12'>
-          <div className='flex items-center gap-5'>
-            <DatePicker onChange={onDate} className='w-80' />
-            <Checkbox>ピックチェック</Checkbox>
-            <Checkbox>配車組み</Checkbox>
+    <div className='flex flex-col'>
+      <Form layout='vertical'>
+        <Form.Item label={"請求日"}>
+          <div className='flex justify-between items-center'>
+            <DatePicker onChange={onDate} className='basis-1/2' />
+            <Checkbox className='basis-1/4'>ピックチェック</Checkbox>
+            <Checkbox className='basis-1/5'>配車組み</Checkbox>
           </div>
         </Form.Item>
-        <Form.Item label={"部署コード"} required className='mb-12'>
-          <div className='flex gap-5'>
+        <Form.Item label={"部署コード"} required>
+          <div className='flex justify-between'>
             <Form.Item name="name" rules={[{ required: true }]}>
-              <Input className='w-80' />
+              <Input className='basis-1/2' />
             </Form.Item>
             <Form.Item>
-              <Checkbox>空バン返却チェック</Checkbox>
+              <Checkbox className='basis-1/4'>空バン返却チェック</Checkbox>
             </Form.Item>
             <Form.Item>
-              <Checkbox>送り状・受領書作成</Checkbox>
+              <Checkbox className='basis-1/4'>送り状・受領書作成</Checkbox>
             </Form.Item>
           </div>
         </Form.Item>
-        <Form.Item label={"区別する"} required className='mb-12'>
+        <Form.Item label={"区別する"} required>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 320 }} options={distinguish} />
             <Checkbox>未定</Checkbox>
           </div>
         </Form.Item>
-        <Form.Item label={"所有者の名前"} className='mb-12'>
+        <Form.Item label={"所有者の名前"}>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 640 }} options={owner} />
           </div>
         </Form.Item>
-        <Form.Item label={"顧客名"} required className='mb-12'>
+        <Form.Item label={"顧客名"} required>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 640 }} options={distinguish} />
           </div>
         </Form.Item>
-        <Form.Item label={"CRUの顧客名"} className='mb-12'>
+        <Form.Item label={"CRUの顧客名"}>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 640 }} options={owner} />
           </div>
         </Form.Item>
-        <Form.Item label={"取場所"} className='mb-12'>
+        <Form.Item label={"取場所"}>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 640 }} options={distinguish} />
           </div>
         </Form.Item>
-        <Form.Item label={"搬入・返却場所"} className='mb-12'>
+        <Form.Item label={"搬入・返却場所"}>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 640 }} options={owner} />
           </div>
         </Form.Item>
-        <Form.Item label={"船社"} className='mb-12'>
+        <Form.Item label={"船社"}>
           <div className='flex gap-5'>
             <Select defaultValue={1} style={{ width: 640 }} options={distinguish} />
           </div>
@@ -137,7 +137,7 @@ const SeaComponent = () => {
             </Form.Item>
           </div>
         </Group>
-        <Form.Item name="name" rules={[{ required: true }]} className='mt-6 mb-16'>
+        <Form.Item name="name" rules={[{ required: true }]}>
           <div className='flex gap-5'>
             <Form.Item label={"BK No."}>
               <Input className='w-56' />
@@ -150,10 +150,10 @@ const SeaComponent = () => {
             </Form.Item>
           </div>
         </Form.Item>
-        <Delivery className='w-[720px]'/>
+        <Delivery className='w-[720px]' />
       </Form>
       <Form layout='vertical' className='w-[50%]'>
-        <Form.Item label={"請求日"} className='mb-12'>
+        <Form.Item label={"請求日"}>
           <DatePicker onChange={onDate} />
           <Checkbox>ピックチェック</Checkbox>
           <Checkbox>配車組み</Checkbox>
@@ -165,7 +165,7 @@ const SeaComponent = () => {
 
 const TruckComponent = () => {
   return (
-    <div className='h-[500px] overflow-y-auto'>
+    <div className='h-[900px] overflow-y-auto'>
       2
     </div>
   )
@@ -189,22 +189,18 @@ const OrderPage = () => {
   };
 
   return (
-    <div className='flex justify-center items-center p-1'>
-      <Form className="min-w-[1500px] min-h-[750px] bg-base-100 rounded-md">
-        <Card title={"受注入力"}>
-          <Tabs type='card' items={tabNames.map((item, index) => {
-            return {
-              label: item,
-              key: index,
-              children: dialogComponent[index]
-            }
-          })} />
-        </Card>
-        <div className='flex justify-end gap-5 p-7'>
-          <Button type='primary'>初期化</Button>
-          <Button type='primary' danger>請求済削除</Button>
-        </div>
-      </Form>
+    <div className='flex flex-col justify-center items-center w-full'>
+      <Tabs type='card' className='w-full' items={tabNames.map((item, index) => {
+        return {
+          label: item,
+          key: index,
+          children: dialogComponent[index]
+        }
+      })} />
+      <div className='flex gap-24'>
+        <Button type='primary'>初期化</Button>
+        <Button type='primary' danger>請求済削除</Button>
+      </div>
     </div>
   )
 }
