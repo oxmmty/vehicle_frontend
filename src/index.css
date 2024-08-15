@@ -28,8 +28,8 @@
   --base-800: #f0f0f0;
   --base-900: #efefef;
   --text-100: #000000;
-  --text-200: #363636;
-  --text-300: #666666;
+  --text-200: #5c5c5c;
+  --text-300: #a7a7a7;
   --border-100: #d9d9d9;
 }
 
@@ -43,8 +43,8 @@
   --base-700: #666666;
   --base-800: #767676;
   --text-100: #ffffff;
-  --text-200: #f4f4f4;
-  --text-300: #f1f1f1;
+  --text-200: #b4b4b4;
+  --text-300: #7a7a7a;
   --border-100: #424242;
 }
 
@@ -64,6 +64,19 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 2.2em;
+  line-height: 1.1;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1.1;
+  font-weight: bold;
 }
 
 ::-webkit-scrollbar {

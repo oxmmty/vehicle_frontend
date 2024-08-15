@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <div className='footer flex justify-center items-center w-full h-full max-w-[1440px]'>
+    <div className='footer flex justify-center items-center w-full h-full max-w-[1440px] m-auto'>
       <p>&copy; 2022 Your Company</p>
     </div>
   );
