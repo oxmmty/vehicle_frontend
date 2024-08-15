@@ -1,8 +1,12 @@
-import { Button, Card, Tabs, Form, DatePicker, Checkbox, Input, Select } from 'antd';
+import { Button, Tabs, Form, DatePicker, Checkbox, Input, Select } from 'antd';
 import { useState } from 'react'
 import Group from 'src/components/Group';
 import Delivery from 'src/components/Delivery';
+import PackageInfo from 'src/components/PackageInfo';
+import SubcontractPayment from 'src/components/SubcontractPayment';
+import Storage from 'src/components/Storage';
 
+const { TextArea } = Input;
 const SeaComponent = () => {
   const distinguish = [
     {
@@ -51,113 +55,102 @@ const SeaComponent = () => {
 
   }
   return (
-    <div className='flex flex-col'>
-      <Form layout='vertical'>
+    <div className='flex flex-col md:flex-row md:gap-4'>
+      <Form layout='vertical md:w-[50%]'>
         <Form.Item label={"請求日"}>
-          <div className='flex justify-between items-center'>
-            <DatePicker onChange={onDate} className='basis-1/2' />
-            <Checkbox className='basis-1/4'>ピックチェック</Checkbox>
-            <Checkbox className='basis-1/5'>配車組み</Checkbox>
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <DatePicker onChange={onDate} className='grow' />
+            <Checkbox>ピックチェック</Checkbox>
+            <Checkbox>配車組み</Checkbox>
           </div>
         </Form.Item>
         <Form.Item label={"部署コード"} required>
-          <div className='flex justify-between'>
-            <Form.Item name="name" rules={[{ required: true }]}>
-              <Input className='basis-1/2' />
-            </Form.Item>
-            <Form.Item>
-              <Checkbox className='basis-1/4'>空バン返却チェック</Checkbox>
-            </Form.Item>
-            <Form.Item>
-              <Checkbox className='basis-1/4'>送り状・受領書作成</Checkbox>
-            </Form.Item>
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Input required className='w-fit grow' />
+            <Checkbox>空バン返却チェック</Checkbox>
+            <Checkbox>送り状・受領書作成</Checkbox>
           </div>
         </Form.Item>
         <Form.Item label={"区別する"} required>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 320 }} options={distinguish} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} style={{ width: 100 }} className='grow' options={distinguish} />
             <Checkbox>未定</Checkbox>
           </div>
         </Form.Item>
         <Form.Item label={"所有者の名前"}>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 640 }} options={owner} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} className='grow' options={owner} />
           </div>
         </Form.Item>
         <Form.Item label={"顧客名"} required>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 640 }} options={distinguish} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} className='grow' options={distinguish} />
           </div>
         </Form.Item>
         <Form.Item label={"CRUの顧客名"}>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 640 }} options={owner} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} className='grow' options={owner} />
           </div>
         </Form.Item>
         <Form.Item label={"取場所"}>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 640 }} options={distinguish} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} className='grow' options={distinguish} />
           </div>
         </Form.Item>
         <Form.Item label={"搬入・返却場所"}>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 640 }} options={owner} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} className='grow' options={owner} />
           </div>
         </Form.Item>
         <Form.Item label={"船社"}>
-          <div className='flex gap-5'>
-            <Select defaultValue={1} style={{ width: 640 }} options={distinguish} />
+          <div className='flex flex-wrap flex-row items-center gap-4'>
+            <Select defaultValue={1} className='grow' options={distinguish} />
           </div>
         </Form.Item>
         <Group label={"受注入力"}>
-          <div className='flex gap-5'>
-            <Form.Item label={"No."}>
-              <div className='flex gap-5'>
-                <Input className='w-60' />
-              </div>
+          <div className='flex flex-wrap flex-row items-center gap-x-4 w-full'>
+            <Form.Item label={"No."} className='w-10 grow'>
+              <Input />
             </Form.Item>
             <Form.Item label={"タイプ"}>
-              <div className='flex gap-5'>
-                <Select defaultValue={1} style={{ width: 70 }} options={number} />
-              </div>
+              <Select defaultValue={1} style={{ width: 70 }} options={number} />
             </Form.Item>
             <Form.Item label={"サイズ"}>
-              <div className='flex gap-5'>
-                <Select defaultValue={1} style={{ width: 70 }} options={number} />
-              </div>
+              <Select defaultValue={1} style={{ width: 70 }} options={number} />
             </Form.Item>
             <Form.Item label={"種類"}>
-              <div className='flex gap-5'>
-                <Select defaultValue={1} style={{ width: 140 }} options={distinguish} />
-              </div>
+              <Select defaultValue={1} style={{ width: 140 }} options={distinguish} />
             </Form.Item>
-            <Form.Item className='pt-3'>
+            <div className='flex flex-col'>
               <Checkbox>3軸</Checkbox>
               <Checkbox>危険品</Checkbox>
-            </Form.Item>
+            </div>
           </div>
         </Group>
         <Form.Item name="name" rules={[{ required: true }]}>
-          <div className='flex gap-5'>
-            <Form.Item label={"BK No."}>
-              <Input className='w-56' />
+          <div className='flex flex-wrap flex-row items-center gap-x-4'>
+            <Form.Item label={"BK No."} className='w-10 grow'>
+              <Input />
             </Form.Item>
-            <Form.Item label={"BL No."}>
-              <Input className='w-56' />
+            <Form.Item label={"BL No."} className='w-10 grow'>
+              <Input />
             </Form.Item>
-            <Form.Item label={"船名"}>
-              <Input className='w-56' />
+            <Form.Item label={"船名"} className='w-10 grow'>
+              <Input />
             </Form.Item>
           </div>
         </Form.Item>
-        <Delivery className='w-[720px]' />
-      </Form>
-      <Form layout='vertical' className='w-[50%]'>
-        <Form.Item label={"請求日"}>
-          <DatePicker onChange={onDate} />
-          <Checkbox>ピックチェック</Checkbox>
-          <Checkbox>配車組み</Checkbox>
+        <Delivery />
+        <Form.Item label={"依頼書備考欄"} rules={[{ required: true }]}>
+          <div className='flex flex-wrap flex-row items-center gap-x-4'>
+            <TextArea rows={4} className='grow' />
+          </div>
         </Form.Item>
+      </Form>
+      <Form layout='vertical' className='md:w-[50%]'>
+        <PackageInfo />
+        <SubcontractPayment />
+        <Storage />
       </Form>
     </div >
   )
@@ -197,6 +190,14 @@ const OrderPage = () => {
           children: dialogComponent[index]
         }
       })} />
+      <div className='flex flex-row flex-wrap justify-center items-center gap-4 mb-[24px]'>
+        <Button>デバックボタン</Button>
+        <Button>動作確認設定</Button>
+        <Button>画面リフレッシュ</Button>
+        <Button>記録データ削除</Button>
+        <Button>保存</Button>
+        <Button>閉じる</Button>
+      </div>
       <div className='flex gap-24'>
         <Button type='primary'>初期化</Button>
         <Button type='primary' danger>請求済削除</Button>
