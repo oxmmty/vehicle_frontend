@@ -198,7 +198,7 @@ const OrderPage = () => {
         <Button>保存</Button>
         <Button>閉じる</Button>
       </div>
-      <div className='flex gap-24'>
+      <div className='flex justify-around max-w-96 w-full'>
         <Button type='primary'>初期化</Button>
         <Button type='primary' danger>請求済削除</Button>
       </div>
