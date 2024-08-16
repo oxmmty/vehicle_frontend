@@ -1,18 +1,17 @@
 import React from 'react';
-import { capitalize } from 'src/utils/General';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const Navbar = ({list}) => {
+const Navbar = ({ list, ...props }) => {
   const location = useLocation();
 
   return (
-    <nav>
-      <ul className='flex justify-evenly items-center'>
+    <div className={`${props.className} flex items-center gap-8`}>
         {list.map((item, index) => (
-          <NavLink key={index} to={`/${item}`} className={ location.pathname === `/${item}` ? 'text-colorLink' : ''}>{capitalize(item)}</NavLink>
+          // <div className='h-full bg-red-400'>
+            <NavLink key={index} to={`/${item.key}`} className={location.pathname === `/${item.key}` ? 'text-colorLink' : ''}>{item.value}</NavLink>
+          // </div>
         ))}
-      </ul>
-    </nav>
+    </div>
   );
 }
 
