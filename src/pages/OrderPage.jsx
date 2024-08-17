@@ -56,7 +56,7 @@ const SeaComponent = () => {
   }
   return (
     <div className='flex flex-col md:flex-row md:gap-4'>
-      <Form layout='vertical md:w-[50%]'>
+      <Form layout='vertical' className='md:w-[50%]'>
         <Form.Item label={"請求日"}>
           <div className='flex flex-wrap flex-row items-center gap-4'>
             <DatePicker onChange={onDate} className='grow' />
@@ -200,6 +200,9 @@ const OrderPage = () => {
       </div>
       <div className='flex justify-around max-w-96 w-full'>
         <Button className='bg-blue-500'>初期化</Button>
+        <Button className='bg-red-500' type='default'>請求済削除</Button>
+        <Button type='primary'>請求済削除</Button>
+        <Button type='dashed'>請求済削除</Button>
         <Button>請求済削除</Button>
       </div>
     </div>
