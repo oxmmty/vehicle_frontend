@@ -14,6 +14,8 @@ export default {
         'base-700': 'var(--base-700)',
         'base-800': 'var(--base-800)',
         'base-900': 'var(--base-900)',
+        'base-primary': 'var(--base-primary)',
+        'hover-primary': 'var(--hover-primary)',
         'text-100': 'var(--text-100)',
         'text-200': 'var(--text-200)',
         'text-300': 'var(--text-300)',
@@ -23,6 +25,9 @@ export default {
         'colorWarning': 'var(--colorWarning)',
         'colorError': 'var(--colorError)',
         'colorLink': 'var(--colorLink)',
+      },
+      boxShadow: {
+        'custom': '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)'
       }
     },
     screens: {

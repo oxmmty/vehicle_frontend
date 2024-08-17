@@ -199,8 +199,8 @@ const OrderPage = () => {
         <Button>閉じる</Button>
       </div>
       <div className='flex justify-around max-w-96 w-full'>
-        <Button type='primary'>初期化</Button>
-        <Button type='primary' danger>請求済削除</Button>
+        <Button className='bg-blue-500'>初期化</Button>
+        <Button>請求済削除</Button>
       </div>
     </div>
   )

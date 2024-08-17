@@ -19,6 +19,11 @@ const ThemeProvider = ({ children }) => {
   }, [theme]);
 
   const commonComponents = {
+    token: {
+      colorBgBase: '#f0f0f0',
+      colorPrimary: '#00b96b',
+      colorTextBase: '#5b5c5f'
+    },
     Menu: {
       lineWidth: 0
     }
@@ -28,7 +33,9 @@ const ThemeProvider = ({ children }) => {
     ...commonComponents,
     algorithm: antdTheme.darkAlgorithm,
     token: {
-      // colorBgBase: '#202836',
+      colorBgBase: '#101319',
+      colorPrimary: '#dde000',
+      colorTextBase: '#8E9DB2'
     }
   } : {
     ...commonComponents,

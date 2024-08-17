@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Menu } from 'antd';
+import { Button, FloatButton, Menu } from 'antd';
 import {
   AppstoreOutlined,
   ContainerOutlined,
@@ -72,7 +72,7 @@ const Sidebar = ({ ...props }) => {
           children: [
             {
               key: '11',
-              label: 'Option 11',
+              label: 'Option 11werqwer qwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',
             },
             {
               key: '12',
@@ -89,13 +89,18 @@ const Sidebar = ({ ...props }) => {
   };
   return (
     <aside className={props.className}>
-      <Menu className='w-60'
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-        inlineCollapsed={collapsed}
-        items={items}
-      />
+      <div className={`relative h-full bg-base-100 border-r border-border-100 ${collapsed ? 'w-fit' : 'w-[250px]'}`}>
+        <Menu
+          defaultSelectedKeys={['1']}
+          defaultOpenKeys={['sub1']}
+          mode="inline"
+          inlineCollapsed={collapsed}
+          items={items}
+        />
+        <div onClick={toggleCollapsed} className='absolute top-4 right-[-10px] p-1 text-center bg-base-300 rounded-full cursor-pointer z-50'>
+          {collapsed ? <RightOutlined className='w-4'/> : <LeftOutlined className='w-4'/> }
+        </div>
+      </div>
     </aside>
   );
 }
