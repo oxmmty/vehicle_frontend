@@ -142,7 +142,7 @@ const InvoicingPage = () => {
   ];
 
   return (
-    <div className='flex flex-col justify-center w-full max-w-[1440px]'>
+    <div className='flex flex-col justify-center w-full'>
       <h2 className='m-auto'>御請求書</h2>
       <Divider className='w-full m-2' />
       <div className="flex justify-around w-full">
@@ -158,7 +158,7 @@ const InvoicingPage = () => {
       <div className="flex flex-col md:flex-row">
         <div className='md:w-[50%]'>
           <h3 className='m-auto py-5'>請求先情報</h3>
-          <div class="flex flex-wrap flex-row items-center gap-4">
+          <div className="flex flex-wrap flex-row items-center gap-4">
             <p><b>顧客</b>: LogiTechnoService株式会社</p>
             <p><b>住所</b>: 東京都武蔵村山市神明2-51-15</p>
             <p><b>事業者登録番号</b>: T1012801022526</p>
@@ -175,7 +175,7 @@ const InvoicingPage = () => {
         </div>
       </div>
       <div className="flex w-full justify-center py-5">
-        <Table dataSource={orderData} columns={orderColumns} virtual scroll={{x: 2000}} />
+        <Table dataSource={orderData} columns={orderColumns} scroll={{x: 320}} className='w-full'  />
       </div>
     </div>
   )
