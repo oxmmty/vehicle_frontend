@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, FloatButton, Menu } from 'antd';
+import { Menu } from 'antd';
 import {
   AppstoreOutlined,
   ContainerOutlined,
@@ -72,7 +72,7 @@ const Sidebar = ({ ...props }) => {
           children: [
             {
               key: '11',
-              label: 'Option 11werqwer qwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww',
+              label: 'Option 11werqwer',
             },
             {
               key: '12',
@@ -87,9 +87,14 @@ const Sidebar = ({ ...props }) => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
+  useEffect(() => {
+
+  }, [location.pathname]);
+
   return (
     <aside className={props.className}>
-      <div className={`relative h-full bg-base-100 border-r border-border-100 ${collapsed ? 'w-fit' : 'w-[250px]'}`}>
+      <div className={`relative h-full bg-bg-light border-r border-border-100 ${collapsed ? 'w-fit' : 'w-[250px]'}`}>
         <Menu
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
@@ -97,7 +102,7 @@ const Sidebar = ({ ...props }) => {
           inlineCollapsed={collapsed}
           items={items}
         />
-        <div onClick={toggleCollapsed} className='absolute top-4 right-[-10px] p-1 text-center bg-base-300 rounded-full cursor-pointer z-50'>
+        <div onClick={toggleCollapsed} className='absolute top-4 right-[-10px] p-1 text-center bg-bg-light-dark rounded-full cursor-pointer z-50'>
           {collapsed ? <RightOutlined className='w-4'/> : <LeftOutlined className='w-4'/> }
         </div>
       </div>

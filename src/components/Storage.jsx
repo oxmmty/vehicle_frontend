@@ -58,7 +58,7 @@ const SubcontractPayment = ({ className = '' }) => {
         </Group>
         <Group label={"備考"}>
           <Form.Item label={"リクエストフォーム備考欄"} rules={[{ required: true }]}>
-            <div className='flex flex-wrap flex-row items-center gap-x-4'>
+            <div className='flex flex-wrap flex-row items-center gap-x-4 anchor-section' id='備考'>
               <TextArea rows={4} className='grow' />
             </div>
           </Form.Item>
