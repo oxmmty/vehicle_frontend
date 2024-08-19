@@ -1,14 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  important: true,
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
   darkMode: ["class"],
   theme: {
     extend: {
       colors: {
-        'base-100': 'var(--base-100)',
+        'bg-light': 'var(--bg-light)',
         'base-200': 'var(--base-200)',
-        'base-300': 'var(--base-300)',
-        'base-400': 'var(--base-400)',
+        'bg-light-dark': 'var(--bg-light-dark)',
+        'bg-dark': 'var(--bg-dark)',
         'base-500': 'var(--base-500)',
         'base-600': 'var(--base-600)',
         'base-700': 'var(--base-700)',
@@ -16,7 +17,7 @@ export default {
         'base-900': 'var(--base-900)',
         'base-primary': 'var(--base-primary)',
         'hover-primary': 'var(--hover-primary)',
-        'text-100': 'var(--text-100)',
+        'txt-100': 'var(--txt-100)',
         'text-200': 'var(--text-200)',
         'text-300': 'var(--text-300)',
         'border-100': 'var(--border-100)',

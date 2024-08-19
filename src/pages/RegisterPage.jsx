@@ -1,58 +1,106 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { UserOutlined, MailOutlined, KeyOutlined } from '@ant-design/icons';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const name = useRef(null);
-  const email = useRef(null);
-  const password = useRef(null);
-  const conformPass = useRef(null);
 
-  const onRegister = async () => {
-    if (email.current.input.value && password.current.input.value) {
-      if (password.current.input.value !== conformPass.current.input.value) {
-        alert('error');
-        return false;
-      }
-      const res = await axios.post("/register", {
-        name: name.current.input.value,
-        email: email.current.input.value,
-        password: password.current.input.value,
-      });
-      if(res.status == 200) {
-        alert('successful.');
-        navigate("/login");
-      }
+  const onFinish = async (values) => {
+    const res = await axios.post("/register", values);
+    if (res.status == 200) {
+      Notification('Successful Register!');
+      navigate("/login");
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-[900px]">
-      <div className="flex flex-col gap-5 w-[500px] border px-10 pt-10">
-        <div className="flex justify-center">
-          <img src="/logo.png" />
+    <div className="w-full h-screen flex justify-center items-center p-2">
+      <Form className="w-full border border-border-100 p-2 max-w-[500px] rounded-2xl bg-bg-light-dark"
+        layout="vertical"
+        initialValues={{
+          remember: true
+        }}
+        onFinish={onFinish}
+      >
+        <div className="flex justify-center py-10">
+          <img src="/logo.png" className="w-24" />
         </div>
-        <p>メール</p>
-        <Input ref={name} />
-        <Input ref={email} />
-        <Input.Password ref={password} />
-        <Input.Password ref={conformPass} />
-        <Checkbox>Remember me</Checkbox>
-        <div className="flex justify-center gap-5 mb-10">
-          <Button
-            type="link"
-            className="border-none"
-            onClick={() => navigate("/login")}
-          >
-            Already registered?
-          </Button>
-          <Button type="primary" htmlType="submit" onClick={onRegister}>
-            登録
-          </Button>
+        <Form.Item label={"Name:"} name={'name'}
+          rules={[
+            {
+              required: true,
+              message: 'Please input your Name!',
+            }
+          ]}
+        >
+          <Input prefix={<UserOutlined />} required />
+        </Form.Item>
+        <Form.Item label={"Email:"} name={"email"}
+          rules={[
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!',
+            },
+            {
+              required: true,
+              message: 'Please input your Email!',
+            }
+          ]}
+        >
+          <Input prefix={<MailOutlined />} required />
+        </Form.Item>
+        <Form.Item label={"Password:"} name={"password"}
+          rules={[
+            {
+              required: true,
+              message: 'Please input your Password!',
+            }
+          ]}
+        >
+          <Input.Password prefix={<KeyOutlined />} required />
+        </Form.Item>
+        <Form.Item label={"Confirm Password:"} name={"confirm"}
+          dependencies={['password']}
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The new password that you entered do not match!'));
+              },
+            }),
+          ]}
+        >
+          <Input.Password prefix={<KeyOutlined />} required />
+        </Form.Item>
+        <div className="flex justify-between px-2">
+          <Form.Item name="remember" valuePropName="checked">
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+          <Form.Item name="forget">
+            <Button type="link">Forget Password？</Button>
+          </Form.Item>
         </div>
-      </div>
+        <div className="flex justify-evenly pt-4 pb-10">
+          <Form.Item name="login">
+            <Button type="link" className="border-none" onClick={() => navigate("/login")}>
+              Already registered?
+            </Button>
+          </Form.Item>
+          <Form.Item name="register">
+            <Button type="primary" htmlType="submit">
+              登録
+            </Button>
+          </Form.Item>
+        </div>
+      </Form>
     </div>
   );
 };

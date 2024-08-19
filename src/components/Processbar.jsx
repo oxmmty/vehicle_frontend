@@ -7,6 +7,8 @@ export const Processbar = () => {
 
   useEffect(() => {
     nprogress.start();
+    nprogress.set(0.4);
+    nprogress.inc();
     nprogress.done();
   }, [location.pathname]);
 };

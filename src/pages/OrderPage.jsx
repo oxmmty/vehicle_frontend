@@ -56,7 +56,7 @@ const SeaComponent = () => {
   }
   return (
     <div className='flex flex-col md:flex-row md:gap-4'>
-      <Form layout='vertical md:w-[50%]'>
+      <Form layout='vertical' id='請求日' className='anchor-section md:w-[50%]'>
         <Form.Item label={"請求日"}>
           <div className='flex flex-wrap flex-row items-center gap-4'>
             <DatePicker onChange={onDate} className='grow' />
@@ -108,7 +108,7 @@ const SeaComponent = () => {
           </div>
         </Form.Item>
         <Group label={"受注入力"}>
-          <div className='flex flex-wrap flex-row items-center gap-x-4 w-full'>
+          <div className='flex flex-wrap flex-row items-center gap-x-4 w-full anchor-section' id='受注入力'>
             <Form.Item label={"No."} className='w-10 grow'>
               <Input />
             </Form.Item>
@@ -199,8 +199,8 @@ const OrderPage = () => {
         <Button>閉じる</Button>
       </div>
       <div className='flex justify-around max-w-96 w-full'>
-        <Button className='bg-blue-500'>初期化</Button>
-        <Button>請求済削除</Button>
+        <Button type='primary'>初期化</Button>
+        <Button type='default'>請求済削除</Button>
       </div>
     </div>
   )

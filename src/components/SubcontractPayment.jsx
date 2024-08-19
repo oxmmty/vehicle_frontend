@@ -78,7 +78,7 @@ const SubcontractPayment = ({ className = '' }) => {
   return (
     <div className={`${className}`}>
       <Group label={"下払"}>
-        <Tabs type='card' className='w-full' items={tabNames.map((item, index) => {
+        <Tabs type='card' className='w-full anchor-section' id='下払' items={tabNames.map((item, index) => {
           return {
             label: item,
             key: index,

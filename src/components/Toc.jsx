@@ -1,42 +1,34 @@
 import { Anchor } from 'antd';
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
+const { Link } = Anchor;
 
 const Toc = ({ ...props }) => {
   const location = useLocation();
-  const items = [
-    {
-      key: '1',
-      href: '#anchor-demo-basic',
-      title: 'Basic demo',
-    },
-    {
-      key: '2',
-      href: '#anchor-demo-static',
-      title: 'Static demo',
-    },
-    {
-      key: '3',
-      href: '#api',
-      title: 'API',
-      children: [
-        {
-          key: '4',
-          href: '#anchor-props',
-          title: 'Anchor Props',
-        },
-        {
-          key: '5',
-          href: '#link-props',
-          title: 'Link Props',
-        },
-      ],
-    }
-  ];
+  const [anchorItems, setAnchorItems] = useState([]);
+  
+  useEffect(() => {
+    // Find all elements with an ID in the document
+    const sections = document.querySelectorAll('.anchor-section[id]');
+    const items = [];
+
+    sections.forEach(section => {
+      const id = section.id;
+      const title = section.dataset.anchorTitle || id; // Use a data attribute for title or fallback to the ID
+      items.push({ key: id, href: `#${id}`, title });
+    });
+
+    setAnchorItems(items);
+  }, [location.pathname]);
 
   return (
     <aside className={props.className}>
-      <Anchor items={items} />
+      <Anchor>
+        {anchorItems.map(item => (
+          <Link key={item.key} href={item.href} title={item.title} />
+        ))}
+      </Anchor>
     </aside>
   );
 }

@@ -18,16 +18,16 @@
   --colorError: #FF4D4F;
   --colorLink: #1668DC;
 
-  --base-100: #f0f0f0;
+  --bg-dark: #CCD7E9;
+  --bg-light: #f0f0f0;
+  --bg-light-dark: #E5EAEE;
   --base-200: #E8EEF6;
-  --base-300: #E5EAEE;
-  --base-400: #CCD7E9;
   --base-500: #f3f3f3;
   --base-600: #f2f2f2;
   --base-700: #f1f1f1;
   --base-800: #f0f0f0;
   --base-900: #efefef;
-  --text-100: #5b5c5f;
+  --txt-100: #5b5c5f;
   --text-200: #5c5c5c;
   --text-300: #a7a7a7;
   --border-100: #CCD7E9;
@@ -36,15 +36,15 @@
 }
 
 .dark {
-  --base-100: #1F2634;
+  --bg-dark: #111621;
+  --bg-light: #1F2634;
+  --bg-light-dark: #2a3142;
   --base-200: #1d1d1d;
-  --base-300: #2a3142;
-  --base-400: #111621;
   --base-500: #464646;
   --base-600: #565656;
   --base-700: #666666;
   --base-800: #767676;
-  --text-100: #8E9DB2;
+  --txt-100: #8E9DB2;
   --text-200: #b4b4b4;
   --text-300: #7a7a7a;
   --border-100: #313D50;
@@ -57,7 +57,6 @@
   padding: 0;
   box-sizing: border-box;
   font-size: 14px;
-  color: var(--text-100);
 }
 
 ::-webkit-scrollbar {
@@ -90,10 +89,8 @@
 }
 
 body {
-  min-width: 320px;
-  min-height: 100vh;
-  background-color: var(--base-400);
-  color: var(--text-100);
+  color: var(--txt-100);
+  background-color: var(--bg-dark);
 }
 
 ul.ant-menu {

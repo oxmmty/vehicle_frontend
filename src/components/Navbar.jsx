@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { Anchor, Button } from 'antd';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Anchor } from 'antd';
 
 const Navbar = ({ list, ...props }) => {
   const navigate = useNavigate();

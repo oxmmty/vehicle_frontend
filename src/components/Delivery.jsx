@@ -142,7 +142,7 @@ const Delivery = ({ className = '' }) => {
   return (
     <div className={`${className}`}>
       <Group label={"配達"}>
-        <Tabs type='card' items={deliveryTab.map((item, index) => {
+        <Tabs id='配達' className='anchor-section' type='card' items={deliveryTab.map((item, index) => {
           return {
             label: item,
             key: index,

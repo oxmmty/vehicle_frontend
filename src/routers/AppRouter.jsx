@@ -32,11 +32,12 @@ const AppRouter = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route element={<App />}>
-          <Route element={<Private />} errorElement={<Error />} loader={async () => {
+        <Route element={<App />} errorElement={<Error />}>
+          <Route element={<Private />} loader={async () => {
             const tokenData = await tokenLogin();
             return { tokenData };
           }}>
+            <Route path="/" loader={() => redirect('/dashboard')} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/container" element={<ContainerPage />} />
             <Route path="/truck" element={<TruckPage />} />
@@ -49,14 +50,14 @@ const AppRouter = () => {
             <Route path="/order" element={<OrderPage />} />
           </Route>
         </Route>
-        <Route element={<Public />} loader={async () => {
+        <Route element={<Public />} errorElement={<Error />} loader={async () => {
           const tokenData = await tokenLogin();
           return { tokenData };
         }}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
-        <Route path="*" loader={() => redirect('/login')} />
+        {/* <Route path="*" loader={() => redirect('/login')} /> */}
       </>
     )
   );

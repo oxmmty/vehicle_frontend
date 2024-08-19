@@ -62,7 +62,7 @@ const Header = ({ ...props }) => {
         <Drawer title="Menu" onClose={onClose} open={open}>
           <div className='flex flex-col gap-2 w-full'>
             {list.map((item, index) => (
-              <div onClick={() => navigate(`/${item.key}`)} className={`w-full hover:bg-hover-primary p-2 rounded-lg cursor-pointer ${location.pathname.slice(1) === item.key ? 'bg-base-primary' : 'bg-base-300'}`}>
+              <div key={index} onClick={() => navigate(`/${item.key}`)} className={`w-full hover:bg-hover-primary p-2 rounded-lg cursor-pointer ${location.pathname.slice(1) === item.key ? 'bg-base-primary' : 'bg-bg-300'}`}>
                 <Typography className={location.pathname === `/${item.key}` ? 'text-colorLink' : ''}>{item.value}</Typography>
               </div>
             ))}
