@@ -11,7 +11,6 @@ const ContainerPage = () => {
   return (
     <div>
       ContainerPage
-      <img src='./logo.png' />
     </div>
   )
 }
