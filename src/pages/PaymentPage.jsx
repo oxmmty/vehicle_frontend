@@ -1,7 +1,9 @@
-import { Button, Table } from 'antd';
+import { Button, Table, Typography } from 'antd';
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs';
 import axios from 'axios';
+
+const { Title } = Typography;
 
 const PaymentPage = () => {
   const [date, setDate] = useState(dayjs().format('YYYY-MM'));
@@ -619,12 +621,18 @@ const PaymentPage = () => {
 
   return (
     <div className='flex flex-col items-center gap-4'>
-      <div className='flex justify-evenly max-w-lg w-full'>
-        <Button>読込</Button>
-        <Button>読込全件</Button>
+      <div className='flex flex-col sm:flex-row justify-evenly w-full'>
+        <Typography className='flex justify-center'>
+          <Title level={3}>{date}</Title>
+        </Typography>
+        <div className='flex justify-evenly max-w-lg w-full'>
+          <Button>読込</Button>
+          <Button>読込全件</Button>
+        </div>
       </div>
+
       <div className='w-full'>
-        <Table dataSource={datas} columns={columns} scroll={{ x: 'max-content' }} size='small' className='table-fixed' />
+        <Table dataSource={datas} columns={columns} scroll={{ x: 'max-content' }} size='small' className='table-fixed' pagination={{pageSize:20}} />
       </div>
     </div>
   )
