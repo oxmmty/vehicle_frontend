@@ -1,5 +1,7 @@
-import { Divider, Table } from 'antd';
+import { Divider, Table, Typography } from 'antd';
 import { useState } from 'react'
+
+const { Title, Text } = Typography;
 
 const InvoicingPage = () => {
   const dataSource = [
@@ -24,7 +26,7 @@ const InvoicingPage = () => {
       value: 9012,
     }
   ];
-  
+
   const orderData = [
     {
       "key": "0",
@@ -143,39 +145,39 @@ const InvoicingPage = () => {
 
   return (
     <div className='flex flex-col justify-center w-full'>
-      <h2 className='m-auto'>御請求書</h2>
+      <Title level={2} className='m-auto'>御請求書</Title>
       <Divider className='w-full m-2' />
       <div className="flex justify-around w-full">
         <div>
-          <b>請求元情報</b>
-          <p className='text-text-300 pt-1'>作成日: 2024/08/15</p>
+          <Title level={5}>請求元情報</Title>
+          <Text type='secondary'>作成日: 2024/08/15</Text>
         </div>
         <div>
-          <b>㈱近鉄エクスプレス 輸入 御中</b>
-          <p className='text-text-300 pt-1'>2024年1月締め</p>
+          <Title level={5}>㈱近鉄エクスプレス 輸入 御中</Title>
+          <Text type='secondary'>2024年1月締め</Text>
         </div>
       </div>
       <div className="flex flex-col md:flex-row">
         <div className='md:w-[50%]'>
-          <h3 className='m-auto py-5'>請求先情報</h3>
+          <Title level={4} className='m-auto py-4'>請求先情報</Title>
           <div className="flex flex-wrap flex-row items-center gap-4">
-            <p><b>顧客</b>: LogiTechnoService株式会社</p>
-            <p><b>住所</b>: 東京都武蔵村山市神明2-51-15</p>
-            <p><b>事業者登録番号</b>: T1012801022526</p>
-            <p><b>銀行名</b>: 山梨中央銀行（銀行コード0142）</p>
-            <p><b>支店名</b>: 立川支店（支店コード207）</p>
-            <p><b>口座名</b>: 普通 704264 ロジテクノサービス（カ）</p>
+            <Typography><Text strong>顧客</Text>: LogiTechnoService株式会社</Typography>
+            <Typography><Text strong>住所</Text>: 東京都武蔵村山市神明2-51-15</Typography>
+            <Typography><Text strong>事業者登録番号</Text>: T1012801022526</Typography>
+            <Typography><Text strong>銀行名</Text>: 山梨中央銀行（銀行コード0142）</Typography>
+            <Typography><Text strong>支店名</Text>: 立川支店（支店コード207）</Typography>
+            <Typography><Text strong>口座名</Text>: 普通 704264 ロジテクノサービス（カ）</Typography>
           </div>
         </div>
         <div className='md:w-[50%]'>
-          <h3 className='m-auto pt-5'>御請求金額</h3>
+          <Title level={4} className='m-auto pt-4'>御請求金額</Title>
           <div className='pt-2'>
             <Table dataSource={dataSource} columns={columns} size='small' />
           </div>
         </div>
       </div>
       <div className="flex w-full justify-center py-5">
-        <Table dataSource={orderData} columns={orderColumns} scroll={{x: 'max-content'}} className='w-full'  />
+        <Table dataSource={orderData} columns={orderColumns} scroll={{ x: 'max-content' }} className='w-full' />
       </div>
     </div>
   )

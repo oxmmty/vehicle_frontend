@@ -14,11 +14,13 @@ const PaymentPage = () => {
       title: 'ID',
       dataIndex: 'ID',
       key: 'ID',
+      fixed: 'left',
     },
     {
       title: '識別コード',
       dataIndex: '識別コード',
       key: '識別コード',
+      fixed: 'left',
     },
     {
       title: '請求日',

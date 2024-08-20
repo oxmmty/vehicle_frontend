@@ -20,7 +20,7 @@ const ThemeProvider = ({ children }) => {
 
   const commonComponents = {
     token: {
-      colorBgBase: '#f0f0f0',
+      colorBgBase: '#ffffff',
       colorPrimary: '#00b96b',
       colorTextBase: '#5b5c5f'
     }
