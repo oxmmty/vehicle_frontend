@@ -46,7 +46,7 @@ const AnalysisPage = () => {
       setDatas(tdata)
     }
     run();
-  })
+  }, [])
   return (
     <div className='flex flex-col gap-0'>
       <DatePicker onChange={onChange} defaultValue={dayjs(date, 'YYYY-MM-DD')} className='grow max-w-96'/>

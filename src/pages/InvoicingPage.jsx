@@ -76,37 +76,37 @@ const InvoicingPage = () => {
     {
       title: '受注コード',
       dataIndex: 'code',
-      key: 'code'
+      key: 'code',
     },
     {
       title: '日付',
       dataIndex: 'date',
-      key: 'date'
+      key: 'date',
     },
     {
       title: '積地',
       dataIndex: 'loading',
-      key: 'loading'
+      key: 'loading',
     },
     {
       title: '配達先',
       dataIndex: 'deliver',
-      key: 'deliver'
+      key: 'deliver',
     },
     {
       title: '品目',
       dataIndex: 'item',
-      key: 'item'
+      key: 'item',
     },
     {
       title: '種類',
       dataIndex: 'kind',
-      key: 'kind'
+      key: 'kind',
     },
     {
       title: '区分',
       dataIndex: 'classify',
-      key: 'classify'
+      key: 'classify',
     },
     {
       title: '基本料金',
@@ -117,27 +117,27 @@ const InvoicingPage = () => {
     {
       title: '数量',
       dataIndex: 'amount',
-      key: 'amount'
+      key: 'amount',
     },
     {
       title: '小計',
       dataIndex: 'subTotal',
-      key: 'subTotal'
+      key: 'subTotal',
     },
     {
       title: '消費税',
       dataIndex: 'tax',
-      key: 'tax'
+      key: 'tax',
     },
     {
       title: '合計',
       dataIndex: 'sum',
-      key: 'sum'
+      key: 'sum',
     },
     {
       title: '備考',
       dataIndex: 'remark',
-      key: 'remark'
+      key: 'remark',
     }
   ];
 
@@ -175,7 +175,7 @@ const InvoicingPage = () => {
         </div>
       </div>
       <div className="flex w-full justify-center py-5">
-        <Table dataSource={orderData} columns={orderColumns} scroll={{x: 320}} className='w-full'  />
+        <Table dataSource={orderData} columns={orderColumns} scroll={{x: 'max-content'}} className='w-full'  />
       </div>
     </div>
   )
