@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'antd';
+import Mail from 'src/components/Mail';
 
 const MailPage = () => {
   const fileColumns = [
@@ -41,46 +42,21 @@ const MailPage = () => {
     },
   ];
 
-  const emailContent = [
-    {
-      key: '1',
-      header: '文頭',
-      content: 'いつもお世話になっております。',
-    },
-    {
-      key: '2',
-      header: '本文',
-      content: '輸送リストと輸送依頼書をお送りいたします。',
-    },
-    {
-      key: '3',
-      header: '文末',
-      content: 'よろしくお願いいたします。',
-    },
-  ];
+  const emailContent = {
+    start: 'いつもお世話になっております。<br /><br />輸送リストと輸送依頼書をお送りいたします。',
+    end: 'よろしくお願いいたします。',
+  };
 
   return (
-    <div className="p-4">
-      <Table 
-        columns={fileColumns} 
-        dataSource={fileData} 
-        pagination={false} 
-        bordered 
-        scroll={{x: 'max-content'}}
+    <div className="flex flex-col gap-2">
+      <Table
+        columns={fileColumns}
+        dataSource={fileData}
+        pagination={false}
+        bordered
+        scroll={{ x: 'max-content' }}
       />
-
-      <div className="mt-4 border rounded-lg p-4">
-        <table className="min-w-full border border-collapse">
-          <tbody>
-            {emailContent.map((item) => (
-              <tr key={item.key}>
-                <td className="border px-4 py-2 bg-gray-100 font-semibold">{item.header}</td>
-                <td className="border px-4 py-2">{item.content}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Mail data={emailContent} className='w-full' />
     </div>
   );
 };

@@ -26,6 +26,10 @@ import MaintainerPage from 'src/pages/MaintainerPage';
 import OrderPage from 'src/pages/OrderPage';
 import AnalysisPage from 'src/pages/AnalysisPage';
 import MailPage from 'src/pages/MailPage';
+import StoragePage from 'src/pages/StoragePage';
+import InventoryPage from 'src/pages/InventoryPage';
+import ReleasePage from 'src/pages/ReleasePage';
+import DataPage from 'src/pages/DataPage';
 
 axios.defaults.baseURL = process.env.REACT_API_BASE_URL;
 
@@ -50,6 +54,10 @@ const AppRouter = () => {
             <Route path="/analysis" element={<AnalysisPage />} />
             <Route path="/order" element={<OrderPage />} />
             <Route path="/mail" element={<MailPage />} />
+            <Route path="/storage" element={<StoragePage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/release" element={<ReleasePage />} />
+            <Route path="/data" element={<DataPage />} />
           </Route>
         </Route>
         <Route element={<Public />} errorElement={<Error />} loader={async () => {

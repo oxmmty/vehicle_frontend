@@ -1,34 +1,74 @@
+import { Typography } from 'antd';
 import React from 'react';
+import Pretend from 'src/components/Pretend';
+
+const {Title, Text} = Typography;
 
 const DailyPage = () => {
-  const formData = [
-    { label: '配送コード', value: 'MA240618-0001' },
-    { label: '区分', value: '受入れ取り' },
-    { label: '依頼日', value: '2024/6/19' },
-    { label: '搬出場所', value: '青海-A4' },
-    { label: '積数', value: '' },
-    { label: 'コンテナNo.', value: 'C12345' },
-    { label: 'コンテナタイプ', value: '' },
-    { label: 'コンテナサイズ', value: '40' },
-    { label: 'コンテナ本数', value: '' },
-    { label: '危険品', value: 'いいえ' },
-    { label: '配送先の', value: '株式会社アルプス物流' },
-    { label: '配送日', value: '2024/1/3' },
-    { label: '納期日', value: '2024/1/2' },
-    { label: '配送時間', value: '1:00' },
-  ];
+  const data = {
+    order: 'MA240618-0001',
+    category: '実入り取り',
+    request: '2024/6/19',
+    removal: '青海A-4',
+    axles: '',
+    container: 'C12345',
+    type1: '',
+    size: '40',
+    type2: '',
+    goods: 'いいえ',
+    destination1: '株式会社アルプス物流',
+    loading1: '2024/1/2',
+    date1: '2024/1/3',
+    time1: '1:00:00',
+    address1: '神奈川県横浜市港北区新羽町1756　2号棟',
+    telephone1: '',
+    charge1: '',
+    basic: '',
+    axle3: '',
+    destination2: '',
+    loading2: '',
+    date2: '',
+    time2: '',
+    address2: '',
+    telephone2: '',
+    charge2: '',
+    destination3: '',
+    loading3: '',
+    date3: '',
+    time3: '',
+    address3: '',
+    telephone3: '',
+    charge3: '',
+    place: '',
+    vessel: '',
+    voy: '',
+    company: '',
+    bk: '',
+    bl: '',
+    discharge: '',
+    final: '',
+    consignor: '',
+    scale: '',
+    chassis: '',
+    highway: '',
+    other: '',
+    fee: '',
+    remarks: '',
+  }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">仮依頼書</h1>
-      <div className="grid grid-cols-4 gap-4 border p-4">
-        {formData.map((field, index) => (
-          <React.Fragment key={index}>
-            <div className="font-bold bg-gray-200 p-2 border">{field.label}</div>
-            <div className="p-2 border">{field.value}</div>
-          </React.Fragment>
-        ))}
+    <div className="flex flex-col items-center mx-auto p-4">
+      <Typography>
+        <Title level={2}>仮依頼書</Title>
+      </Typography>
+      <div className="flex justify-between w-full">
+        <Text strong>寿咲 御中</Text>
+        <div className='flex flex-col'>
+          <Text>翔風運輸株式会社</Text>
+          <Text type='secondary'>担当：渡邉</Text>
+        </div>
       </div>
+      <Pretend data={data} className='w-full' />
     </div>
   );
 };
