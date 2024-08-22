@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "src/assets/styles/Notification.css"
+import "src/assets/styles/Notification.css";
 
 const notify = (message, type='success') => {
   if(type === 'success') toast.success(message, { autoClose: 1500, theme: "colored" });
