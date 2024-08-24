@@ -30,6 +30,7 @@ import StoragePage from 'src/pages/StoragePage';
 import InventoryPage from 'src/pages/InventoryPage';
 import ReleasePage from 'src/pages/ReleasePage';
 import DataPage from 'src/pages/DataPage';
+import PartnercompanyPage from 'src/pages/PartnercompanyPage';
 
 axios.defaults.baseURL = process.env.REACT_API_BASE_URL;
 
@@ -58,6 +59,7 @@ const AppRouter = () => {
             <Route path="/inventory" element={<InventoryPage />} />
             <Route path="/release" element={<ReleasePage />} />
             <Route path="/data" element={<DataPage />} />
+            <Route path="/partner" element={<PartnercompanyPage />} />
           </Route>
         </Route>
         <Route element={<Public />} errorElement={<Error />} loader={async () => {
