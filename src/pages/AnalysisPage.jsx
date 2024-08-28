@@ -53,7 +53,7 @@ const AnalysisPage = () => {
       <Typography className='flex justify-center'>
         <Title level={3}>{date}</Title>
       </Typography>
-      <Table dataSource={datas} columns={columns} scroll={{x: 320}} className='w-full'  />
+      <Table dataSource={datas} columns={columns} scroll={{x: 'max-content'}} className='w-full'  />
     </div>
   )
 }
