@@ -20,9 +20,6 @@ function App() {
       <div className='bg-bg-dark'>
         <Main className="z-10 ml-[14px] mr-6 flex flex-col grid-in-main pt-4" />
       </div>
-      {/* <div className='bg-bg-dark'>
-        <Toc className="hidden 2xl:block sticky top-[100px] w-[176px] max-h-[80vh] pt-12 z-10 overflow-auto overscroll-contain grid-in-toc" />
-      </div> */}
       <Footer className="xl:col-start-2 xl:col-span-1 2xl:col-span-2 2xl:col-start-2 text-center text-txt-100 grid-in-footer bg-bg-dark" />
     </div>
   )
