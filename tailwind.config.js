@@ -6,7 +6,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-header': 'var(--bg-header)',
+        'bg-light': 'var(--bg-light)',
+        'base-200': 'var(--base-200)',
+        'bg-light-dark': 'var(--bg-light-dark)',
         'bg-dark': 'var(--bg-dark)',
         'base-500': 'var(--base-500)',
         'base-600': 'var(--base-600)',

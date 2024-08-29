@@ -12,28 +12,44 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --colorPrimary: #6F51A1;
+  --colorPrimary: #1677FF;
   --colorSuccess: #52C41A;
   --colorWarning: #FAAD14;
   --colorError: #FF4D4F;
   --colorLink: #1668DC;
 
-  --bg-header: #F3F3F3;
-  --bg-dark: #F8F6F6;
-  --base-table-header: #F5F5F5;
-  --base-500: #DFDFDF;
+  --bg-dark: #F4F6F9;
+  --bg-light: #ffffff;
+  --bg-light-dark: #ffffffea;
+  --base-200: #E8EEF6;
+  --base-500: #f3f3f3;
   --base-600: #f2f2f2;
   --base-700: #f1f1f1;
   --base-800: #f0f0f0;
   --base-900: #efefef;
-  --txt-100: #080808;
-  --txt-200: #363636;
-  --text-300: #989898;
-  --text-400: #9E9E9E;
-  --text-500: #A4A4A4;
+  --txt-100: #5b5c5f;
+  --text-200: #5c5c5c;
+  --text-300: #a7a7a7;
   --border-100: #CCD7E9;
   --base-primary: #00b96b;
   --hover-primary: #DFFBEC;
+}
+
+.dark {
+  --bg-dark: #111621;
+  --bg-light: #1F2634;
+  --bg-light-dark: #2a3142;
+  --base-200: #1d1d1d;
+  --base-500: #464646;
+  --base-600: #565656;
+  --base-700: #666666;
+  --base-800: #767676;
+  --txt-100: #8E9DB2;
+  --text-200: #b4b4b4;
+  --text-300: #7a7a7a;
+  --border-100: #313D50;
+  --base-primary: #dde000;
+  --hover-primary: #242813;
 }
 
 * {
@@ -72,6 +88,11 @@
   }
 }
 
+body {
+  color: var(--txt-100);
+  background-color: var(--bg-dark);
+}
+
 ul.ant-menu {
   border-inline-end: 0px !important;
 }
@@ -85,9 +106,4 @@ ul.ant-menu {
 
 .ant-form-item-label {
   padding: 0 !important;
-}
-
-.ant-menu-item-selected {
-  background-color: var(--colorPrimary) !important;
-  color: #ECE8F2 !important;
 }

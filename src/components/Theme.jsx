@@ -18,12 +18,25 @@ const ThemeProvider = ({ children }) => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const newTheme = {
+  const commonComponents = {
     token: {
       colorBgBase: '#ffffff',
-      colorPrimary: '#6F51A1',
-      colorTextBase: '#A4A4A4'
+      colorPrimary: '#00b96b',
+      colorTextBase: '#5b5c5f'
     }
+  };
+
+  const newTheme = theme === 'dark' ? {
+    ...commonComponents,
+    algorithm: antdTheme.darkAlgorithm,
+    token: {
+      colorBgBase: '#101319',
+      colorPrimary: '#dde000',
+      colorTextBase: '#afb6c1'
+    }
+  } : {
+    ...commonComponents,
+    algorithm: antdTheme.defaultAlgorithm
   };
 
   return (

@@ -34,10 +34,12 @@ const Main = ({...props}) => {
 
   return (
     <main className={props.className}>
-      <div className='sticky'>
-        dsfadsfasdf
-      </div>
-      <div className='bg-bg-dark p-1 sm:p-2 rounded-lg shadow-custom'>
+      <div className='bg-bg-light-dark p-1 sm:p-2 rounded-lg shadow-custom'>
+        <Breadcrumb className='p-4'>
+          {breadcrumbItems.map((breadcrumb, index) => (
+            <Breadcrumb.Item key={index}>{breadcrumb.title}</Breadcrumb.Item>
+          ))}
+        </Breadcrumb>
         <Outlet />
       </div>
     </main>
