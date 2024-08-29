@@ -1,4 +1,4 @@
-import { Divider, Table, Typography } from 'antd';
+import { Button, Divider, Select, Table, Typography } from 'antd';
 import { useState } from 'react'
 
 const { Title, Text } = Typography;
@@ -143,6 +143,77 @@ const InvoicingPage = () => {
     }
   ];
 
+  const option = [
+    {
+      value: 0,
+      label: 'お客様',
+    },
+    {
+      value: 1,
+      label: '船社',
+    },
+    {
+      value: 2,
+      label: '下払',
+    },
+    {
+      value: 3,
+      label: '保管',
+    }
+  ]
+
+  const columns2 = [
+    {
+      key: '請求先',
+      title: '請求先',
+      dataIndex: '請求先'
+    },
+    {
+      key: '会社名',
+      title: '会社名',
+      dataIndex: '会社名'
+    },
+    {
+      key: '会社住所',
+      title: '会社住所',
+      dataIndex: '会社住所'
+    },
+    {
+      key: '事業者登録番号',
+      title: '事業者登録番号',
+      dataIndex: '事業者登録番号'
+    },
+    {
+      key: 'タグ',
+      title: 'タグ',
+      dataIndex: 'タグ'
+    },
+    {
+      key: '銀行名',
+      title: '銀行名',
+      dataIndex: '銀行名'
+    },
+    {
+      key: '支店名',
+      title: '支店名',
+      dataIndex: '支店名'
+    },
+    {
+      key: '口座名',
+      title: '口座名',
+      dataIndex: '口座名'
+    },
+    {
+      key: '口座名義',
+      title: '口座名義',
+      dataIndex: '口座名義'
+    },
+    {
+      key: '件名',
+      title: '件名',
+      dataIndex: '件名'
+    }
+  ]
   return (
     <div className='flex flex-col justify-center w-full'>
       <Title level={2} className='m-auto'>御請求書</Title>
@@ -178,6 +249,14 @@ const InvoicingPage = () => {
       </div>
       <div className="flex w-full justify-center py-5">
         <Table dataSource={orderData} columns={orderColumns} scroll={{ x: 'max-content' }} className='w-full' />
+      </div>
+      <div className="flex flex-wrap flex-row items-center justify-end gap-5">
+        <div className='flex justify-center items-center bg-slate-700'>請求先</div>
+        <Select options={option} defaultValue={1} className='max-w-72 grow' />
+        <Button type='primary'>PDF作成</Button>
+      </div>
+      <div className="flex w-full justify-center py-5">
+        <Table columns={columns2} scroll={{ x: 'max-content' }} className='w-full' />
       </div>
     </div>
   )
