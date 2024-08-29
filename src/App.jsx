@@ -4,7 +4,6 @@ import Footer from 'src/components/Footer';
 import 'src/components/Notification'
 import { axiosSetting } from 'src/components/AxiosSetting'
 import Sidebar from "./components/Sidebar";
-import Toc from "./components/Toc";
 import Main from "./components/Main";
 import { Processbar } from 'src/components/Processbar'
 import 'nprogress/nprogress.css';
