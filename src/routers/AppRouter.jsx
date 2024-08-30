@@ -34,6 +34,10 @@ import PartnercompanyPage from 'src/pages/PartnercompanyPage';
 import CustomerPage from 'src/pages/CustomerPage';
 import DBPage from 'src/pages/DBPage';
 import MonthlyCustomerPage from 'src/pages/MonthlyCustomerPage';
+import MonthlyPatnerPage from 'src/pages/MonthlyPatnerPage';
+import MonthlyTypePage from 'src/pages/MonthlyTypePage';
+import StorageContainerPage from 'src/pages/StorageContainerPage';
+import DBSPage from 'src/pages/DBSPage';
 
 axios.defaults.baseURL = process.env.REACT_API_BASE_URL;
 
@@ -47,24 +51,29 @@ const AppRouter = () => {
             return { tokenData };
           }}>
             <Route path="/" loader={() => redirect('/dashboard')} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/container" element={<ContainerPage />} />
-            <Route path="/truck" element={<TruckPage />} />
-            <Route path="/daily" element={<DailyPage />} />
-            <Route path="/clamping" element={<ClampingPage />} />
-            <Route path="/invoicing" element={<InvoicingPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/maintainer" element={<MaintainerPage />} />
             <Route path="/analysis" element={<AnalysisPage />} />
-            <Route path="/order" element={<OrderPage />} />
-            <Route path="/mail" element={<MailPage />} />
-            <Route path="/storage" element={<StoragePage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/release" element={<ReleasePage />} />
-            <Route path="/data" element={<DataPage />} />
-            <Route path="/partner" element={<PartnercompanyPage />} />
+            <Route path="/clamping" element={<ClampingPage />} />
+            <Route path="/container" element={<ContainerPage />} />
             <Route path="/customer" element={<CustomerPage />} />
+            <Route path="/daily" element={<DailyPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/data" element={<DataPage />} />
+            <Route path="/DB" element={<DBPage />} />
+            <Route path="/DBSPage" element={<DBSPage />} />
+            <Route path="/inventory" element={<InventoryPage />} />
+            <Route path="/invoicing" element={<InvoicingPage />} />
+            <Route path="/mail" element={<MailPage />} />
+            <Route path="/maintainer" element={<MaintainerPage />} />
             <Route path="/month" element={<MonthlyCustomerPage />} />
+            <Route path="/monthpartner" element={<MonthlyPatnerPage />} />
+            <Route path="/type" element={<MonthlyTypePage />} />
+            <Route path="/order" element={<OrderPage />} />
+            <Route path="/partner" element={<PartnercompanyPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/release" element={<ReleasePage />} />
+            <Route path="/storecontainer" element={<StorageContainerPage />} />
+            <Route path="/storage" element={<StoragePage />} />
+            <Route path="/truck" element={<TruckPage />} />
           </Route>
         </Route>
         <Route element={<Public />} errorElement={<Error />} loader={async () => {
