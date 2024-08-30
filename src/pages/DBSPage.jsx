@@ -3,7 +3,7 @@ import { DatePicker, Table } from 'antd';
 import { Line, Column } from '@ant-design/plots';
 import { ThemeContext } from 'src/components/Theme';
 
-const MonthlyCustomerPage = () => {
+const DBSPage = () => {
   const { theme } = useContext(ThemeContext);
   const dataSource = [
     { key: '1', name: 'ユウキトランス', '2022/09': 30000, '2023/09': 50000, '2022/10': 40000, '2023/10': 60000 },
@@ -15,11 +15,18 @@ const MonthlyCustomerPage = () => {
   ];
 
   const columns = [
-    { title: '顧客名', dataIndex: 'name', key: 'name' },
-    { title: '2022/09', dataIndex: '2022/09', key: '2022/09' },
-    { title: '2023/09', dataIndex: '2023/09', key: '2023/09' },
-    { title: '2022/10', dataIndex: '2022/10', key: '2022/10' },
-    { title: '2023/10', dataIndex: '2023/10', key: '2023/10' },
+    { title: '#', dataIndex: 'name', key: 'name' },
+    { title: '協力会社名', dataIndex: '2022/09', key: '2022/09' },
+    { title: '支払い確認', dataIndex: '2023/09', key: '2023/09' },
+    { title: '課税', dataIndex: '2022/10', key: '2022/10' },
+    { title: '非課税', dataIndex: '2023/10', key: '2023/10' },
+    { title: '税抜合計', dataIndex: '2023/10', key: '2023/10' },
+    { title: '消費税', dataIndex: '2023/10', key: '2023/10' },
+    { title: '支払合計', dataIndex: '2023/10', key: '2023/10' },
+    { title: '支払日', dataIndex: '2023/10', key: '2023/10' },
+    { title: '前月比', dataIndex: '2023/10', key: '2023/10' },
+    { title: '売掛計税抜', dataIndex: '2023/10', key: '2023/10' },
+    { title: '支払い比率', dataIndex: '2023/10', key: '2023/10' },
   ];
 
   const lineData = [];
@@ -97,25 +104,15 @@ const MonthlyCustomerPage = () => {
   };
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
+      <h1 className="text-center text-2xl font-bold mb-4">協力会社別月次</h1>
       <div className="flex justify-end w-full pb-2">
         <DatePicker picker="month" className='grow max-w-96' />
       </div>
       <div className="mb-4">
         <Table dataSource={dataSource} columns={columns} pagination={false} bordered scroll={{x: 'max-content'}} />
       </div>
-      <div className="flex flex-wrap flex-row items-center gap-5 w-full pt-5">
-        <div className='flex-1 min-w-[250px] text-center'>
-          <h2>月次比較</h2>
-          <Line {...config} />
-        </div>
-        <div className='flex-1 min-w-[250px] text-center'>
-          <h2>月次合計</h2>
-          <Column {...barConfig} />
-        </div>
-      </div>
     </div>
   );
 };
 
-export default MonthlyCustomerPage;
+export default DBSPage;
