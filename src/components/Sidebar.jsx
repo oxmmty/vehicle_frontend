@@ -21,6 +21,14 @@ const Sidebar = ({ ...props }) => {
 
   const orders_invoices = [
     {
+      key: 'newOrderForm',
+      label: '新依頼書'
+    },
+    {
+      key: 'db',
+      label: 'DB'
+    },
+    {
       key: 'orderDB',
       label: '受注DB'
     },
@@ -69,6 +77,10 @@ const Sidebar = ({ ...props }) => {
     {
       key: 'calendar',
       label: 'カレンダー'
+    },
+    {
+      key: 'dispatchSpecification',
+      label: '配車表仕様書'
     },
     {
       key: 'taskSchedule',
@@ -142,10 +154,6 @@ const Sidebar = ({ ...props }) => {
     {
       key: 'data',
       label: 'データ'
-    },
-    {
-      key: 'invoices_receipts',
-      label: '送り状・受領書 '
     }
   ];
 

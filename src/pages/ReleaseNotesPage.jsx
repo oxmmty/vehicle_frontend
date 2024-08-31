@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Table } from 'antd';
 import Mail from 'src/components/Mail';
 
-const ReleasePage = () => {
+const ReleaseNotesPage = () => {
   const fileColumns = [
     {
       key: 'no',
@@ -70,4 +70,4 @@ const ReleasePage = () => {
   );
 };
 
-export default ReleasePage;
+export default ReleaseNotesPage;
