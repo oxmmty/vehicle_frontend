@@ -228,10 +228,10 @@ const InvoicePage = () => {
           <Text type='secondary'>2024年1月締め</Text>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row px-2">
         <div className='md:w-[50%]'>
           <Title level={4} className='m-auto py-4'>請求先情報</Title>
-          <div className="flex flex-wrap flex-row items-center gap-4">
+          <div className="flex flex-wrap flex-row items-center gap-5">
             <Typography><Text strong>顧客</Text>: LogiTechnoService株式会社</Typography>
             <Typography><Text strong>住所</Text>: 東京都武蔵村山市神明2-51-15</Typography>
             <Typography><Text strong>事業者登録番号</Text>: T1012801022526</Typography>
@@ -251,7 +251,7 @@ const InvoicePage = () => {
         <Table dataSource={orderData} columns={orderColumns} scroll={{ x: 'max-content' }} pagination={false} className='w-full' />
       </div>
       <div className="flex flex-wrap flex-row items-center justify-end gap-5">
-        <div className='flex justify-center items-center bg-slate-700'>請求先</div>
+        <div className='flex justify-center items-center'>請求先</div>
         <Select options={option} defaultValue={1} className='max-w-72 grow' />
         <Button type='primary'>PDF作成</Button>
       </div>
