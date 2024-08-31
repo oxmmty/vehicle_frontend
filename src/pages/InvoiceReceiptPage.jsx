@@ -4,7 +4,7 @@ import Waybill from 'src/components/Waybill';
 
 const { Title, Text } = Typography;
 
-const TruckPage = () => {
+const InvoiceReceiptPage = () => {
   const [count, setCount] = useState(0);
   const [droppedImageSrc, setDroppedImageSrc] = useState(null);
 
@@ -66,4 +66,4 @@ const TruckPage = () => {
   )
 }
 
-export default TruckPage
+export default InvoiceReceiptPage

@@ -1,20 +1,9 @@
-import React, { useContext } from 'react';
-import { DatePicker, Table } from 'antd';
-import { Line, Column } from '@ant-design/plots';
-import { ThemeContext } from 'src/components/Theme';
+import React from 'react';
+import { Button, Table } from 'antd';
+import Mail from 'src/components/Mail';
 
 const StorageContainerPage = () => {
-  const { theme } = useContext(ThemeContext);
-  const dataSource = [
-    { key: '1', name: 'ユウキトランス', '2022/09': 30000, '2023/09': 50000, '2022/10': 40000, '2023/10': 60000 },
-    { key: '2', name: '南本牧日新', '2022/09': 45000, '2023/09': 50000, '2022/10': 45000, '2023/10': 60000 },
-    { key: '3', name: '有限会社鴨原商事', '2022/09': 0, '2023/09': 30000, '2022/10': 30000, '2023/10': 40000 },
-    { key: '4', name: '東洋境運株式会社', '2022/09': 100000, '2023/09': 110000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '5', name: '鈴与カーゴネット株式会社', '2022/09': 100000, '2023/09': 120000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '6', name: '鈴与株式会社', '2022/09': 10000, '2023/09': 20000, '2022/10': 10000, '2023/10': 20000 },
-  ];
-
-  const columns = [
+  const fileColumns = [
     {
       key: '搬入日',
       title: '搬入日',
@@ -27,18 +16,18 @@ const StorageContainerPage = () => {
     },
     {
       key: 'コンテナ№',
-      title: 'コンテナ№',
-      dataIndex: 'コンテナ№'
+      title: 'テナ№',
+      dataIndex: 'テナ№'
     },
     {
-      key: 'コンテナサイズ',
-      title: 'コンテナサイズ',
-      dataIndex: 'コンテナサイズ'
+      key: 'サイズ',
+      title: 'サイズ',
+      dataIndex: 'サイズ'
     },
     {
-      key: 'コンテナタイプ',
-      title: 'コンテナタイプ',
-      dataIndex: 'コンテナタイプ'
+      key: 'タイプ',
+      title: 'タイプ',
+      dataIndex: 'タイプ'
     },
     {
       key: '船社',
@@ -52,24 +41,34 @@ const StorageContainerPage = () => {
     },
     {
       key: '搬入顧客',
-      title: '搬入顧客',
-      dataIndex: '搬入顧客'
-    },
+      title: '入顧客',
+      dataIndex: '入顧客'
+    }
+  ];
+
+  const fileData = [
     {
-      key: '搬出顧客',
-      title: '搬出顧客',
-      dataIndex: '搬出顧客'
+      key: '1',
+      fileName: 'エムズ物流株式会社2401030100 株式会社アルプス物流 HA240419-0001.pdf',
+      cooperationCompany: 'エムズ物流株式会社',
+      deliveryDestination: '株式会社アルプス物流',
+      deliveryDate: '1/3',
+      transmissionDate: '4/25',
     },
-    {
-      key: '搬出ブッキング№',
-      title: '搬出ブッキング№',
-      dataIndex: '搬出ブッキング№'
-    }    
   ];
 
   return (
-    <div className="container mx-auto p-4">
-      <Table columns={columns} pagination={false} bordered scroll={{x: 'max-content'}} />
+    <div className="flex flex-col gap-2">
+      <div>
+        <Button className='float-end'>更新</Button>
+      </div>
+      <Table
+        columns={fileColumns}
+        dataSource={fileData}
+        pagination={false}
+        bordered
+        scroll={{ x: 'max-content' }}
+      />
     </div>
   );
 };

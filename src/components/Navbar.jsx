@@ -17,7 +17,7 @@ const Navbar = ({ list, ...props }) => {
   }
   
   useEffect(() => {
-    setCurrentAnchor(location.pathname.slice(1));
+    setCurrentAnchor(location.pathname.split('/')[1]);
   }, [location])
 
   useEffect(() => {

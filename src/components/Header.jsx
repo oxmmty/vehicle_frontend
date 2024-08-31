@@ -10,15 +10,13 @@ const { Text } = Typography;
 
 const list = [
   { key: 'dashboard', value: 'ダッシュボード' },
-  { key: 'container', value: 'コンテナ' },
-  { key: 'truck', value: 'トラック' },
-  { key: 'daily', value: '作業日報' },
-  { key: 'clamping', value: '締め処理' },
-  { key: 'invoicing', value: '請求書発行' },
-  { key: 'payment', value: '支払書発行' },
-  { key: 'maintainer', value: 'マスタメンテ' },
-  { key: 'analysis', value: '車両・就労分析' },
-  { key: 'order', value: 'Web受注' }
+  { key: 'orders_invoices', value: '受注・請求書メニュー' },
+  { key: 'containers', value: 'コンテナ管理' },
+  { key: 'calendar_schedules', value: 'カレンダー・配車' },
+  { key: 'masterDatas', value: 'マスタデータ' },
+  { key: 'analysis_reports', value: '分析・レポート' },
+  { key: 'document_notes', value: 'ドキュメント・ノート' },
+  { key: 'settings_administration', value: '設定・管理' }
 ];
 
 const Header = ({ ...props }) => {
@@ -50,10 +48,10 @@ const Header = ({ ...props }) => {
           <Badge count={5} color="hsl(102, 70%, 61%)">
             <Button shape='circle' icon={<BellOutlined />} />
           </Badge>
-          <Button shape='circle' icon={<img src='./language.png' />} />
+          <Button shape='circle' icon={<img src='/language.png' />} />
           <Button shape="circle" icon={theme === 'light' ? <SunOutlined /> : <MoonOutlined />} onClick={toggleTheme} />
           <LogoMenu>
-            <Button icon={<Avatar src={'./user/man.png'} />} className='rounded-full' />
+            <Button icon={<Avatar src={'/user/man.png'} />} className='rounded-full' />
           </LogoMenu>
           <div className='2xl:hidden'>
             <Button onClick={showDrawer} icon={<MenuOutlined />} />
