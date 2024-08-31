@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Table } from 'antd';
 import Mail from 'src/components/Mail';
 
-const InventoryPage = () => {
+const InventoryContainerPage = () => {
   const fileColumns = [
     {
       key: '搬入日',
@@ -83,4 +83,4 @@ const InventoryPage = () => {
   );
 };
 
-export default InventoryPage;
+export default InventoryContainerPage;

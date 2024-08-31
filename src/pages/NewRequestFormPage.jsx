@@ -4,7 +4,7 @@ import Pretend from 'src/components/Pretend';
 
 const {Title, Text} = Typography;
 
-const DailyPage = () => {
+const NewRequestFormPage = () => {
   const data = {
     order: 'MA240618-0001',
     category: '実入り取り',
@@ -73,4 +73,4 @@ const DailyPage = () => {
   );
 };
 
-export default DailyPage;
+export default NewRequestFormPage;

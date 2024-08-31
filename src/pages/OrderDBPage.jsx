@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const { Title } = Typography;
 
-const PaymentPage = () => {
+const OrderDBPage = () => {
   const [date, setDate] = useState(dayjs().format('YYYY-MM'));
   const [datas, setDatas] = useState([]);
 
@@ -640,4 +640,4 @@ const PaymentPage = () => {
   )
 }
 
-export default PaymentPage
+export default OrderDBPage

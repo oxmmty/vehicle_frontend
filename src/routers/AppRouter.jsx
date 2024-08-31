@@ -16,28 +16,35 @@ import Error from 'src/components/Error';
 import LoginPage from 'src/pages/LoginPage';
 import RegisterPage from 'src/pages/RegisterPage';
 import DashboardPage from 'src/pages/DashboardPage';
-import ContainerPage from 'src/pages/ContainerPage';
-import TruckPage from 'src/pages/TruckPage';
-import DailyPage from 'src/pages/DailyPage';
+import BillingListPage from 'src/pages/BillingListPage';
+import DepartmentProfitPage from 'src/pages/DepartmentProfitPage';
+import InvoiceReceiptPage from 'src/pages/InvoiceReceiptPage';
+import NewRequestFormPage from 'src/pages/NewRequestFormPage';
 import ClampingPage from 'src/pages/ClampingPage';
-import InvoicingPage from 'src/pages/InvoicingPage';
-import PaymentPage from 'src/pages/PaymentPage';
-import MaintainerPage from 'src/pages/MaintainerPage';
+import InvoicePage from 'src/pages/InvoicePage';
+import InvoiceMSPage from 'src/pages/InvoiceMSPage';
+import OrderDBPage from 'src/pages/OrderDBPage';
+import CalendarPage from 'src/pages/CalendarPage';
 import OrderPage from 'src/pages/OrderPage';
 import AnalysisPage from 'src/pages/AnalysisPage';
 import MailPage from 'src/pages/MailPage';
-import StoragePage from 'src/pages/StoragePage';
-import InventoryPage from 'src/pages/InventoryPage';
+import StorageContainerPage from 'src/pages/StorageContainerPage';
+import InventoryContainerPage from 'src/pages/InventoryContainerPage';
 import ReleasePage from 'src/pages/ReleasePage';
 import DataPage from 'src/pages/DataPage';
-import PartnercompanyPage from 'src/pages/PartnercompanyPage';
+import PartnerCompanyPage from 'src/pages/PartnerCompanyPage';
 import CustomerPage from 'src/pages/CustomerPage';
+import CustomerListPage from 'src/pages/CustomerListPage';
+import PartnerCompanyListPage from 'src/pages/PartnerCompanyListPage';
 import DBPage from 'src/pages/DBPage';
-import MonthlyCustomerPage from 'src/pages/MonthlyCustomerPage';
-import MonthlyPatnerPage from 'src/pages/MonthlyPatnerPage';
-import MonthlyTypePage from 'src/pages/MonthlyTypePage';
-import StorageContainerPage from 'src/pages/StorageContainerPage';
+import MonthlyCustomerDBGraphPage from 'src/pages/MonthlyCustomerDBGraphPage';
+import MonthlyPartnerCompanyDBGraphPage from 'src/pages/MonthlyPartnerCompanyDBGraphPage';
+import MonthlyCustomerDBPage from 'src/pages/MonthlyCustomerDBPage';
+import MonthlyPartnerCompanyPage from 'src/pages/MonthlyPartnerCompanyPage';
+import StorageContainerDBPage from 'src/pages/StorageContainerDBPage';
 import DBSPage from 'src/pages/DBSPage';
+import RequestListPage from 'src/pages/RequestListPage';
+import TaskSchedulePage from 'src/pages/TaskSchedulePage';
 
 axios.defaults.baseURL = process.env.REACT_API_BASE_URL;
 
@@ -51,29 +58,54 @@ const AppRouter = () => {
             return { tokenData };
           }}>
             <Route path="/" loader={() => redirect('/dashboard')} />
-            <Route path="/analysis" element={<AnalysisPage />} />
-            <Route path="/clamping" element={<ClampingPage />} />
-            <Route path="/container" element={<ContainerPage />} />
-            <Route path="/customer" element={<CustomerPage />} />
-            <Route path="/daily" element={<DailyPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/data" element={<DataPage />} />
-            <Route path="/DB" element={<DBPage />} />
-            <Route path="/DBSPage" element={<DBSPage />} />
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/invoicing" element={<InvoicingPage />} />
-            <Route path="/mail" element={<MailPage />} />
-            <Route path="/maintainer" element={<MaintainerPage />} />
-            <Route path="/month" element={<MonthlyCustomerPage />} />
-            <Route path="/monthpartner" element={<MonthlyPatnerPage />} />
-            <Route path="/type" element={<MonthlyTypePage />} />
-            <Route path="/order" element={<OrderPage />} />
-            <Route path="/partner" element={<PartnercompanyPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/release" element={<ReleasePage />} />
-            <Route path="/storecontainer" element={<StorageContainerPage />} />
-            <Route path="/storage" element={<StoragePage />} />
-            <Route path="/truck" element={<TruckPage />} />
+
+            <Route path="/dashboard" loader={() => redirect('/dashboard/overview')} />
+            <Route path="/dashboard/overview" element={<DashboardPage />} />
+            <Route path="/dashboard/quick" element={<DashboardPage />} />
+
+            <Route path="/orders_invoices" loader={() => redirect('/orders_invoices/orderDB')} />
+            <Route path="/orders_invoices/orderDB" element={<OrderDBPage />} />
+            <Route path="/orders_invoices/billingList" element={<BillingListPage />} />
+            <Route path="/orders_invoices/invoice" element={<InvoicePage />} />
+            <Route path="/orders_invoices/invoice_Ms" element={<InvoiceMSPage />} />
+            <Route path="/orders_invoices/requestList" element={<RequestListPage />} />
+            <Route path="/orders_invoices/newRequestForm" element={<NewRequestFormPage />} />
+            <Route path="/orders_invoices/invoice_receipt" element={<InvoiceReceiptPage />} />
+            <Route path="/orders_invoices/mail" element={<MailPage />} />
+
+            <Route path="/containers" loader={() => redirect('/containers/storageContainer')} />
+            <Route path="/containers/storageContainer" element={<StorageContainerPage />} />
+            <Route path="/containers/inventoryContainer" element={<InventoryContainerPage />} />
+
+            <Route path="/calendar_schedules" loader={() => redirect('/calendar_schedules/calendar')} />
+            <Route path="/calendar_schedules/calendar" element={<CalendarPage />} />
+            <Route path="/calendar_schedules/taskSchedule" element={<TaskSchedulePage />} />
+
+            <Route path="/masterDatas" loader={() => redirect('/masterDatas/customer')} />
+            <Route path="/masterDatas/customer" element={<CustomerPage />} />
+            <Route path="/masterDatas/partnerCompany" element={<PartnerCompanyPage />} />
+            <Route path="/masterDatas/customerList" element={<CustomerListPage />} />
+            <Route path="/masterDatas/partnerCompanyList" element={<PartnerCompanyListPage />} />
+
+            <Route path="/analysis_reports" loader={() => redirect('/analysis_reports/monthlyCustomerDBGraph')} />
+            <Route path="/analysis_reports/monthlyCustomerDBGraph" element={<MonthlyCustomerDBGraphPage />} />
+            <Route path="/analysis_reports/monthlyPartnerCompanyDBGraph" element={<MonthlyPartnerCompanyDBGraphPage />} />
+            <Route path="/analysis_reports/db_s" element={<DBSPage />} />
+            <Route path="/analysis_reports/monthlyCustomerDB" element={<MonthlyCustomerDBPage />} />
+            <Route path="/analysis_reports/storageContainerDB" element={<StorageContainerDBPage />} />
+            <Route path="/analysis_reports/monthlyPartnerCompany" element={<MonthlyPartnerCompanyPage />} />
+            <Route path="/analysis_reports/departmentProfit" element={<DepartmentProfitPage />} />
+            <Route path="/analysis_reports/monthlyDepartmentReport" element={<NewRequestFormPage />} />
+            <Route path="/analysis_reports/transportCompanyRequest" element={<NewRequestFormPage />} />
+
+            <Route path="/document_notes" loader={() => redirect('/document_notes/releaseNotes')} />
+            <Route path="/document_notes/releaseNotes" element={<NewRequestFormPage />} />
+            <Route path="/document_notes/data" element={<NewRequestFormPage />} />
+            <Route path="/document_notes/invoices_receipts" element={<NewRequestFormPage />} />
+
+            <Route path="/settings_administration" loader={() => redirect('/settings_administration/userManagements')} />
+            <Route path="/settings_administration/userManagements" element={<NewRequestFormPage />} />
+            <Route path="/settings_administration/systemSettings" element={<NewRequestFormPage />} />
           </Route>
         </Route>
         <Route element={<Public />} errorElement={<Error />} loader={async () => {

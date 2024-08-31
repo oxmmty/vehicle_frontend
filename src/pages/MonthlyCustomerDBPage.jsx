@@ -3,7 +3,7 @@ import { DatePicker, Table } from 'antd';
 import { Line, Column, Bar } from '@ant-design/plots';
 import { ThemeContext } from 'src/components/Theme';
 
-const MonthlyTypePage = () => {
+const MonthlyCustomerDBPage = () => {
   const { RangePicker } = DatePicker;
   const { theme } = useContext(ThemeContext);
   const dataSource = [
@@ -115,4 +115,4 @@ const MonthlyTypePage = () => {
   );
 };
 
-export default MonthlyTypePage;
+export default MonthlyCustomerDBPage;

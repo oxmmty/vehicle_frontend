@@ -3,7 +3,7 @@ import { DatePicker, Table } from 'antd';
 import { Line, Column } from '@ant-design/plots';
 import { ThemeContext } from 'src/components/Theme';
 
-const MonthlyCustomerPage = () => {
+const MonthlyPartnerCompanyDBGraphPage = () => {
   const { theme } = useContext(ThemeContext);
   const dataSource = [
     { key: '1', name: 'ユウキトランス', '2022/09': 30000, '2023/09': 50000, '2022/10': 40000, '2023/10': 60000 },
@@ -15,7 +15,7 @@ const MonthlyCustomerPage = () => {
   ];
 
   const columns = [
-    { title: '顧客名', dataIndex: 'name', key: 'name' },
+    { title: '協力会社名', dataIndex: 'name', key: 'name' },
     { title: '2022/09', dataIndex: '2022/09', key: '2022/09' },
     { title: '2023/09', dataIndex: '2023/09', key: '2023/09' },
     { title: '2022/10', dataIndex: '2022/10', key: '2022/10' },
@@ -97,7 +97,7 @@ const MonthlyCustomerPage = () => {
   };
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
+      <h1 className="text-center text-2xl font-bold mb-4">協力会社別月次グラフ</h1>
       <div className="flex justify-end w-full pb-2">
         <DatePicker picker="month" className='grow max-w-96' />
       </div>
@@ -118,4 +118,4 @@ const MonthlyCustomerPage = () => {
   );
 };
 
-export default MonthlyCustomerPage;
+export default MonthlyPartnerCompanyDBGraphPage;

@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Select, Table } from 'antd';
 import { useState } from 'react'
 
-const ContainerPage = () => {
+const BillingListPage = () => {
   const columns = [
     {
       title: '受注コード',
@@ -93,4 +93,4 @@ const ContainerPage = () => {
   )
 }
 
-export default ContainerPage
+export default BillingListPage

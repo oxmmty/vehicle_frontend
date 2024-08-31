@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 const { Title, Text } = Typography;
 
-const InvoicingPage = () => {
+const InvoicePage = () => {
   const dataSource = [
     {
       key: '0',
@@ -243,12 +243,12 @@ const InvoicingPage = () => {
         <div className='md:w-[50%]'>
           <Title level={4} className='m-auto pt-4'>御請求金額</Title>
           <div className='pt-2'>
-            <Table dataSource={dataSource} columns={columns} size='small' />
+            <Table dataSource={dataSource} columns={columns} pagination={false} size='small' />
           </div>
         </div>
       </div>
       <div className="flex w-full justify-center py-5">
-        <Table dataSource={orderData} columns={orderColumns} scroll={{ x: 'max-content' }} className='w-full' />
+        <Table dataSource={orderData} columns={orderColumns} scroll={{ x: 'max-content' }} pagination={false} className='w-full' />
       </div>
       <div className="flex flex-wrap flex-row items-center justify-end gap-5">
         <div className='flex justify-center items-center bg-slate-700'>請求先</div>
@@ -262,4 +262,4 @@ const InvoicingPage = () => {
   )
 }
 
-export default InvoicingPage
+export default InvoicePage
