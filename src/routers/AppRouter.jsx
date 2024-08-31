@@ -31,8 +31,8 @@ import StorageContainerPage from 'src/pages/StorageContainerPage';
 import InventoryContainerPage from 'src/pages/InventoryContainerPage';
 import ReleaseNotesPage from 'src/pages/ReleaseNotesPage';
 import DataPage from 'src/pages/DataPage';
-// import PartnerCompanyPage from 'src/pages/PartnerCompanyPage';
 import CustomerPage from 'src/pages/CustomerPage';
+import PartnerCompanyPage from 'src/pages/PartnerCompanyPage';
 import CustomerListPage from 'src/pages/CustomerListPage';
 import PartnerCompanyListPage from 'src/pages/PartnerCompanyListPage';
 import MonthlyCustomerDBGraphPage from 'src/pages/MonthlyCustomerDBGraphPage';
@@ -87,7 +87,7 @@ const AppRouter = () => {
 
             <Route path="/masterDatas" loader={() => redirect('/masterDatas/customer')} />
             <Route path="/masterDatas/customer" element={<CustomerPage />} />
-            {/* <Route path="/masterDatas/partnerCompany" element={<PartnerCompanyPage />} /> */}
+            <Route path="/masterDatas/partnerCompany" element={<PartnerCompanyPage />} />
             <Route path="/masterDatas/customerList" element={<CustomerListPage />} />
             <Route path="/masterDatas/partnerCompanyList" element={<PartnerCompanyListPage />} />
 

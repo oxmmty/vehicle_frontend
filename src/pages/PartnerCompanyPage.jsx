@@ -56,11 +56,6 @@ const PartnerCompanyPage = () => {
     },
   ];
 
-  const emailContent = {
-    start: 'いつもお世話になっております。<br /><br />輸送リストと輸送依頼書をお送りいたします。',
-    end: 'よろしくお願いいたします。',
-  };
-
   return (
     <div className="flex flex-col gap-2">
       <Table
