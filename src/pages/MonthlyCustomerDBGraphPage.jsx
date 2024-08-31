@@ -96,7 +96,7 @@ const MonthlyCustomerDBGraphPage = () => {
     legend: false,
   };
   return (
-    <div className="container mx-auto p-4">
+    <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
       <div className="flex justify-end w-full pb-2">
         <DatePicker picker="month" className='grow max-w-96' />

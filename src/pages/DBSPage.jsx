@@ -103,7 +103,7 @@ const DBSPage = () => {
     legend: false,
   };
   return (
-    <div className="container mx-auto p-4">
+    <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">協力会社別月次</h1>
       <div className="flex justify-end w-full pb-2">
         <DatePicker picker="month" className='grow max-w-96' />

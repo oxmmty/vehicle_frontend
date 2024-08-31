@@ -1,96 +1,190 @@
-import { Button, DatePicker, Form, Select, Table } from 'antd';
-import { useState } from 'react'
+import React from "react";
+import { Table, Tag } from "antd";
+import moment from "moment";
 
 const TransportCompanyRequestPage = () => {
   const columns = [
     {
-      title: '受注コード',
-      dataIndex: '受注コード',
-      key: '受注コード'
+      title: "配送日",
+      dataIndex: "deliveryDate",
+      key: "deliveryDate",
     },
     {
-      title: '日付',
-      dataIndex: '日付',
-      key: '日付'
+      title: "ピック日",
+      dataIndex: "pickDate",
+      key: "pickDate",
     },
     {
-      title: '顧客名',
-      dataIndex: '顧客名',
-      key: '顧客名'
+      title: "時間",
+      dataIndex: "time",
+      key: "time",
     },
     {
-      title: '積地',
-      dataIndex: '積地',
-      key: '積地'
+      title: "コンテナ種類",
+      dataIndex: "containerType",
+      key: "containerType",
     },
     {
-      title: '配達先',
-      dataIndex: '配達先',
-      key: '配達先'
+      title: "軸数",
+      dataIndex: "axisCount",
+      key: "axisCount",
     },
     {
-      title: '船社',
-      dataIndex: '船社',
-      key: '船社'
+      title: "MG有無",
+      dataIndex: "mgPresence",
+      key: "mgPresence",
     },
     {
-      title: '下払会社1',
-      dataIndex: '下払会社1',
-      key: '下払会社1'
+      title: "BOOKING NO.",
+      dataIndex: "bookingNo",
+      key: "bookingNo",
     },
     {
-      title: '下払会社2',
-      dataIndex: '下払会社2',
-      key: '下払会社2'
+      title: "コンテナNo.",
+      dataIndex: "containerNo",
+      key: "containerNo",
     },
     {
-      title: '下払会社3',
-      dataIndex: '下払会社3',
-      key: '下払会社3'
+      title: "備考",
+      dataIndex: "remarks",
+      key: "remarks",
     },
     {
-      title: '下払会社4',
-      dataIndex: '下払会社4',
-      key: '下払会社4'
+      title: "依頼日",
+      dataIndex: "requestDate",
+      key: "requestDate",
     },
-    {
-      title: '下払会社5',
-      dataIndex: '下払会社5',
-      key: '下払会社5'
-    },
-    {
-      title: '下払会社6',
-      dataIndex: '下払会社6',
-      key: '下払会社6'
-    },
-    {
-      title: '保管場所',
-      dataIndex: '保管場所',
-      key: '保管場所'
-    },
-    {
-      title: '請求書作成日',
-      dataIndex: '請求書作成日',
-      key: '請求書作成日'
-    }
   ];
 
-  return (
-    <div className='flex flex-col items-center w-full'>
-      <Form layout='vertical'>
-        <div className="flex flex-wrap flex-row items-center gap-4">
-          <Form.Item label={"年月"} className='grow'>
-            <DatePicker />
-          </Form.Item>
-          <Form.Item label={"請求状況"} className='grow'>
-            <Select defaultValue={1} style={{ width: 100 }} />
-          </Form.Item>
-          <Button type='primary' className='grow'>一覧作成</Button>
-        </div>
-      </Form>
-      <Table columns={columns} scroll={{x: 'max-content'}} className='w-full'/>
-    </div>
-  )
-}
+  const data = [
+    {
+      key: "1",
+      deliveryDate: "7月11日",
+      pickDate: "7月15日",
+      time: "9:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234567",
+      containerNo: "AIHI1234567",
+      remarks: "",
+      requestDate: "7月15日",
+      isUpdated: true,
+    },
+    {
+      key: "2",
+      deliveryDate: "9月13日",
+      pickDate: "9月15日",
+      time: "10:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234568",
+      containerNo: "AIHI1234568",
+      remarks: "",
+      requestDate: "9月15日",
+      isUpdated: true,
+    },
+    {
+      key: "3",
+      deliveryDate: "9月14日",
+      pickDate: "9月15日",
+      time: "11:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234569",
+      containerNo: "AIHI1234569",
+      remarks: "",
+      requestDate: "9月15日",
+      isUpdated: true,
+    },
+    {
+      key: "4",
+      deliveryDate: "9月15日",
+      pickDate: "9月15日",
+      time: "12:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234570",
+      containerNo: "AIHI1234570",
+      remarks: "",
+      requestDate: "9月15日",
+      isUpdated: true,
+    },
+    {
+      key: "5",
+      deliveryDate: "9月16日",
+      pickDate: "9月15日",
+      time: "13:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234571",
+      containerNo: "AIHI1234571",
+      remarks: "",
+      requestDate: "9月15日",
+      isUpdated: true,
+    },
+    {
+      key: "6",
+      deliveryDate: "9月16日",
+      pickDate: "9月15日",
+      time: "16:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234574",
+      containerNo: "AIHI1234574",
+      remarks: "",
+      requestDate: "9月15日",
+      isUpdated: true,
+      isNew: true,
+    },
+    {
+      key: "7",
+      deliveryDate: "9月16日",
+      pickDate: "9月15日",
+      time: "17:00",
+      containerType: "40",
+      axisCount: "3",
+      mgPresence: "なし",
+      bookingNo: "AIHI1234575",
+      containerNo: "AIHI1234575",
+      remarks: "",
+      requestDate: "9月15日",
+      isUpdated: true,
+      isNew: true,
+    },
+  ];
 
-export default TransportCompanyRequestPage
+  const getRowClassName = (record) => {
+    const currentDate = moment().format("YYYY-MM-DD");
+    const updatedDate = moment("2024-08-31", "YYYY-MM-DD").format("YYYY-MM-DD");
+    
+    const recordDeliveryDate = moment(record.deliveryDate, "M月D日").format("YYYY-MM-DD");
+    
+    if (record.isNew) {
+      return "bg-yellow-600";
+    }
+  
+    if (moment(recordDeliveryDate).isBefore(updatedDate)) {
+      return "bg-gray-500";
+    }
+  
+    return "";
+  };
+  
+
+  return (
+    <Table
+      columns={columns}
+      dataSource={data}
+      pagination={false}
+      rowClassName={getRowClassName}
+    />
+  );
+};
+
+export default TransportCompanyRequestPage;

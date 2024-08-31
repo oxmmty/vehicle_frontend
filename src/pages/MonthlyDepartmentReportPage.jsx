@@ -77,18 +77,6 @@ const MonthlyDepartmentReportPage = () => {
 
   return (
     <div className='flex flex-col items-center w-full'>
-      <Form layout='vertical'>
-        <div className="flex flex-wrap flex-row items-center gap-4">
-          <Form.Item label={"年月"} className='grow'>
-            <DatePicker />
-          </Form.Item>
-          <Form.Item label={"請求状況"} className='grow'>
-            <Select defaultValue={1} style={{ width: 100 }} />
-          </Form.Item>
-          <Button type='primary' className='grow'>一覧作成</Button>
-        </div>
-      </Form>
-      <Table columns={columns} scroll={{x: 'max-content'}} className='w-full'/>
     </div>
   )
 }
