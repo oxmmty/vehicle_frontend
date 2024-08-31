@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Image, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import axios from "axios";
@@ -31,7 +31,7 @@ const LoginPage = () => {
         onFinish={onFinish}
       >
         <div className="flex justify-center py-10">
-          <img src="/logo.png" className="w-24" />
+          <Image src="/logo.png" width={96} preview={false} />
         </div>
         <Form.Item label={"Email:"} name={"email"}
           rules={[
