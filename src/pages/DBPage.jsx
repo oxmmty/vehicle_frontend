@@ -56,6 +56,106 @@ const DBPage = () => {
       dataIndex: '顧客名'
     },
     {
+      key: '配達先',
+      title: '配達先',
+      dataIndex: '配達先'
+    },
+    {
+      key: '配達先住所',
+      title: '配達先住所',
+      dataIndex: '配達先住所'
+    },
+    {
+      key: '配達先TEL',
+      title: '配達先TEL',
+      dataIndex: '配達先TEL'
+    },
+    {
+      key: '配達先担当者',
+      title: '配達先担当者',
+      dataIndex: '配達先担当者'
+    },
+    {
+      key: '取場所',
+      title: '取場所',
+      dataIndex: '取場所'
+    },
+    {
+      key: '搬入返却場所',
+      title: '搬入返却場所',
+      dataIndex: '搬入返却場所'
+    },
+    {
+      key: '船社',
+      title: '船社',
+      dataIndex: '船社'
+    },
+    {
+      key: 'コンテナタイプ',
+      title: 'コンテナタイプ',
+      dataIndex: 'コンテナタイプ'
+    },
+    {
+      key: 'コンテナサイズ',
+      title: 'コンテナサイズ',
+      dataIndex: 'コンテナサイズ'
+    },
+    {
+      key: 'コンテナ種類',
+      title: 'コンテナ種類',
+      dataIndex: 'コンテナ種類'
+    },
+    {
+      key: '危険品',
+      title: '危険品',
+      dataIndex: '危険品'
+    },
+    {
+      key: '軸数',
+      title: '軸数',
+      dataIndex: '軸数'
+    },
+    {
+      key: 'コンテナ№',
+      title: 'コンテナ№',
+      dataIndex: 'コンテナ№'
+    },
+    {
+      key: 'シール番号',
+      title: 'シール番号',
+      dataIndex: 'シール番号'
+    },
+    {
+      key: 'TW',
+      title: 'TW',
+      dataIndex: 'TW'
+    },
+    {
+      key: 'BK№',
+      title: 'BK№',
+      dataIndex: 'BK№'
+    },
+    {
+      key: 'BL№',
+      title: 'BL№',
+      dataIndex: 'BL№'
+    },
+    {
+      key: '船名',
+      title: '船名',
+      dataIndex: '船名'
+    },
+    {
+      key: '依頼書備考欄',
+      title: '依頼書備考欄',
+      dataIndex: '依頼書備考欄'
+    },
+    {
+      key: 'ピック日',
+      title: 'ピック日',
+      dataIndex: 'ピック日'
+    },
+    {
       key: '配送日',
       title: '配送日',
       dataIndex: '配送日'

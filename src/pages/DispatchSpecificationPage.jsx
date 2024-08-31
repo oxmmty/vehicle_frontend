@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 
 const { Title } = Typography;
 
-const AnalysisPage = () => {
+const DispatchSpecificationPage = () => {
   const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [datas, setDatas] = useState([]);
   
@@ -58,4 +58,4 @@ const AnalysisPage = () => {
   )
 }
 
-export default AnalysisPage
+export default DispatchSpecificationPage

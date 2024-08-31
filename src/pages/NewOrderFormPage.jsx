@@ -172,7 +172,7 @@ const OtherComponent = () => {
   )
 }
 
-const OrderPage = () => {
+const NewOrderFormPage = () => {
   const tabNames = ['海上コンテナ', 'トラック', 'その他']
   const [count, setCount] = useState(0);
   const [droppedImageSrc, setDroppedImageSrc] = useState(null);
@@ -206,4 +206,4 @@ const OrderPage = () => {
   )
 }
 
-export default OrderPage
+export default NewOrderFormPage
