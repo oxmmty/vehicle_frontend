@@ -5,44 +5,44 @@ import { ThemeContext } from 'src/components/Theme';
 
 const MonthlyPartnerCompanyDBGraphPage = () => {
   const { theme } = useContext(ThemeContext);
+  
   const dataSource = [
-    { key: '1', name: 'ユウキトランス', '2022/09': 30000, '2023/09': 50000, '2022/10': 40000, '2023/10': 60000 },
-    { key: '2', name: '南本牧日新', '2022/09': 45000, '2023/09': 50000, '2022/10': 45000, '2023/10': 60000 },
-    { key: '3', name: '有限会社鴨原商事', '2022/09': 0, '2023/09': 30000, '2022/10': 30000, '2023/10': 40000 },
-    { key: '4', name: '東洋境運株式会社', '2022/09': 100000, '2023/09': 110000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '5', name: '鈴与カーゴネット株式会社', '2022/09': 100000, '2023/09': 120000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '6', name: '鈴与株式会社', '2022/09': 10000, '2023/09': 20000, '2022/10': 10000, '2023/10': 20000 },
+    { key: '1', name: 'ユウキトランスK', '2022/10': 30000, '2023/10': 50000, '2022/11': null, '2023/11': null },
+    { key: '2', name: '南本牧日新K', '2022/10': 45000, '2023/10': 50000, '2022/11': null, '2023/11': null },
+    { key: '3', name: '有限会社鴫原商事K', '2022/10': 0, '2023/10': 30000, '2022/11': null, '2023/11': null },
+    { key: '4', name: '東洋埠頭株式会社K', '2022/10': 100000, '2023/10': 110000, '2022/11': null, '2023/11': null },
+    { key: '5', name: '鈴与カーゴネット株式会社K', '2022/10': 100000, '2023/10': 120000, '2022/11': null, '2023/11': null }
   ];
 
   const columns = [
     { title: '協力会社名', dataIndex: 'name', key: 'name' },
-    { title: '2022/09', dataIndex: '2022/09', key: '2022/09' },
-    { title: '2023/09', dataIndex: '2023/09', key: '2023/09' },
     { title: '2022/10', dataIndex: '2022/10', key: '2022/10' },
     { title: '2023/10', dataIndex: '2023/10', key: '2023/10' },
+    { title: '2022/11', dataIndex: '2022/11', key: '2022/11' },
+    { title: '2023/11', dataIndex: '2023/11', key: '2023/11' },
   ];
 
   const lineData = [];
   dataSource.map((item, index) => {
-    let temp = {x: item.name, y: item['2022/09'], category: '2022/09'};
+    let temp = {x: item.name, y: item['2022/10'], category: '2022/10'};
     lineData.push(temp);
-    temp = {x: item.name, y: item['2022/10'], category: '2022/10'};
-    lineData.push(temp);
-    temp = {x: item.name, y: item['2023/09'], category: '2023/09'};
+    temp = {x: item.name, y: item['2022/11'], category: '2022/11'};
     lineData.push(temp);
     temp = {x: item.name, y: item['2023/10'], category: '2023/10'};
+    lineData.push(temp);
+    temp = {x: item.name, y: item['2023/11'], category: '2023/11'};
     lineData.push(temp);
   });
 
   const totals = dataSource.reduce((acc, item) => {
-    acc['2022/09'] += item['2022/09'];
-    acc['2023/09'] += item['2023/09'];
     acc['2022/10'] += item['2022/10'];
     acc['2023/10'] += item['2023/10'];
+    acc['2022/11'] += item['2022/11'];
+    acc['2023/11'] += item['2023/11'];
     return acc;
-  }, { '2022/09': 0, '2023/09': 0, '2022/10': 0, '2023/10': 0 });
+  }, { '2022/10': 0, '2023/10': 0, '2022/11': 0, '2023/11': 0 });
 
-  dataSource.push({key: '7', name: '合計', '2022/09': totals['2022/09'], "2023/09": totals['2023/09'], "2022/10": totals['2022/10'], "2023/10": totals['2023/10']});
+  dataSource.push({key: '6', name: '合計', '2022/10': totals['2022/10'], "2023/10": totals['2023/10'], "2022/11": totals['2022/11'], "2023/11": totals['2023/11']});
 
   const config = {
     theme: theme === 'light' ? 'academy' : 'classicDark',
@@ -63,12 +63,12 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
       lineWidth: 2,
     },
   };
-
+  const len = dataSource.length - 1;
   const barData = [
-    {type: `2022/09\r\n${dataSource[6]['2022/09']}`, value: dataSource[6]['2022/09']},
-    {type: `2023/09\r\n${dataSource[6]['2023/09']}`, value: dataSource[6]['2023/09']},
-    {type: `2022/10\r\n${dataSource[6]['2022/10']}`, value: dataSource[6]['2022/10']},
-    {type: `2023/10\r\n${dataSource[6]['2023/10']}`, value: dataSource[6]['2023/10']}
+    {type: `2022/10\r\n${dataSource[len]['2022/10']}`, value: dataSource[len]['2022/10']},
+    {type: `2023/10\r\n${dataSource[len]['2023/10']}`, value: dataSource[len]['2023/10']},
+    {type: `2022/11\r\n${dataSource[len]['2022/11']}`, value: dataSource[len]['2022/11']},
+    {type: `2023/11\r\n${dataSource[len]['2023/11']}`, value: dataSource[len]['2023/11']}
   ]
   const barConfig = {
     theme: theme === 'light' ? 'academy' : 'classicDark',
@@ -96,7 +96,7 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
     legend: false,
   };
   return (
-    <div className="container mx-auto p-4">
+    <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">協力会社別月次グラフ</h1>
       <div className="flex justify-end w-full pb-2">
         <DatePicker picker="month" className='grow max-w-96' />

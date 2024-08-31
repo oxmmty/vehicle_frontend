@@ -68,7 +68,7 @@ const getMonthData = (value) => {
     return 1394;
   }
 };
-const MonthlyPartnerCompanyPage = () => {
+const MonthlyCustomerPage = () => {
   const monthCellRender = (value) => {
     const num = getMonthData(value);
     return num ? (
@@ -100,4 +100,4 @@ const MonthlyPartnerCompanyPage = () => {
     </div>
   );
 };
-export default MonthlyPartnerCompanyPage;
+export default MonthlyCustomerPage;

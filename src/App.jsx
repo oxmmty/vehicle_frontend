@@ -130,6 +130,10 @@ const analysis_reports = [
     label: '保管コンテナ一覧DB'
   },
   {
+    key: 'monthlyCustomer',
+    label: '顧客別　月次'
+  },
+  {
     key: 'monthlyPartnerCompany',
     label: '協力会社別 月次'
   },

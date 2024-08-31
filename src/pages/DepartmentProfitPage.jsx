@@ -4,91 +4,68 @@ import { useState } from 'react'
 const DepartmentProfitPage = () => {
   const columns = [
     {
-      title: '受注コード',
-      dataIndex: '受注コード',
-      key: '受注コード'
+      key: '部署コード',
+      title: '部署コード',
+      dataIndex: '部署コード'
     },
     {
-      title: '日付',
-      dataIndex: '日付',
-      key: '日付'
+      key: '部署名',
+      title: '部署名',
+      dataIndex: '部署名'
     },
     {
-      title: '顧客名',
-      dataIndex: '顧客名',
-      key: '顧客名'
+      key: '8月',
+      title: '8月',
+      dataIndex: '8月'
     },
     {
-      title: '積地',
-      dataIndex: '積地',
-      key: '積地'
+      key: '9月',
+      title: '9月',
+      dataIndex: '9月'
+    }
+  ];
+
+  const data = [
+    {
+      key: '1',
+      部署コード: '1',
+      部署名: '東京支店',
+      '8月': 1000000,
+      '9月': 1500000
     },
     {
-      title: '配達先',
-      dataIndex: '配達先',
-      key: '配達先'
+      key: '2',
+      部署コード: '2',
+      部署名: '山梨支店',
+      '8月': 1500000,
+      '9月': 1400000
     },
     {
-      title: '船社',
-      dataIndex: '船社',
-      key: '船社'
+      key: '3',
+      部署コード: '3',
+      部署名: '海上コンテナ部署',
+      '8月': 5000000,
+      '9月': 4500000
     },
     {
-      title: '下払会社1',
-      dataIndex: '下払会社1',
-      key: '下払会社1'
+      key: '4',
+      部署コード: '4',
+      部署名: 'トラック部署',
+      '8月': 750000,
+      '9月': 600000
     },
     {
-      title: '下払会社2',
-      dataIndex: '下払会社2',
-      key: '下払会社2'
-    },
-    {
-      title: '下払会社3',
-      dataIndex: '下払会社3',
-      key: '下払会社3'
-    },
-    {
-      title: '下払会社4',
-      dataIndex: '下払会社4',
-      key: '下払会社4'
-    },
-    {
-      title: '下払会社5',
-      dataIndex: '下払会社5',
-      key: '下払会社5'
-    },
-    {
-      title: '下払会社6',
-      dataIndex: '下払会社6',
-      key: '下払会社6'
-    },
-    {
-      title: '保管場所',
-      dataIndex: '保管場所',
-      key: '保管場所'
-    },
-    {
-      title: '請求書作成日',
-      dataIndex: '請求書作成日',
-      key: '請求書作成日'
+      key: '5',
+      部署コード: '5',
+      部署名: '倉庫部署',
+      '8月': 800000,
+      '9月': 900000
     }
   ];
 
   return (
     <div className='flex flex-col items-center w-full'>
-      <Form layout='vertical'>
-        <div className="flex flex-wrap flex-row items-center gap-4">
-          <Form.Item label={"年月"} className='grow'>
-            <DatePicker />
-          </Form.Item>
-          <Form.Item label={"請求状況"} className='grow'>
-            <Select defaultValue={1} style={{ width: 100 }} />
-          </Form.Item>
-          <Button type='primary' className='grow'>一覧作成</Button>
-        </div>
-      </Form>
-      <Table columns={columns} scroll={{x: 'max-content'}} className='w-full'/>
+      <Table dataSource={data} columns={columns} pagination={false} scroll={{x: 'max-content'}} className='w-full'/>
     </div>
   )
 }

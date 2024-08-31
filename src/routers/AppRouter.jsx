@@ -38,6 +38,7 @@ import PartnerCompanyListPage from 'src/pages/PartnerCompanyListPage';
 import MonthlyCustomerDBGraphPage from 'src/pages/MonthlyCustomerDBGraphPage';
 import MonthlyPartnerCompanyDBGraphPage from 'src/pages/MonthlyPartnerCompanyDBGraphPage';
 import MonthlyCustomerDBPage from 'src/pages/MonthlyCustomerDBPage';
+import MonthlyCustomerPage from 'src/pages/MonthlyCustomerPage';
 import MonthlyPartnerCompanyPage from 'src/pages/MonthlyPartnerCompanyPage';
 import StorageContainerDBPage from 'src/pages/StorageContainerDBPage';
 import DBSPage from 'src/pages/DBSPage';
@@ -97,6 +98,7 @@ const AppRouter = () => {
             <Route path="/analysis_reports/db_s" element={<DBSPage />} />
             <Route path="/analysis_reports/monthlyCustomerDB" element={<MonthlyCustomerDBPage />} />
             <Route path="/analysis_reports/storageContainerDB" element={<StorageContainerDBPage />} />
+            <Route path="/analysis_reports/monthlyCustomer" element={<MonthlyCustomerPage />} />
             <Route path="/analysis_reports/monthlyPartnerCompany" element={<MonthlyPartnerCompanyPage />} />
             <Route path="/analysis_reports/departmentProfit" element={<DepartmentProfitPage />} />
             <Route path="/analysis_reports/monthlyDepartmentReport" element={<MonthlyDepartmentReportPage />} />
@@ -107,8 +109,8 @@ const AppRouter = () => {
             <Route path="/document_notes/data" element={<DataPage />} />
 
             <Route path="/settings_administration" loader={() => redirect('/settings_administration/userManagements')} />
-            <Route path="/settings_administration/userManagements" element={<NewRequestFormPage />} />
-            <Route path="/settings_administration/systemSettings" element={<NewRequestFormPage />} />
+            <Route path="/settings_administration/userManagements" element={<DashboardPage />} />
+            <Route path="/settings_administration/systemSettings" element={<DashboardPage />} />
           </Route>
         </Route>
         <Route element={<Public />} errorElement={<Error />} loader={async () => {

@@ -5,14 +5,6 @@ import { ThemeContext } from 'src/components/Theme';
 
 const StorageContainerDBPage = () => {
   const { theme } = useContext(ThemeContext);
-  const dataSource = [
-    { key: '1', name: 'ユウキトランス', '2022/09': 30000, '2023/09': 50000, '2022/10': 40000, '2023/10': 60000 },
-    { key: '2', name: '南本牧日新', '2022/09': 45000, '2023/09': 50000, '2022/10': 45000, '2023/10': 60000 },
-    { key: '3', name: '有限会社鴨原商事', '2022/09': 0, '2023/09': 30000, '2022/10': 30000, '2023/10': 40000 },
-    { key: '4', name: '東洋境運株式会社', '2022/09': 100000, '2023/09': 110000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '5', name: '鈴与カーゴネット株式会社', '2022/09': 100000, '2023/09': 120000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '6', name: '鈴与株式会社', '2022/09': 10000, '2023/09': 20000, '2022/10': 10000, '2023/10': 20000 },
-  ];
 
   const columns = [
     {
@@ -64,12 +56,12 @@ const StorageContainerDBPage = () => {
       key: '搬出ブッキング№',
       title: '搬出ブッキング№',
       dataIndex: '搬出ブッキング№'
-    }    
+    }
   ];
 
   return (
-    <div className="container mx-auto p-4">
-      <Table columns={columns} pagination={false} bordered scroll={{x: 'max-content'}} />
+    <div className='flex flex-col items-center w-full p-4'>
+      <Table columns={columns} pagination={false} bordered scroll={{ x: 'max-content' }} className='w-full' />
     </div>
   );
 };
