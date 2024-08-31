@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 
-const PartnerCompanysPage = () => {
+const PartnerCompanyPage = () => {
   const columns = [
     {
       key: '協力会社',
@@ -69,4 +69,4 @@ const PartnerCompanysPage = () => {
   );
 };
 
-export default PartnerCompanysPage;
+export default PartnerCompanyPage;
