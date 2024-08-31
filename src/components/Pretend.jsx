@@ -154,7 +154,7 @@ const Pretend = ({ data, ...props }) => {
           <th colspan="6">備考欄</th>
         </tr>
         <tr>
-          <td colspan="6">{data?.remarks}</td>
+          <td className='h-36' colspan="6">{data?.remarks}</td>
         </tr>
       </table>
     </div >

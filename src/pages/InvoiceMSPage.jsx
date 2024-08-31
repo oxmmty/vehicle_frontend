@@ -76,70 +76,89 @@ const InvoiceMSPage = () => {
 
   const orderColumns = [
     {
+      key: '受注コード',
       title: '受注コード',
-      dataIndex: 'code',
-      key: 'code',
+      dataIndex: '受注コード'
     },
     {
-      title: '日付',
-      dataIndex: 'date',
-      key: 'date',
+      key: '積日',
+      title: '積日',
+      dataIndex: '積日'
     },
     {
+      key: '卸日',
+      title: '卸日',
+      dataIndex: '卸日'
+    },
+    {
+      key: '車番1',
+      title: '車番1',
+      dataIndex: '車番1'
+    },
+    {
+      key: '車番2',
+      title: '車番2',
+      dataIndex: '車番2'
+    },
+    {
+      key: '積地',
       title: '積地',
-      dataIndex: 'loading',
-      key: 'loading',
+      dataIndex: '積地'
     },
     {
-      title: '配達先',
-      dataIndex: 'deliver',
-      key: 'deliver',
+      key: '卸地',
+      title: '卸地',
+      dataIndex: '卸地'
     },
     {
+      key: '品目',
       title: '品目',
-      dataIndex: 'item',
-      key: 'item',
+      dataIndex: '品目'
     },
     {
+      key: '種類',
       title: '種類',
-      dataIndex: 'kind',
-      key: 'kind',
+      dataIndex: '種類'
     },
     {
-      title: '区分',
-      dataIndex: 'classify',
-      key: 'classify',
+      key: '税区分',
+      title: '税区分',
+      dataIndex: '税区分'
     },
     {
-      title: '基本料金',
-      dataIndex: 'basicMount',
-      key: 'basicMount',
-      render: (num) => `${num.toLocaleString()}円`
+      key: '単価',
+      title: '単価',
+      dataIndex: '単価'
     },
     {
+      key: '数量',
       title: '数量',
-      dataIndex: 'amount',
-      key: 'amount',
+      dataIndex: '数量'
     },
     {
+      key: '回数',
+      title: '回数',
+      dataIndex: '回数'
+    },
+    {
+      key: '小計',
       title: '小計',
-      dataIndex: 'subTotal',
-      key: 'subTotal',
+      dataIndex: '小計'
     },
     {
+      key: '消費税',
       title: '消費税',
-      dataIndex: 'tax',
-      key: 'tax',
+      dataIndex: '消費税'
     },
     {
+      key: '合計',
       title: '合計',
-      dataIndex: 'sum',
-      key: 'sum',
+      dataIndex: '合計'
     },
     {
+      key: '備考',
       title: '備考',
-      dataIndex: 'remark',
-      key: 'remark',
+      dataIndex: '備考'
     }
   ];
 
