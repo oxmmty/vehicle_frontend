@@ -5,7 +5,7 @@ import { ThemeContext } from 'src/components/Theme';
 import Navbar from 'src/components/Navbar';
 import LogoMenu from 'src/components/menu/LogoMenu';
 import { SunOutlined, MoonOutlined, MenuOutlined, BellOutlined, SearchOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Button, Drawer, Input, Typography } from 'antd';
+import { Avatar, Badge, Button, Drawer, Image, Input, Typography } from 'antd';
 const { Text } = Typography;
 
 const list = [
@@ -19,27 +19,38 @@ const list = [
   { key: 'settings_administration', value: '設定・管理' }
 ];
 
-const Header = ({ ...props }) => {
+const Header = ({ items, ...props }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userName } = useSelector(state => state.user);
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [open, setOpen] = useState(false);
+  const [openNav, setOpenNav] = useState(false);
+  const [openSide, setOpenSide] = useState(false);
 
-  const showDrawer = () => {
-    setOpen(true);
+  const showDrawerNav = () => {
+    setOpenNav(true);
+  };
+
+  const showDrawerSide = () => {
+    setOpenSide(true);
   };
 
   const onClose = () => {
-    setOpen(false);
+    setOpenNav(false);
+    setOpenSide(false);
   };
 
   return (
     <header className={props.className}>
       <div className='flex justify-between items-center h-full px-4 2xl:px-6 m-auto'>
-        <button className='flex-none' onClick={() => navigate('/dashboard')}>
-          <img src='/logo.png' className='h-[40px]' />
-        </button>
+        <div className='flex justify-center items-center'>
+          <div className='xl:hidden'>
+            <Button onClick={showDrawerSide} icon={<MenuOutlined />} />
+          </div>
+          <button className='flex-none px-4' onClick={() => navigate('/dashboard')}>
+            <Image src='/logo.png' width={40} preview={false} />
+          </button>
+        </div>
         <Navbar list={list} className="h-full hidden 2xl:inline" />
         <div className='pr-2'>
           <Input placeholder='Type keywords...' prefix={<SearchOutlined />} suffix={<Text keyboard>Ctrl K</Text>} className='hidden sm:inline-flex rounded-full bg-transparent' />
@@ -48,20 +59,29 @@ const Header = ({ ...props }) => {
           <Badge count={5} color="hsl(102, 70%, 61%)">
             <Button shape='circle' icon={<BellOutlined />} />
           </Badge>
-          <Button shape='circle' icon={<img src='/language.png' />} />
+          <Button shape='circle' icon={<Image src='/language.png' preview={false} />} />
           <Button shape="circle" icon={theme === 'light' ? <SunOutlined /> : <MoonOutlined />} onClick={toggleTheme} />
           <LogoMenu>
             <Button icon={<Avatar src={'/user/man.png'} />} className='rounded-full' />
           </LogoMenu>
           <div className='2xl:hidden'>
-            <Button onClick={showDrawer} icon={<MenuOutlined />} />
+            <Button onClick={showDrawerNav} icon={<MenuOutlined />} />
           </div>
         </div>
-        <Drawer title="Menu" onClose={onClose} open={open}>
+        <Drawer title="Navbar Menu" onClose={onClose} open={openNav}>
           <div className='flex flex-col gap-2 w-full'>
             {list.map((item, index) => (
-              <div key={index} onClick={() => navigate(`/${item.key}`)} className={`w-full hover:bg-hover-primary p-2 rounded-lg cursor-pointer ${location.pathname.slice(1) === item.key ? 'bg-base-primary' : 'bg-bg-300'}`}>
-                <Typography className={location.pathname === `/${item.key}` ? 'text-colorLink' : ''}>{item.value}</Typography>
+              <div key={index} onClick={() => { navigate(`/${item.key}`); onClose(); }} className={`w-full hover:bg-hover-primary p-2 rounded-lg cursor-pointer ${location.pathname.split('/')[1] === item.key ? 'bg-base-primary' : 'bg-bg-300'}`}>
+                <Typography className={location.pathname.split('/')[1] === `${item.key}` ? 'text-colorLink' : ''}>{item.value}</Typography>
+              </div>
+            ))}
+          </div>
+        </Drawer>
+        <Drawer title="Sidebar Menu" onClose={onClose} open={openSide} placement={'left'}>
+          <div className='flex flex-col gap-2 w-full'>
+            {items[location.pathname.split('/')[1]].map((item, index) => (
+              <div key={index} onClick={() => { navigate(`/${location.pathname.split('/')[1]}/${item.key}`); onClose(); }} className={`w-full hover:bg-hover-primary p-2 rounded-lg cursor-pointer ${location.pathname.split('/')[2] === item.key ? 'bg-base-primary' : 'bg-bg-300'}`}>
+                <Typography className={location.pathname === `/${location.pathname.split('/')[1]}/${item.key}` ? 'text-colorLink' : ''}>{item.label}</Typography>
               </div>
             ))}
           </div>
