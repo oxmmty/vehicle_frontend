@@ -14,10 +14,9 @@ export default function PartnerCompanyPage() {
   }, []);
   const a = async () => {
     const res = await axios.get(
-      process.env.REACT_API_BASE_URL + `/partnercompnay`,
+      process.env.REACT_API_BASE_URL + `/partnercompany`,
     );
     setDatas(res.data);
-    console.log(res.data);
   };
   const columns = [
     {
@@ -61,17 +60,6 @@ export default function PartnerCompanyPage() {
       dataIndex: "住所",
     },
   ];
-
-  // const fileData = [
-  //   {
-  //     key: '1',
-  //     fileName: 'エムズ物流株式会社2401030100 株式会社アルプス物流 HA240419-0001.pdf',
-  //     cooperationCompany: 'エムズ物流株式会社',
-  //     deliveryDestination: '株式会社アルプス物流',
-  //     deliveryDate: '1/3',
-  //     transmissionDate: '4/25',
-  //   },
-  // ];
 
   return (
     <div className="flex flex-col gap-2">
