@@ -14,10 +14,9 @@ export default function PartnerCompanyPage() {
   }, []);
   const a = async () => {
     const res = await axios.get(
-      process.env.REACT_API_BASE_URL + `/partnercompnay`,
+      process.env.REACT_API_BASE_URL + `/partnercompany`,
     );
     setDatas(res.data);
-    console.log(res.data);
   };
   const columns = [
     {
