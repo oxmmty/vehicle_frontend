@@ -12,9 +12,8 @@ export default function CustomerPage() {
     a();
   }, []);
   const a = async () => {
-    const res = await axios.get(process.env.REACT_API_BASE_URL + `/customer`);
+    const res = await axios.get(process.env.REACT_API_BASE_URL + `/customer`,);
     setDatas(res.data);
-    console.log(res.data);
   };
 
   const columns = [

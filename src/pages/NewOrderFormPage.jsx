@@ -38,6 +38,20 @@ const SeaComponent = () => {
   const [selectedValueLocation, setSelectedValueLocation] = useState("");
   const [inputValueLocation, setInputValueLocation] = useState("");
 
+  const [loadData, setLoadData] = useState([]);
+  const [filteredLoadData, setFilteredLoadData] = useState([]);
+  const [selectedValueLoad, setSelectedValueLoad] = useState("");
+  const [inputValueLoad, setInputValueLoad] = useState("");
+
+  const [shipData, setShipData] = useState([]);
+  const [filteredShipData, setFilteredShipData] = useState([]);
+  const [selectedValueShip, setSelectedValueShip] = useState("");
+  const [inputValueShip, setInputValueShip] = useState("");
+
+  const [shipperData, setShipperData] = useState([]);
+  const [filteredShipperData, setFilteredShipperData] = useState([]);
+  const [selectedValueShipper, setSelectedValueShipper] = useState("");
+  const [inputValueShipper, setInputValueShipper] = useState("");
   const today = dayjs().format("YYYY-MM-DD");
   useEffect(() => {
     const fetchData = async () => {
@@ -61,9 +75,15 @@ const SeaComponent = () => {
           .map((item) => item.協力会社);
         setCompanyData(partnercompnay);
 
-        const ship = ships.data.sort((a, b) => b.カウント - a.カウント);
+        const ship = ships.data
+          .sort((a, b) => b.カウント - a.カウント)
+          .map((item) => item.船社名称);
+        setShipData(ship);
 
-        const shipper = shippers.data.sort((a, b) => b.カウント - a.カウント);
+        const shipper = shippers.data
+          .sort((a, b) => b.カウント - a.カウント)
+          .map((item) => item.荷主名称);
+        setShipperData(shipper);
 
         const locationFilter = workstations.data
           .filter((item) => item.取場所 !== null)
@@ -75,11 +95,13 @@ const SeaComponent = () => {
           .filter((item) => item.配達場所 !== null)
           .sort((a, b) => b.配達場所 - a.配達場所);
         const delivery = deliveryFilter.map((item) => item.作業地名称);
+        
 
         const loadFilter = workstations.data
           .filter((item) => item.搬入返却場所 !== null)
           .sort((a, b) => b.搬入返却場所 - a.搬入返却場所);
         const load = loadFilter.map((item) => item.作業地名称);
+        setLoadData(load);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
@@ -159,6 +181,75 @@ const SeaComponent = () => {
       setFilteredLocationData([...locationData, inputValueLocation]);
     }
   };
+  //Load Datas
+  const handleSelectLoad = (value) => {
+    setSelectedValueLoad(value);
+  };
+  const handleChangeLoad = (value) => {
+    setInputValueLoad(value);
+    const filteredData = loadData.filter((load) =>
+      load.toLowerCase().includes(value.toLowerCase()),
+    );
+    setFilteredLoadData(filteredData);
+  };
+  const handleKeyPressLoad = async (event) => {
+    if (
+      event.key === "Enter" &&
+      inputValueLoad &&
+      !loadData.includes(inputValueLoad)
+    ) {
+      // const savedValue = await saveToDatabase(inputValueLoad);
+      setSelectedValueLoad(inputValueLoad);
+      setInputValueLoad("");
+      setFilteredLoadData([...loadData, inputValueLoad]);
+    }
+  };
+  //Ship Data
+  const handleSelectShip = (value) => {
+    setSelectedValueShip(value);
+  };
+  const handleChangeShip = (value) => {
+    setInputValueShip(value);
+    const filteredData = shipData.filter((ship) =>
+      ship.toLowerCase().includes(value.toLowerCase()),
+    );
+    setFilteredShipData(filteredData);
+  };
+  const handleKeyPressShip = async (event) => {
+    if (
+      event.key === "Enter" &&
+      inputValueShip &&
+      !shipData.includes(inputValueShip)
+    ) {
+      // const savedValue = await saveToDatabase(inputValueShip);
+      setSelectedValueShip(inputValueShip);
+      setInputValueShip("");
+      setFilteredShipData([...shipData, inputValueShip]);
+    }
+  };
+  //Shipper Data
+  const handleSelectShipper = (value) => {
+    setSelectedValueShipper(value);
+  };
+  const handleChangeShipper = (value) => {
+    setInputValueShipper(value);
+    const filteredData = shipperData.filter((shipper) =>
+      shipper.toLowerCase().includes(value.toLowerCase()),
+    );
+    setFilteredShipperData(filteredData);
+  };
+  const handleKeyPressShipper = async (event) => {
+    if (
+      event.key === "Enter" &&
+      inputValueShipper &&
+      !shipperData.includes(inputValueShipper)
+    ) {
+      // const savedValue = await saveToDatabase(inputValueShipper);
+      setSelectedValueShipper(inputValueShipper);
+      setInputValueShipper("");
+      setFilteredShipperData([...shipperData, inputValueShipper]);
+    }
+  };
 
   const distinguish = [
     {
@@ -192,20 +283,6 @@ const SeaComponent = () => {
     {
       value: 7,
       label: "船社請求",
-    },
-  ];
-  const owner = [
-    {
-      value: 0,
-      label: "荷主A",
-    },
-    {
-      value: 1,
-      label: "荷主B",
-    },
-    {
-      value: 2,
-      label: "荷主C",
     },
   ];
   const number = [
@@ -260,7 +337,26 @@ const SeaComponent = () => {
         </Form.Item>
         <Form.Item label={"荷主名"}>
           <div className="flex flex-wrap flex-row items-center gap-4">
-            <Select defaultValue={1} className="grow" options={owner} />
+            <Select
+              showSearch
+              value={selectedValueShipper} // Set the selected value here
+              onSearch={handleChangeShipper} // Track input changes
+              onSelect={handleSelectShipper} // Handle option selection
+              onInputKeyDown={handleKeyPressShipper} // Capture Enter key press
+              style={{ width: 200 }}
+              filterOption={false} // Disable default filter to handle custom search
+              notFoundContent={null} // Optional: Customize "No data" message
+              className="grow">
+              {filteredShipperData.length > 0 ? (
+                filteredShipperData.map((data) => (
+                  <Option key={data} value={data}>
+                    {data}
+                  </Option>
+                ))
+              ) : (
+                <Option disabled>Loading...</Option>
+              )}
+            </Select>
           </div>
         </Form.Item>
         <Form.Item label={"顧客名"} required>
@@ -338,12 +434,50 @@ const SeaComponent = () => {
         </Form.Item>
         <Form.Item label={"搬入・返却場所"}>
           <div className="flex flex-wrap flex-row items-center gap-4">
-            <Select defaultValue={1} className="grow" options={owner} />
+            <Select
+              showSearch
+              value={selectedValueLoad} // Set the selected value here
+              onSearch={handleChangeLoad} // Track input changes
+              onSelect={handleSelectLoad} // Handle option selection
+              onInputKeyDown={handleKeyPressLoad} // Capture Enter key press
+              style={{ width: 200 }}
+              filterOption={false} // Disable default filter to handle custom search
+              notFoundContent={null} // Optional: Customize "No data" message
+              className="grow">
+              {filteredLoadData.length > 0 ? (
+                filteredLoadData.map((data) => (
+                  <Option key={data} value={data}>
+                    {data}
+                  </Option>
+                ))
+              ) : (
+                <Option disabled>Loading...</Option>
+              )}
+            </Select>
           </div>
         </Form.Item>
         <Form.Item label={"船社"}>
           <div className="flex flex-wrap flex-row items-center gap-4">
-            <Select defaultValue={1} className="grow" options={distinguish} />
+            <Select
+              showSearch
+              value={selectedValueShip} // Set the selected value here
+              onSearch={handleChangeShip} // Track input changes
+              onSelect={handleSelectShip} // Handle option selection
+              onInputKeyDown={handleKeyPressShip} // Capture Enter key press
+              style={{ width: 200 }}
+              filterOption={false} // Disable default filter to handle custom search
+              notFoundContent={null} // Optional: Customize "No data" message
+              className="grow">
+              {filteredShipData.length > 0 ? (
+                filteredShipData.map((data) => (
+                  <Option key={data} value={data}>
+                    {data}
+                  </Option>
+                ))
+              ) : (
+                <Option disabled>Loading...</Option>
+              )}
+            </Select>
           </div>
         </Form.Item>
         <Group label={"受注入力"}>
