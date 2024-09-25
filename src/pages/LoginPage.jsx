@@ -18,7 +18,6 @@ const LoginPage = () => {
     Notification('Successful Login!');
     navigate('/dashboard');
   }
-
   return (
     <div className="w-full h-screen flex justify-center items-center p-2">
       <Form className="w-full border border-border-100 p-2 max-w-[500px] rounded-2xl bg-bg-light-dark"
