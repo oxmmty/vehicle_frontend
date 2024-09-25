@@ -22,6 +22,7 @@ const dateFormat = "YYYY-MM-DD";
 
 const SeaComponent = () => {
   const [dates, setDates] = useState(dayjs().format("YYYY-MM-DD"));
+  const today = dayjs().format("YYYY-MM-DD");
 
   const [customerData, setCustomerData] = useState([]);
   const [filteredCustomerData, setFilteredCustomerData] = useState([]);
@@ -52,7 +53,10 @@ const SeaComponent = () => {
   const [filteredShipperData, setFilteredShipperData] = useState([]);
   const [selectedValueShipper, setSelectedValueShipper] = useState("");
   const [inputValueShipper, setInputValueShipper] = useState("");
-  const today = dayjs().format("YYYY-MM-DD");
+
+  const [pick, setPick] = useState();
+  const [vehicle, setVehicle] = useState();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -95,7 +99,6 @@ const SeaComponent = () => {
           .filter((item) => item.配達場所 !== null)
           .sort((a, b) => b.配達場所 - a.配達場所);
         const delivery = deliveryFilter.map((item) => item.作業地名称);
-        
 
         const loadFilter = workstations.data
           .filter((item) => item.搬入返却場所 !== null)
@@ -116,7 +119,6 @@ const SeaComponent = () => {
   };
   const handleChangeCustomer = (value) => {
     setInputValueCustomer(value);
-
     // Filter customer data based on input value
     const filteredData = customerData.filter((customer) =>
       customer.toLowerCase().includes(value.toLowerCase()),
@@ -299,7 +301,20 @@ const SeaComponent = () => {
       label: "2",
     },
   ];
-
+  const checkPick = () => {
+    if (pick !== true) {
+      setPick(true);
+    } else {
+      setPick(false);
+    }
+  };
+  const checkVehicle = () => {
+    if (vehicle !== true) {
+      setVehicle(true);
+    } else {
+      setVehicle(false);
+    }
+  };
   return (
     <div className="flex flex-col md:flex-row md:gap-4">
       <Form layout="vertical" id="請求日" className="anchor-section md:w-[50%]">
@@ -313,8 +328,12 @@ const SeaComponent = () => {
                 setDates(dateString);
               }}
             />
-            <Checkbox>ピックチェック</Checkbox>
-            <Checkbox>配車組み</Checkbox>
+            <Checkbox onChange={checkPick} value={pick}>
+              ピックチェック
+            </Checkbox>
+            <Checkbox onChange={checkVehicle} value={vehicle}>
+              配車組み
+            </Checkbox>
           </div>
         </Form.Item>
         <Form.Item label={"部署コード"} required>
