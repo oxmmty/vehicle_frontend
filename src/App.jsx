@@ -31,11 +31,15 @@ const orders_invoices = [
   },
   {
     key: "newRequestForm",
-    label: "新依頼書",
+    label: "依頼書",
   },
   {
     key: "requestList",
     label: "依頼リスト",
+  },
+  {
+    key: "mail",
+    label: "Mail",
   },
   {
     key: "orderDB",
@@ -56,10 +60,6 @@ const orders_invoices = [
   {
     key: "invoice_receipt",
     label: "送り状・受領書",
-  },
-  {
-    key: "mail",
-    label: "Mail",
   },
 ];
 
