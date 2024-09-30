@@ -1,61 +1,61 @@
-import React from 'react';
-import { Badge, Button, Calendar } from 'antd';
+import React from "react";
+import { Badge, Button, Calendar } from "antd";
 const getListData = (value) => {
   let listData = [];
   switch (value.date()) {
     case 8:
       listData = [
         {
-          type: 'warning',
-          content: 'This is warning event.',
+          type: "warning",
+          content: "MA240831-0001",
         },
         {
-          type: 'success',
-          content: 'This is usual event.',
+          type: "success",
+          content: "This is usual event.",
         },
       ];
       break;
     case 10:
       listData = [
         {
-          type: 'warning',
-          content: 'This is warning event.',
+          type: "warning",
+          content: "This is warning event.",
         },
         {
-          type: 'success',
-          content: 'This is usual event.',
+          type: "success",
+          content: "This is usual event.",
         },
         {
-          type: 'error',
-          content: 'This is error event.',
+          type: "error",
+          content: "This is error event.",
         },
       ];
       break;
     case 15:
       listData = [
         {
-          type: 'warning',
-          content: 'This is warning event',
+          type: "warning",
+          content: "This is warning event",
         },
         {
-          type: 'success',
-          content: 'This is very long usual event......',
+          type: "success",
+          content: "This is very long usual event......",
         },
         {
-          type: 'error',
-          content: 'This is error event 1.',
+          type: "error",
+          content: "This is error event 1.",
         },
         {
-          type: 'error',
-          content: 'This is error event 2.',
+          type: "error",
+          content: "This is error event 2.",
         },
         {
-          type: 'error',
-          content: 'This is error event 3.',
+          type: "error",
+          content: "This is error event 3.",
         },
         {
-          type: 'error',
-          content: 'This is error event 4.',
+          type: "error",
+          content: "This is error event 4.",
         },
       ];
       break;
@@ -91,13 +91,13 @@ const CalendarPage = () => {
     );
   };
   const cellRender = (current, info) => {
-    if (info.type === 'date') return dateCellRender(current);
-    if (info.type === 'month') return monthCellRender(current);
+    if (info.type === "date") return dateCellRender(current);
+    if (info.type === "month") return monthCellRender(current);
     return info.originNode;
   };
   return (
-    <div className='flex flex-col items-center gap-2 w-full'>
-      <div className='flex justify-evenly max-w-[500px] w-full'>
+    <div className="flex flex-col items-center gap-2 w-full">
+      <div className="flex justify-evenly max-w-[500px] w-full">
         <Button>カレンダー</Button>
         <Button>カレンダー全件</Button>
       </div>
