@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Table,
   Typography,
@@ -10,6 +9,7 @@ import {
   notification,
 } from "antd";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
 const { Title } = Typography;
@@ -18,11 +18,13 @@ const EditableCell = ({
   editing,
   dataIndex,
   title,
+  inputType,
   record,
   index,
   children,
   ...restProps
 }) => {
+  const inputNode = <Input />;
   return (
     <td {...restProps}>
       {editing ? (
@@ -30,7 +32,7 @@ const EditableCell = ({
           name={dataIndex}
           style={{ margin: 0 }}
           rules={[{ required: true, message: `Please Input ${title}!` }]}>
-          <Input />
+          {inputNode}
         </Form.Item>
       ) : (
         children
@@ -39,7 +41,7 @@ const EditableCell = ({
   );
 };
 
-export default function PartnerCompanyPage() {
+const BussinessLocation = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
   const [datas, setDatas] = useState([]);
@@ -47,20 +49,20 @@ export default function PartnerCompanyPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    fetchPartnerCompanies();
+    fetchCustomers();
   }, []);
 
-  // Fetch partner company data from the API
-  const fetchPartnerCompanies = async () => {
+  // Fetch customer data from the API
+  const fetchCustomers = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_API_BASE_URL}/partnercompany`,
+        process.env.REACT_API_BASE_URL + `/workstation`,
       );
       setDatas(res.data);
     } catch (error) {
       notification.error({
         message: "Error",
-        description: "Failed to load partner companies.",
+        description: "Failed to load workstations.",
       });
     }
   };
@@ -76,24 +78,24 @@ export default function PartnerCompanyPage() {
     setEditingKey("");
   };
 
-  // Save changes to the partner company
+  // Save changes to the customer
   const save = async (key) => {
     try {
       const row = await form.validateFields();
-      const updatedCompany = { ...row };
+      const updatedCustomer = { ...row };
 
-      // Update partner company via API
+      // Update customer via API
       await axios.put(
-        `${process.env.REACT_API_BASE_URL}/partnercompany/${key}`,
-        updatedCompany,
+        process.env.REACT_API_BASE_URL + `/workstation/${key}`,
+        updatedCustomer,
       );
 
       notification.success({
         message: "Success",
-        description: "Partner company updated successfully.",
+        description: "Customer updated successfully.",
       });
       setEditingKey("");
-      fetchPartnerCompanies(); // Reload data after editing
+      fetchCustomers(); // Reload data after editing
     } catch (errInfo) {
       notification.error({
         message: "Save Failed",
@@ -102,70 +104,78 @@ export default function PartnerCompanyPage() {
     }
   };
 
-  // Delete partner company
+  // Delete customer
   const handleDelete = async (key) => {
     try {
       await axios.delete(
-        `${process.env.REACT_API_BASE_URL}/partnercompany/${key}`,
+        process.env.REACT_API_BASE_URL + `/workstation/${key}`,
       );
       notification.success({
         message: "Deleted",
-        description: "Partner company deleted successfully.",
+        description: "Customer deleted successfully.",
       });
-      fetchPartnerCompanies(); // Reload data after deletion
+      fetchCustomers(); // Reload data after deletion
     } catch (error) {
       notification.error({
         message: "Error",
-        description: "Failed to delete partner company.",
+        description: "Failed to delete customer.",
       });
     }
   };
 
-  // Add a new partner company
+  // Add a new customer
   const handleAdd = async (values) => {
     try {
-      await axios.post(
-        `${process.env.REACT_API_BASE_URL}/partnercompany`,
-        values,
-      );
+      await axios.post(process.env.REACT_API_BASE_URL + `/workstation`, values);
       notification.success({
         message: "Added",
-        description: "Partner company added successfully.",
+        description: "Customer added successfully.",
       });
       setIsModalVisible(false);
-      fetchPartnerCompanies(); // Reload data after adding
+      fetchCustomers(); // Reload data after adding
     } catch (error) {
       notification.error({
         message: "Error",
-        description: "Failed to add partner company.",
+        description: "Failed to add customer.",
       });
     }
   };
 
   const columns = [
     {
-      title: "協力会社",
-      dataIndex: "協力会社",
+      title: "作業地名称",
+      dataIndex: "作業地名称",
       editable: true,
     },
     {
-      title: "カウント",
-      dataIndex: "カウント",
+      title: "取場所",
+      dataIndex: "取場所",
       editable: true,
     },
     {
-      title: "担当",
-      dataIndex: "担当",
+      title: "配達場所",
+      dataIndex: "配達場所",
       editable: true,
     },
     {
-      title: "アドレス",
-      dataIndex: "アドレス",
+      title: "搬入返却場所",
+      dataIndex: "搬入返却場所",
+      editable: true,
+    },
+
+    {
+      title: "保管場所",
+      dataIndex: "保管場所",
       editable: true,
     },
     {
-      title: "CC",
-      dataIndex: "CC",
+      title: "住所",
+      dataIndex: "住所",
+      editable: true,
+    },
+    {
+      title: "依頼書備考コメント",
+      dataIndex: "依頼書備考コメント",
       editable: true,
     },
     {
@@ -174,13 +184,8 @@ export default function PartnerCompanyPage() {
       editable: true,
     },
     {
-      title: "FAX",
-      dataIndex: "FAX",
-      editable: true,
-    },
-    {
-      title: "住所",
-      dataIndex: "住所",
+      title: "担当者",
+      dataIndex: "担当者",
       editable: true,
     },
     {
@@ -252,7 +257,7 @@ export default function PartnerCompanyPage() {
           onClick={showAddModal}
           type="primary"
           style={{ marginBottom: 16 }}>
-          Add Partner Company
+          Add Customer
         </Button>
         <Table
           components={{
@@ -260,7 +265,6 @@ export default function PartnerCompanyPage() {
               cell: EditableCell,
             },
           }}
-          className=" overflow-scroll"
           rowKey="_id"
           bordered
           dataSource={datas}
@@ -271,15 +275,15 @@ export default function PartnerCompanyPage() {
       </Form>
 
       <Modal
-        title="Add Partner Company"
+        title="Add Customer"
         visible={isModalVisible}
         onCancel={handleCancelModal}
         footer={null}>
         <Form form={addForm} onFinish={handleAdd}>
           <Form.Item
-            name="協力会社"
-            rules={[{ required: true, message: "Please input 協力会社!" }]}>
-            <Input placeholder="協力会社" />
+            name="顧客名称"
+            rules={[{ required: true, message: "Please input 顧客名称!" }]}>
+            <Input placeholder="顧客名称" />
           </Form.Item>
           <Form.Item
             name="カウント"
@@ -290,16 +294,6 @@ export default function PartnerCompanyPage() {
             name="担当"
             rules={[{ required: true, message: "Please input 担当!" }]}>
             <Input placeholder="担当" />
-          </Form.Item>
-          <Form.Item
-            name="アドレス"
-            rules={[{ required: true, message: "Please input アドレス!" }]}>
-            <Input placeholder="アドレス" />
-          </Form.Item>
-          <Form.Item
-            name="CC"
-            rules={[{ required: true, message: "Please input CC!" }]}>
-            <Input placeholder="CC" />
           </Form.Item>
           <Form.Item
             name="TEL"
@@ -325,4 +319,5 @@ export default function PartnerCompanyPage() {
       </Modal>
     </div>
   );
-}
+};
+export default BussinessLocation;
