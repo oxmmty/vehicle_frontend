@@ -106,6 +106,9 @@ const masterDatas = [
     key: "partnerCompanyList",
     label: "協力会社別料金表",
   },
+  { key: "shipperList", label: "荷主" },
+  { key: "shipCompany", label: "船社" },
+  { key: "businessLocation", label: "作業地" },
 ];
 
 const analysis_reports = [
@@ -167,6 +170,7 @@ const settings_administration = [
     key: "userManagements",
     label: "ユーザー管理",
   },
+  { key: "businessOffice", label: "事業所" },
   {
     key: "systemSettings",
     label: "システム設定",

@@ -107,7 +107,7 @@ const SeaComponent = ({ setData }) => {
         const partnercompnay = companies.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.協力会社);
-        setCompanyData(partnercompnay);
+        setCompanyData(customer);
 
         const ship = ships.data
           .sort((a, b) => b.カウント - a.カウント)
@@ -146,9 +146,9 @@ const SeaComponent = ({ setData }) => {
     "空バン在庫",
     "船社請求",
   ];
-  const typeData = [98, 88, 78, 68];
-  const sizeData = [86, 66, 46];
-  const kindsData = ["Dry", "Wet", "Solid"];
+  const typeData = [86, 96];
+  const sizeData = [20, 40];
+  const kindsData = ["Dry", "TNK", "REEFER", "FRAT"];
 
   // Customer Datas
   const handleSelectCustomer = (value) => {

@@ -11,9 +11,9 @@ const OrderDBPage = () => {
 
   const columns = [
     {
-      title: "No",
-      dataIndex: "No",
-      key: "No",
+      title: "ID",
+      dataIndex: "ID",
+      key: "ID",
       fixed: "left",
     },
     {
@@ -621,7 +621,6 @@ const OrderDBPage = () => {
     run();
   }, []);
 
-  console.log(datas);
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex flex-col sm:flex-row justify-evenly w-full">
