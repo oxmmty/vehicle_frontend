@@ -30,6 +30,10 @@ const orders_invoices = [
     label: "DB",
   },
   {
+    key: "orderDB",
+    label: "受注DB",
+  },
+  {
     key: "newRequestForm",
     label: "依頼書",
   },
@@ -40,10 +44,6 @@ const orders_invoices = [
   {
     key: "mail",
     label: "Mail",
-  },
-  {
-    key: "orderDB",
-    label: "受注DB",
   },
   {
     key: "billingList",

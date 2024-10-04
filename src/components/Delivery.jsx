@@ -13,7 +13,7 @@ import {
 } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
-
+const format = "HH:mm";
 const { TextArea } = Input;
 const distinguish = [
   {
@@ -218,7 +218,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item required label={"配達日"} className="grow">
           <DatePicker
-            className="grow"
+            className="w-full"
             defaultValue={dayjs(today, dateFormat)}
             onChange={(date, dateString) => {
               setDate1(dateString);
@@ -226,17 +226,18 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
             }}
           />
         </Form.Item>
-        <Form.Item label={"配達時間"} className="grow">
+        <Form.Item required label={"配達時間"} className="grow">
           <TimePicker
             className="w-full"
             onChange={(time, timeString) => {
               setTime1(timeString);
             }}
+            format={format}
           />
         </Form.Item>
       </div>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"基本料金"} className="grow">
+        <Form.Item required label={"基本料金"} className="grow">
           <Input
             required
             className="w-full"
@@ -564,7 +565,7 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item required label={"配達日"} className="grow">
           <DatePicker
-            className="grow"
+            className="w-full"
             defaultValue={dayjs(today, dateFormat)}
             onChange={(date, dateString) => {
               setDate2(dateString);
@@ -572,7 +573,7 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
             }}
           />
         </Form.Item>
-        <Form.Item label={"配達時間"} className="grow">
+        <Form.Item label={"配達時間"} className="grow" required>
           <TimePicker
             className="w-full"
             onChange={(time, timeString) => {
@@ -582,7 +583,7 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
         </Form.Item>
       </div>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"基本料金"} className="grow">
+        <Form.Item label={"基本料金"} className="grow" required>
           <Input
             required
             className="w-full"
@@ -911,7 +912,7 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item required label={"配達日"} className="grow">
           <DatePicker
-            className="grow"
+            className="w-full"
             defaultValue={dayjs(today, dateFormat)}
             onChange={(date, dateString) => {
               setDate3(dateString);
@@ -919,7 +920,7 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
             }}
           />
         </Form.Item>
-        <Form.Item label={"配達時間"} className="grow">
+        <Form.Item label={"配達時間"} className="grow" required>
           <TimePicker
             className="w-full"
             onChange={(time, timeString) => {
@@ -929,7 +930,7 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
         </Form.Item>
       </div>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"基本料金"} className="grow">
+        <Form.Item label={"基本料金"} className="grow" required>
           <Input
             required
             className="w-full"

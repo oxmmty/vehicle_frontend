@@ -1,0 +1,22 @@
+/* styles.css */
+
+@media print {
+  body {
+    background: white !important;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+    color: black !important; /* Ensure text is black */
+  }
+  th {
+    background-color: white; /* White background for headers */
+  }
+  /* Additional styles for your layout can be added here */
+}

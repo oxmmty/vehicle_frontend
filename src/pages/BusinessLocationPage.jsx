@@ -281,19 +281,41 @@ const BussinessLocation = () => {
         footer={null}>
         <Form form={addForm} onFinish={handleAdd}>
           <Form.Item
-            name="顧客名称"
-            rules={[{ required: true, message: "Please input 顧客名称!" }]}>
-            <Input placeholder="顧客名称" />
+            name="作業地名称"
+            rules={[{ required: true, message: "Please input 作業地名称!" }]}>
+            <Input placeholder="作業地名称" />
           </Form.Item>
           <Form.Item
-            name="カウント"
-            rules={[{ required: true, message: "Please input カウント!" }]}>
-            <Input placeholder="カウント" />
+            name="取場所"
+            rules={[{ required: true, message: "Please input 取場所!" }]}>
+            <Input placeholder="取場所" />
           </Form.Item>
           <Form.Item
-            name="担当"
-            rules={[{ required: true, message: "Please input 担当!" }]}>
-            <Input placeholder="担当" />
+            name="配達場所"
+            rules={[{ required: true, message: "Please input 配達場所!" }]}>
+            <Input placeholder="配達場所" />
+          </Form.Item>
+          <Form.Item
+            name="搬入返却場所"
+            rules={[{ required: true, message: "Please input 搬入返却場所!" }]}>
+            <Input placeholder="搬入返却場所" />
+          </Form.Item>
+          <Form.Item
+            name="保管場所"
+            rules={[{ required: true, message: "Please input 保管場所!" }]}>
+            <Input placeholder="保管場所" />
+          </Form.Item>
+          <Form.Item
+            name="住所"
+            rules={[{ required: true, message: "Please input 住所!" }]}>
+            <Input placeholder="住所" />
+          </Form.Item>
+          <Form.Item
+            name="依頼書備考コメント"
+            rules={[
+              { required: true, message: "Please input 依頼書備考コメント!" },
+            ]}>
+            <Input placeholder="依頼書備考コメント" />
           </Form.Item>
           <Form.Item
             name="TEL"
@@ -301,14 +323,9 @@ const BussinessLocation = () => {
             <Input placeholder="TEL" />
           </Form.Item>
           <Form.Item
-            name="FAX"
-            rules={[{ required: true, message: "Please input FAX!" }]}>
-            <Input placeholder="FAX" />
-          </Form.Item>
-          <Form.Item
-            name="住所"
-            rules={[{ required: true, message: "Please input 住所!" }]}>
-            <Input placeholder="住所" />
+            name="担当者"
+            rules={[{ required: true, message: "Please input 担当者!" }]}>
+            <Input placeholder="担当者" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">

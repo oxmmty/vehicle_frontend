@@ -1,4 +1,4 @@
-import { Button, Table, Typography } from "antd";
+import { Button, DatePicker, Table, Typography } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -6,14 +6,14 @@ import axios from "axios";
 const { Title } = Typography;
 
 const OrderDBPage = () => {
-  const [date, setDate] = useState(dayjs().format("YYYY-MM"));
+  const [date, setDate] = useState(dayjs().format("YYYY-MM")); // Default date is the current month
   const [datas, setDatas] = useState([]);
+  const [filteredDatas, setFilteredDatas] = useState([]); // To store the filtered data
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "ID",
-      key: "ID",
+      title: "No",
+      render: (_, __, index) => index + 1,
       fixed: "left",
     },
     {
@@ -26,31 +26,19 @@ const OrderDBPage = () => {
       title: "請求日",
       dataIndex: "請求日",
       key: "請求日",
-    },
-    {
-      title: "配車組み",
-      dataIndex: "配車組み",
-      key: "配車組み",
+      fixed: "left",
     },
     {
       title: "部署コード",
       dataIndex: "部署コード",
       key: "部署コード",
-    },
-    {
-      title: "ピックチェック",
-      dataIndex: "ピックチェック",
-      key: "ピックチェック",
+      fixed: "left",
     },
     {
       title: "区分",
       dataIndex: "区分",
       key: "区分",
-    },
-    {
-      title: "未定",
-      dataIndex: "未定",
-      key: "未定",
+      fixed: "left",
     },
     {
       title: "送り状受領書作成",
@@ -613,24 +601,42 @@ const OrderDBPage = () => {
       key: "案件コード",
     },
   ];
+
+  // Fetch data on component mount
   useEffect(() => {
-    const run = async () => {
-      const res = await axios.get("/order");
+    const fetchData = async () => {
+      const res = await axios.get("/orderlist");
       setDatas(res.data);
+      filterData(dayjs().format("YYYY-MM"), res.data); // Filter data initially based on the current month
     };
-    run();
+    fetchData();
   }, []);
+
+  // Function to filter data based on the selected date
+  const filterData = (selectedDate, dataToFilter) => {
+    const filtered = dataToFilter.filter((item) => {
+      const invoiceDate = dayjs(item.請求日).format("YYYY-MM"); // Assuming '請求日' is a date field
+      return invoiceDate === selectedDate;
+    });
+    setFilteredDatas(filtered);
+  };
+
+  // Handle date change in the DatePicker
+  const handleDateChange = (date, dateString) => {
+    setDate(dateString); // Set the selected date in state
+    filterData(dateString, datas); // Filter the data based on the selected date
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col sm:flex-row justify-evenly w-full">
-        <Typography className="flex justify-center">
-          <Title level={3}>{date}</Title>
+      <div className="sm:flex-row justify-evenly w-full">
+        <Typography className="ml-10 mt-5 justify-center">
+          <DatePicker
+            picker="month"
+            value={dayjs(date, "YYYY-MM")}
+            onChange={handleDateChange} // Capture date changes
+          />
         </Typography>
-        <div className="flex justify-evenly max-w-lg w-full">
-          <Button>読込</Button>
-          <Button>読込全件</Button>
-        </div>
       </div>
 
       <div className="w-full">

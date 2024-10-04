@@ -109,7 +109,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
 
   return (
     <div>
-      <Form.Item label={"会社名"}>
+      <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany1}
@@ -140,7 +140,11 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"料金"} style={{ width: 100 }} className="grow">
+        <Form.Item
+          label={"料金"}
+          style={{ width: 100 }}
+          className="grow"
+          required>
           <Input
             onChange={(e) => {
               setSubBasicPay(e.target.value);
@@ -382,7 +386,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
   };
   return (
     <div>
-      <Form.Item label={"会社名"}>
+      <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany2}
@@ -413,7 +417,11 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"料金"} style={{ width: 100 }} className="grow">
+        <Form.Item
+          label={"料金"}
+          style={{ width: 100 }}
+          className="grow"
+          required>
           <Input
             onChange={(e) => {
               setSubBasicPay(e.target.value);
@@ -654,7 +662,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
   };
   return (
     <div>
-      <Form.Item label={"会社名"}>
+      <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany3}
@@ -685,7 +693,11 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"料金"} style={{ width: 100 }} className="grow">
+        <Form.Item
+          label={"料金"}
+          style={{ width: 100 }}
+          className="grow"
+          required>
           <Input
             onChange={(e) => {
               setSubBasicPay(e.target.value);
@@ -926,7 +938,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
   };
   return (
     <div>
-      <Form.Item label={"会社名"}>
+      <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany4}
@@ -957,7 +969,11 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"料金"} style={{ width: 100 }} className="grow">
+        <Form.Item
+          label={"料金"}
+          style={{ width: 100 }}
+          className="grow"
+          required>
           <Input
             onChange={(e) => {
               setSubBasicPay(e.target.value);
@@ -1198,7 +1214,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
   };
   return (
     <div>
-      <Form.Item label={"会社名"}>
+      <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany5}
@@ -1229,7 +1245,11 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"料金"} style={{ width: 100 }} className="grow">
+        <Form.Item
+          label={"料金"}
+          style={{ width: 100 }}
+          className="grow"
+          required>
           <Input
             onChange={(e) => {
               setSubBasicPay(e.target.value);
@@ -1470,7 +1490,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
   };
   return (
     <div>
-      <Form.Item label={"会社名"}>
+      <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany6}
@@ -1501,7 +1521,11 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
-        <Form.Item label={"料金"} style={{ width: 100 }} className="grow">
+        <Form.Item
+          label={"料金"}
+          style={{ width: 100 }}
+          className="grow"
+          required>
           <Input
             onChange={(e) => {
               setSubBasicPay(e.target.value);
