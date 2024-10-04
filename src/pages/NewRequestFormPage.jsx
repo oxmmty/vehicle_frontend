@@ -1,63 +1,16 @@
 import React, { useRef } from "react";
 import { Typography, Button } from "antd";
 import "src/assets/styles/Table.css";
+import { useLocation } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
 const NewRequestFormPage = () => {
-  const data = {
-    order: "MA240618-0001",
-    category: "実入り取り",
-    request: "2024/6/19",
-    removal: "青海A-4",
-    axles: "",
-    container: "C12345",
-    type1: "",
-    size: "40",
-    type2: "",
-    goods: "いいえ",
-    destination1: "株式会社アルプス物流",
-    loading1: "2024/1/2",
-    date1: "2024/1/3",
-    time1: "1:00:00",
-    address1: "神奈川県横浜市港北区新羽町1756　2号棟",
-    telephone1: "",
-    charge1: "",
-    basic: "",
-    axle3: "",
-    destination2: "",
-    loading2: "",
-    date2: "",
-    time2: "",
-    address2: "",
-    telephone2: "",
-    charge2: "",
-    destination3: "",
-    loading3: "",
-    date3: "",
-    time3: "",
-    address3: "",
-    telephone3: "",
-    charge3: "",
-    place: "",
-    vessel: "",
-    voy: "",
-    company: "",
-    bk: "",
-    bl: "",
-    discharge: "",
-    final: "",
-    consignor: "",
-    scale: "",
-    chassis: "",
-    highway: "",
-    other: "",
-    fee: "",
-    remarks: "",
-  };
+  const location = useLocation();
+  const { data } = location.state || {};
+  console.log(data);
 
   const componentRef = useRef();
-
   const handlePrint = () => {
     const printWindow = window.open("aaa", "_blank");
     printWindow.document.write(`
@@ -143,154 +96,154 @@ const NewRequestFormPage = () => {
           <table>
             <tr>
               <th>受注コード</th>
-              <td>{data.order}</td>
+              <td>{data.識別コード}</td>
               <th>区分</th>
-              <td>{data.category}</td>
+              <td>{data.区分}</td>
               <th>依頼日</th>
-              <td>{data.request}</td>
+              <td>{data.依頼日}</td>
             </tr>
             <tr>
               <th>搬出場所</th>
-              <td>{data.removal}</td>
+              <td>{data.取場所}</td>
               <th>軸数</th>
               <td colSpan="3">{data.axles}</td>
             </tr>
             <tr>
               <th>コンテナ№</th>
-              <td>{data.container}</td>
+              <td>{data.コンテナNo}</td>
               <th>コンテナタイプ</th>
-              <td colSpan="3">{data.type1}</td>
+              <td colSpan="3">{data.コンテナタイプ}</td>
             </tr>
             <tr>
               <th>コンテナサイズ</th>
-              <td>{data.size}</td>
+              <td>{data.コンテナサイズ}</td>
               <th>コンテナ種類</th>
-              <td>{data.type2}</td>
+              <td>{data.コンテナ種類}</td>
               <th>危険品</th>
-              <td>{data.goods}</td>
+              <td>{data.危険品}</td>
             </tr>
             <tr>
               <th>配達先➀</th>
-              <td>{data.destination1}</td>
+              <td>{data.配達先1}</td>
               <th>積日</th>
-              <td colSpan="3">{data.loading1}</td>
+              <td colSpan="3">{data.積日1}</td>
             </tr>
             <tr>
               <th>配達日</th>
-              <td>{data.date1}</td>
+              <td>{data.配達日1}</td>
               <th>配達時間</th>
-              <td colSpan="3">{data.time1}</td>
+              <td colSpan="3">{data.配達時間1}</td>
             </tr>
             <tr>
               <th>配達先住所</th>
-              <td colSpan="5">{data.address1}</td>
+              <td colSpan="5">{data.配達先住所1}</td>
             </tr>
             <tr>
               <th>配達先TEL</th>
-              <td>{data.telephone1}</td>
+              <td>{data.配達先TEL1}</td>
               <th>配達先担当者</th>
-              <td colSpan="3">{data.charge1}</td>
+              <td colSpan="3">{data.配達先担当者1}</td>
             </tr>
             <tr>
               <th>基本料金</th>
-              <td>{data.basic}</td>
+              <td>{data.基本料金1}</td>
               <th>3軸料金</th>
-              <td colSpan="3">{data.axle3}</td>
+              <td colSpan="3">{data["3軸料金1"]}</td>
             </tr>
             <tr>
               <th>配達先②</th>
-              <td>{data.destination2}</td>
+              <td>{data.配達先2}</td>
               <th>積日</th>
-              <td colSpan="3">{data.loading2}</td>
+              <td colSpan="3">{data.積日2}</td>
             </tr>
             <tr>
               <th>配達日</th>
-              <td>{data.date2}</td>
+              <td>{data.配達日2}</td>
               <th>配達時間</th>
-              <td colSpan="3">{data.time2}</td>
+              <td colSpan="3">{data.配達時間2}</td>
             </tr>
             <tr>
               <th>配達先住所</th>
-              <td colSpan="5">{data.address2}</td>
+              <td colSpan="5">{data.配達先住所2}</td>
             </tr>
             <tr>
               <th>配達先TEL</th>
-              <td>{data.telephone2}</td>
+              <td>{data.配達先TEL2}</td>
               <th>配達先担当者</th>
-              <td colSpan="3">{data.charge2}</td>
+              <td colSpan="3">{data.配達先担当者2}</td>
             </tr>
             <tr>
               <th>配達先③</th>
-              <td>{data.destination3}</td>
+              <td>{data.配達先3}</td>
               <th>積日</th>
-              <td colSpan="3">{data.loading3}</td>
+              <td colSpan="3">{data.積日3}</td>
             </tr>
             <tr>
               <th>配達日</th>
-              <td>{data.date3}</td>
+              <td>{data.配達日3}</td>
               <th>配達時間</th>
-              <td colSpan="3">{data.time3}</td>
+              <td colSpan="3">{data.配達時間3}</td>
             </tr>
             <tr>
               <th>配達先住所</th>
-              <td colSpan="5">{data.address3}</td>
+              <td colSpan="5">{data.配達先住所3}</td>
             </tr>
             <tr>
               <th>配達先TEL</th>
-              <td>{data.telephone3}</td>
+              <td>{data.配達先TEL3}</td>
               <th>配達先担当者</th>
-              <td colSpan="3">{data.charge3}</td>
+              <td colSpan="3">{data.配達先担当者3}</td>
             </tr>
             <tr>
               <th>搬入・返却場所</th>
-              <td colSpan="5">{data.place}</td>
+              <td colSpan="5">{data.搬入返却場所}</td>
             </tr>
             <tr>
               <th>本船名</th>
-              <td>{data.vessel}</td>
+              <td>{data.船名}</td>
               <th>VOY.№</th>
-              <td>{data.voy}</td>
+              <td>{data.VOYNo}</td>
               <th>船社</th>
-              <td>{data.company}</td>
+              <td>{data.船社}</td>
             </tr>
             <tr>
               <th>BK№</th>
-              <td>{data.bk}</td>
+              <td>{data.BKNo}</td>
               <th>BL№</th>
-              <td colSpan="3">{data.bl}</td>
+              <td colSpan="3">{data.BLNo}</td>
             </tr>
             <tr>
               <th>荷揚港</th>
-              <td>{data.discharge}</td>
+              <td>{data.荷揚港}</td>
               <th>最終仕向地</th>
-              <td colSpan="3">{data.final}</td>
+              <td colSpan="3">{data.最終仕向}</td>
             </tr>
             <tr>
               <th>荷主名</th>
-              <td colSpan="5">{data.consignor}</td>
+              <td colSpan="5">{data.荷主名}</td>
             </tr>
             <tr>
               <th>スケール費</th>
-              <td>{data.scale}</td>
+              <td>{data.スケール費}</td>
               <th>シャーシ留置費</th>
-              <td colSpan="3">{data.chassis}</td>
+              <td colSpan="3">{data.シャーシ留置費}</td>
             </tr>
             <tr>
               <th>高速費</th>
-              <td>{data.highway}</td>
+              <td>{data.高速費}</td>
               <th>その他費用</th>
-              <td colSpan="3">{data.other}</td>
+              <td colSpan="3">{data.その他費用}</td>
             </tr>
             <tr>
               <th>料金</th>
-              <td colSpan="5">{data.fee}</td>
+              <td colSpan="5">{data.下払料金1}</td>
             </tr>
             <tr>
               <th colSpan="6">備考欄</th>
             </tr>
             <tr>
               <td className="h-36" colSpan="6">
-                {data.remarks}
+                {data.依頼書備考1}
               </td>
             </tr>
           </table>
@@ -301,3 +254,138 @@ const NewRequestFormPage = () => {
 };
 
 export default NewRequestFormPage;
+
+// import React, { useRef } from "react";
+// import { Button, Typography } from "antd";
+// import {
+//   PDFDownloadLink,
+//   Document,
+//   Page,
+//   Text,
+//   View,
+//   StyleSheet,
+//   Image,
+//   PDFViewer,
+// } from "@react-pdf/renderer";
+// import "src/assets/styles/Table.css";
+// import { useLocation } from "react-router-dom";
+
+// // Styles for the PDF document
+// const styles = StyleSheet.create({
+//   page: {
+//     padding: 20,
+//     fontFamily: "Arial",
+//     fontSize: 12,
+//     color: "black",
+//   },
+//   section: {
+//     marginBottom: 10,
+//   },
+//   table: {
+//     display: "table",
+//     width: "auto",
+//     margin: "auto",
+//   },
+//   row: {
+//     flexDirection: "row",
+//   },
+//   cell: {
+//     width: "50%",
+//     border: "1pt solid black",
+//     padding: 5,
+//   },
+//   title: {
+//     fontSize: 20,
+//     marginBottom: 10,
+//     textAlign: "center",
+//   },
+// });
+
+// const NewRequestFormPage = () => {
+//   const location = useLocation();
+//   const { data } = location.state || {};
+//   console.log(data);
+
+//   // PDF Document Component
+//   const MyDocument = () => (
+//     <Document>
+//       <Page style={styles.page}>
+//         <Text style={styles.title}>依頼書</Text>
+//         <View style={styles.section}>
+//           <Text strong>寿咲 御中</Text>
+//           <Text>翔風運輸株式会社</Text>
+//           <Text>担当：渡邉</Text>
+//         </View>
+
+//         {/* Table for Data */}
+//         <View style={styles.table}>
+//           <View style={styles.row}>
+//             <Text style={styles.cell}>受注コード</Text>
+//             <Text style={styles.cell}>{data.識別コード}</Text>
+//             <Text style={styles.cell}>区分</Text>
+//             <Text style={styles.cell}>{data.区分}</Text>
+//             <Text style={styles.cell}>依頼日</Text>
+//             <Text style={styles.cell}>{data.依頼日}</Text>
+//           </View>
+//           {/* Add more rows as needed */}
+//           <View style={styles.row}>
+//             <Text style={styles.cell}>搬出場所</Text>
+//             <Text style={styles.cell}>{data.取場所}</Text>
+//             <Text style={styles.cell}>軸数</Text>
+//             <Text style={styles.cell} colSpan="3">
+//               {data.axles}
+//             </Text>
+//           </View>
+//           <View style={styles.row}>
+//             <Text style={styles.cell}>配達先➀</Text>
+//             <Text style={styles.cell}>{data.配達先1}</Text>
+//             <Text style={styles.cell}>配達日</Text>
+//             <Text style={styles.cell}>{data.配達日1}</Text>
+//             <Text style={styles.cell}>配達時間</Text>
+//             <Text style={styles.cell}>{data.配達時間1}</Text>
+//           </View>
+//           {/* Continue adding other data rows in a similar fashion */}
+//         </View>
+//       </Page>
+//     </Document>
+//   );
+
+//   return (
+//     <div className="relative">
+//       <Button type="primary" className="absolute right-7 top-7">
+//         <PDFDownloadLink
+//           document={<MyDocument />}
+//           fileName={`Request_${data?.識別コード || "document"}.pdf`}>
+//           {({ loading }) => (loading ? "Loading document..." : "Download PDF")}
+//         </PDFDownloadLink>
+//       </Button>
+//       <div className="flex flex-col items-center mx-auto p-4">
+//         <Typography>
+//           <Typography.Title level={2}>依頼書</Typography.Title>
+//         </Typography>
+//         <div className="flex justify-between w-full">
+//           <Typography.Text strong>寿咲 御中</Typography.Text>
+//           <div className="flex flex-col">
+//             <Typography.Text>翔風運輸株式会社</Typography.Text>
+//             <Typography.Text type="secondary">担当：渡邉</Typography.Text>
+//           </div>
+//         </div>
+//         <div id="specialTable" className="overflow-auto w-full">
+//           <table>
+//             <tr>
+//               <th>受注コード</th>
+//               <td>{data.識別コード}</td>
+//               <th>区分</th>
+//               <td>{data.区分}</td>
+//               <th>依頼日</th>
+//               <td>{data.依頼日}</td>
+//             </tr>
+//             {/* Continue adding your original table rows here */}
+//           </table>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default NewRequestFormPage;
