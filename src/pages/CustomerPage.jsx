@@ -265,29 +265,19 @@ export default function CustomerPage() {
             rules={[{ required: true, message: "Please input 顧客名称!" }]}>
             <Input placeholder="顧客名称" />
           </Form.Item>
-          <Form.Item
-            name="カウント"
-            rules={[{ required: true, message: "Please input カウント!" }]}>
-            <Input placeholder="カウント" />
-          </Form.Item>
+
           <Form.Item
             name="担当"
             rules={[{ required: true, message: "Please input 担当!" }]}>
             <Input placeholder="担当" />
           </Form.Item>
-          <Form.Item
-            name="TEL"
-            rules={[{ required: true, message: "Please input TEL!" }]}>
+          <Form.Item name="TEL" rules={[{ message: "Please input TEL!" }]}>
             <Input placeholder="TEL" />
           </Form.Item>
-          <Form.Item
-            name="FAX"
-            rules={[{ required: true, message: "Please input FAX!" }]}>
+          <Form.Item name="FAX" rules={[{ message: "Please input FAX!" }]}>
             <Input placeholder="FAX" />
           </Form.Item>
-          <Form.Item
-            name="住所"
-            rules={[{ required: true, message: "Please input 住所!" }]}>
+          <Form.Item name="住所" rules={[{ message: "Please input 住所!" }]}>
             <Input placeholder="住所" />
           </Form.Item>
           <Form.Item>

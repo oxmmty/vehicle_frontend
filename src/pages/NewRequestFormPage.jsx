@@ -119,7 +119,13 @@ const NewRequestFormPage = () => {
   };
 
   return (
-    <div>
+    <div className="relative">
+      <Button
+        type="primary"
+        onClick={handlePrint}
+        className="absolute right-7 top-7">
+        Print PDF
+      </Button>
       <div
         className="flex flex-col items-center mx-auto p-4"
         ref={componentRef}>
@@ -290,9 +296,6 @@ const NewRequestFormPage = () => {
           </table>
         </div>
       </div>
-      <Button type="primary" onClick={handlePrint}>
-        Print PDF
-      </Button>
     </div>
   );
 };

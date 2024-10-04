@@ -340,7 +340,27 @@ const SeaComponent = ({ setData }) => {
       setRisk(false);
     }
   };
-
+  const today = dayjs().format("YYYY-MM-DD");
+  const a = dayjs(today).format("YYMMDD");
+  if (selectedValueDivide == "実入り取り") {
+    const b = "MA" + a + "-";
+    console.log(b);
+  } else if (selectedValueDivide == "空バン取り") {
+    const b = "KA" + a + "-";
+    console.log(b);
+  } else if (selectedValueDivide == "実入り取りCRU") {
+    const b = "MA" + a + "-";
+    console.log(b);
+  } else if (selectedValueDivide == "実入り取りFDR") {
+    const b = "MA" + a + "-";
+    console.log(b);
+  } else if (selectedValueDivide == "実入り取りPIC") {
+    const b = "PA" + a + "-";
+    console.log(b);
+  } else if (selectedValueDivide == "保管") {
+    const b = "XA" + a + "-";
+    console.log(b);
+  }
   useEffect(() => {
     setData({
       請求日: lastDay,
@@ -756,6 +776,7 @@ const SeaComponent = ({ setData }) => {
     requestRemark,
     invoiceRemark,
   ]);
+
   return (
     <div className="flex flex-col md:flex-row md:gap-4">
       <Form layout="vertical" id="請求日" className="anchor-section md:w-[50%]">
