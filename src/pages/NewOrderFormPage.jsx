@@ -1145,16 +1145,12 @@ const OtherComponent = () => {
 const NewOrderFormPage = () => {
   const tabNames = ["海上コンテナ", "トラック", "その他"];
   const [data, setData] = useState();
-  const [count, setCount] = useState(0);
-  const [droppedImageSrc, setDroppedImageSrc] = useState(null);
+
   const dialogComponent = [
     <SeaComponent setData={setData} />,
     <TruckComponent />,
     <OtherComponent />,
   ];
-  const handleImageDrop = (src) => {
-    setDroppedImageSrc(src);
-  };
 
   const sendData = async () => {
     const jsonString = JSON.stringify(

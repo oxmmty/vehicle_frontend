@@ -33,10 +33,10 @@ const orders_invoices = [
     key: "orderDB",
     label: "受注DB",
   },
-  {
-    key: "newRequestForm",
-    label: "依頼書",
-  },
+  // {
+  //   key: "newRequestForm",
+  //   label: "依頼書",
+  // },
   {
     key: "requestList",
     label: "依頼リスト",
@@ -79,14 +79,14 @@ const calendar_schedules = [
     key: "calendar",
     label: "カレンダー",
   },
-  {
-    key: "dispatchSpecification",
-    label: "配車表仕様書",
-  },
-  {
-    key: "taskSchedule",
-    label: "Task Schedule",
-  },
+  // {
+  //   key: "dispatchSpecification",
+  //   label: "配車表仕様書",
+  // },
+  // {
+  //   key: "taskSchedule",
+  //   label: "Task Schedule",
+  // },
 ];
 
 const masterDatas = [

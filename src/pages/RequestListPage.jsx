@@ -1,52 +1,146 @@
-import React, { useRef } from "react";
-import { Table, Button, Dropdown, Menu, Typography } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Table,
+  Button,
+  Dropdown,
+  Menu,
+  Typography,
+  Select,
+  DatePicker,
+} from "antd";
+import axios from "axios";
+import moment from "moment";
+import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
 const RequestListPage = () => {
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [pdfDate, setPdfDate] = useState("");
+  const today = dayjs().format("YYYY-MM-DD");
   const componentRef = useRef();
+  useEffect(() => {
+    axios.get(`${process.env.REACT_API_BASE_URL}/order`).then((response) => {
+      const transformedData = response.data.map((item) => ({
+        ...item,
+        配達日1: moment(item.配達日1).format("YYYY-MM"), // Change the format to Date object
+        // Change other fields from null to empty string
+        配達時間1: item.配達時間1 || "",
+        搬入返却場所: item.搬入返却場所 || "",
+        取場所: item.取場所 || "",
+        コンテナサイズ: item.コンテナサイズ || "",
+        コンテナNo: item.コンテナNo || "",
+        シャーシ留置費: item.シャーシ留置費 || "",
+        work1: item.work1 || "",
+        work2: item.work2 || "",
+        work3: item.work3 || "",
+        work4: item.work4 || "",
+        work5: item.work5 || "",
+        work6: item.work6 || "",
+        識別コード: item.識別コード || "",
+        請求書備考: item.請求書備考 || "",
+      }));
+      setData(transformedData);
+    });
+    axios
+      .get(`${process.env.REACT_API_BASE_URL}/partnercompany`)
+      .then((response) => {
+        const companyList = [
+          ...new Set(response.data.map((item) => item.協力会社)),
+        ];
+        setCompanies(companyList);
+      });
+  }, []);
+
+  useEffect(() => {
+    filterData();
+  }, [selectedCompany, selectedDate]);
+
+  const filterData = () => {
+    if (!selectedCompany && !selectedDate) {
+      // Set table to blank if neither company nor date is selected
+      setFilteredData([]);
+      return;
+    }
+
+    let filtered = data;
+    console.log(data);
+    if (selectedCompany) {
+      filtered = filtered.filter(
+        (item) =>
+          item.下払会社名1 === selectedCompany ||
+          item.下払会社名2 === selectedCompany ||
+          item.下払会社名3 === selectedCompany ||
+          item.下払会社名4 === selectedCompany ||
+          item.下払会社名5 === selectedCompany ||
+          item.下払会社名6 === selectedCompany,
+      );
+    }
+
+    if (selectedDate) {
+      const formattedDate = moment(selectedDate).format("YYYY/MM");
+      filtered = filtered.filter(
+        (item) => moment(item.配達日1).format("YYYY/MM") === formattedDate,
+      );
+
+      setPdfDate(formattedDate);
+    }
+    setFilteredData(filtered);
+  };
+
+  const handleCompanyChange = (value) => {
+    setSelectedCompany(value);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   const columns = [
     {
-      title: "時間",
-      dataIndex: "time",
-      key: "time",
+      title: "No",
+      render: (_, __, index) => index + 1,
+      fixed: "left",
     },
     {
       title: "配達日",
-      dataIndex: "deliveryDate",
-      key: "deliveryDate",
+      dataIndex: "配達日1",
+      key: "配達日1",
     },
     {
       title: "時間",
-      dataIndex: "time2",
-      key: "time2",
+      dataIndex: "配達時間1",
+      key: "配達時間1",
     },
     {
       title: "搬出・搬入",
-      dataIndex: "load",
-      key: "load",
+      dataIndex: "搬入返却場所",
+      key: "搬入返却場所",
     },
     {
       title: "作業先",
-      dataIndex: "workPlace",
-      key: "workPlace",
+      dataIndex: "取場所",
+      key: "取場所",
     },
     {
       title: "サイズ",
-      dataIndex: "size",
-      key: "size",
+      dataIndex: "コンテナサイズ",
+      key: "コンテナサイズ",
     },
     {
       title: "コンテナ番号",
-      dataIndex: "containerNo",
-      key: "containerNo",
+      dataIndex: "コンテナNo",
+      key: "コンテナNo",
     },
     {
       title: "シャーシ",
-      dataIndex: "chassis",
-      key: "chassis",
+      dataIndex: "シャーシ留置費",
+      key: "シャーシ留置費",
     },
     {
       title: "作業 1",
@@ -58,25 +152,38 @@ const RequestListPage = () => {
       dataIndex: "work2",
       key: "work2",
     },
-  ];
-
-  const data = [
     {
-      key: "1",
-      time: "10:00",
-      deliveryDate: "2024/01/03",
-      time2: "12:00",
-      load: "搬入",
-      workPlace: "場所A",
-      size: "Large",
-      containerNo: "123456",
-      chassis: "シャーシA",
-      work1: "作業内容1",
-      work2: "作業内容2",
+      title: "作業 3",
+      dataIndex: "work3",
+      key: "work3",
+    },
+    {
+      title: "作業 4",
+      dataIndex: "work4",
+      key: "work4",
+    },
+    {
+      title: "作業 5",
+      dataIndex: "work5",
+      key: "work5",
+    },
+    {
+      title: "作業 6",
+      dataIndex: "work6",
+      key: "work6",
+    },
+    {
+      title: "識別コード",
+      dataIndex: "識別コード",
+      key: "識別コード",
+    },
+    {
+      title: "備考",
+      dataIndex: "請求書備考",
+      key: "請求書備考",
     },
   ];
 
-  // Move handlePrint above the menu definition
   const handlePrint = () => {
     const printWindow = window.open("aaa", "apple");
     printWindow.document.write(`
@@ -86,7 +193,7 @@ const RequestListPage = () => {
           <style>
             body {
               margin: 0;
-              padding: 20px;
+              padding: 10px;
               font-family: Arial, sans-serif;
               background-color: white;
             }
@@ -103,7 +210,7 @@ const RequestListPage = () => {
             }
             th, td {
               border: 1px solid black;
-              padding: 6px;
+              padding: 2px;
             }
             th {
               background-color: #f2f2f2;
@@ -112,10 +219,10 @@ const RequestListPage = () => {
         </head>
         <body>
         <p>配車リスト</p>
-          <h2>東海運株式会社</h2>
+          <h2>${selectedCompany}</h2>
           <div style=" display: flex; justify-content: space-between; ">
-          <div><p>2024年1月3日(水)</tepxt></div>
-          <div><p>翔風運輸株式会社　担当：渡邉</p><p>2024年8月3日(水)</p></div>
+          <div><p>${pdfDate}</p></div>
+          <div><p>翔風運輸株式会社　担当：渡邉</p><p>${today}</p></div>
           </div>
           <table>
             <thead>
@@ -124,17 +231,24 @@ const RequestListPage = () => {
               </tr>
             </thead>
             <tbody>
-              ${data
-                .map(
-                  (row) => `
-                <tr>
-                  ${columns
-                    .map((col) => `<td>${row[col.dataIndex]}</td>`)
-                    .join("")}
-                </tr>
-              `,
-                )
-                .join("")}
+               ${filteredData
+                 .map(
+                   (row) => `
+      <tr>
+        ${columns
+          .map(
+            (col) =>
+              `<td>${
+                row[col.dataIndex] !== undefined && row[col.dataIndex] !== null
+                  ? row[col.dataIndex]
+                  : ""
+              }</td>`,
+          )
+          .join("")}
+      </tr>
+    `,
+                 )
+                 .join("")}
             </tbody>
           </table>
         </body>
@@ -145,36 +259,42 @@ const RequestListPage = () => {
     printWindow.close();
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">リスト作成</Menu.Item>
-      <Menu.Item key="2" onClick={handlePrint}>
-        PDF作成
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <div className="w-full">
       <div className="flex flex-wrap flex-row w-full justify-between items-center gap-4 px-2">
-        <div>
-          <Title level={3}>東海運株式会社</Title>
-          <Text>2024年1月3日(水)</Text>
+        <div className="flex flex-col gap-4 mb-2">
+          <Select
+            placeholder="Select a company"
+            onChange={handleCompanyChange}
+            style={{ width: 200 }}
+            allowClear>
+            {companies.map((company) => (
+              <Option key={company} value={company}>
+                {company}
+              </Option>
+            ))}
+          </Select>
+          <DatePicker
+            picker="month"
+            onChange={handleDateChange}
+            format="YYYY/MM"
+            allowClear
+          />
         </div>
-        <div>
+        <div className=" text-center">
           <Title level={5}>翔風運輸株式会社　担当：渡邉</Title>
-          <Text>2024年8月3日(水)</Text>
+          <Text>{today}</Text>
         </div>
-        <Dropdown overlay={menu} trigger={["click"]} className="mt-4">
-          <Button type="primary">
-            Options <DownOutlined />
-          </Button>
-        </Dropdown>
+
+        <Button type="primary" onClick={handlePrint}>
+          PDF作成
+        </Button>
       </div>
+
       <div ref={componentRef}>
         <Table
           columns={columns}
-          dataSource={data}
+          dataSource={filteredData}
           pagination={false}
           scroll={{ x: "max-content" }}
           bordered

@@ -2,7 +2,7 @@ import { DatePicker, Table, Typography, Checkbox } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-
+import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
 const DBPage = () => {
@@ -11,6 +11,7 @@ const DBPage = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   // Fetch data from backend
   const fetchData = async () => {
@@ -43,6 +44,13 @@ const DBPage = () => {
     } else {
       setFilteredData(allData);
     }
+  };
+
+  const printPdf = async (record) => {
+    console.log(record);
+    navigate(`/orders_invoices/newRequestForm`, {
+      state: { data: record },
+    });
   };
 
   const onCheckboxChange = async (record, field, checked) => {
@@ -95,6 +103,7 @@ const DBPage = () => {
             if (!record.配車組み) {
               onCheckboxChange(record, "配車組み", e.target.checked);
             }
+            printPdf(record);
           }}
           disabled={record.配車組み} // Disable if checked
         />
@@ -214,6 +223,7 @@ const DBPage = () => {
           defaultValue={dayjs(date)}
           onChange={handleDateChange}
           format="YYYY-MM-DD"
+          className=""
         />
         {error && <p style={{ color: "red" }}>{error}</p>}
         {loading ? (
