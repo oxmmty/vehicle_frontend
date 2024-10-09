@@ -2,13 +2,13 @@ import React, { useRef } from "react";
 import { Typography, Button } from "antd";
 import "src/assets/styles/Table.css";
 import { useLocation } from "react-router-dom";
+import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 
 const NewRequestFormPage = () => {
   const location = useLocation();
   const { data } = location.state || {};
-  console.log(data);
 
   const componentRef = useRef();
   const handlePrint = () => {
@@ -29,7 +29,7 @@ const NewRequestFormPage = () => {
               font-size: 20px;
             }
             table {
-              font-size:15px;
+              font-size:12px;
               width: 100%;
               border-collapse: collapse;
               text-align: center;
@@ -71,6 +71,15 @@ const NewRequestFormPage = () => {
     printWindow.close();
   };
 
+  const formatDate = (date) => {
+    if (date === null) return ""; // Return empty string if the date is null
+    return dayjs(date).format("YYYY-MM-DD"); // Format the date if it's not null
+  };
+
+  const formatTime = (time) => {
+    if (time === null) return "";
+    return dayjs(time, "HH:mm:ss").format("HH:mm");
+  };
   return (
     <div className="relative">
       <Button
@@ -86,7 +95,7 @@ const NewRequestFormPage = () => {
           <Title level={2}>依頼書</Title>
         </Typography>
         <div className="flex justify-between w-full">
-          <Text strong>寿咲 御中</Text>
+          <Text strong>{data[0].下払会社名} 御中</Text>
           <div className="flex flex-col">
             <Text>翔風運輸株式会社</Text>
             <Text type="secondary">担当：渡邉</Text>
@@ -96,154 +105,154 @@ const NewRequestFormPage = () => {
           <table>
             <tr>
               <th>受注コード</th>
-              <td>{data.識別コード}</td>
+              <td>{data[0].受注コード}</td>
               <th>区分</th>
-              <td>{data.区分}</td>
+              <td>{data[0].区分}</td>
               <th>依頼日</th>
-              <td>{data.依頼日}</td>
+              <td>{formatDate(data[0].依頼日)}</td>
             </tr>
             <tr>
               <th>搬出場所</th>
-              <td>{data.取場所}</td>
+              <td>{data[0].搬出場所}</td>
               <th>軸数</th>
-              <td colSpan="3">{data.axles}</td>
+              <td colSpan="3">{data[0].軸数}</td>
             </tr>
             <tr>
               <th>コンテナ№</th>
-              <td>{data.コンテナNo}</td>
+              <td>{data[0].コンテナNo}</td>
               <th>コンテナタイプ</th>
-              <td colSpan="3">{data.コンテナタイプ}</td>
+              <td colSpan="3">{data[0].コンテナタイプ}</td>
             </tr>
             <tr>
               <th>コンテナサイズ</th>
-              <td>{data.コンテナサイズ}</td>
+              <td>{data[0].コンテナサイズ}</td>
               <th>コンテナ種類</th>
-              <td>{data.コンテナ種類}</td>
+              <td>{data[0].コンテナ種類}</td>
               <th>危険品</th>
-              <td>{data.危険品}</td>
+              <td>{data[0].危険品}</td>
             </tr>
             <tr>
               <th>配達先➀</th>
-              <td>{data.配達先1}</td>
+              <td>{data[0].配達先1}</td>
               <th>積日</th>
-              <td colSpan="3">{data.積日1}</td>
+              <td colSpan="3">{formatDate(data[0].積日1)}</td>
             </tr>
             <tr>
               <th>配達日</th>
-              <td>{data.配達日1}</td>
+              <td>{formatDate(data[0].配達日1)}</td>
               <th>配達時間</th>
-              <td colSpan="3">{data.配達時間1}</td>
+              <td colSpan="3">{formatTime(data[0].配達時間1)}</td>
             </tr>
             <tr>
               <th>配達先住所</th>
-              <td colSpan="5">{data.配達先住所1}</td>
+              <td colSpan="5">{data[0].配達先住所1}</td>
             </tr>
             <tr>
               <th>配達先TEL</th>
-              <td>{data.配達先TEL1}</td>
+              <td>{data[0].配達先TEL1}</td>
               <th>配達先担当者</th>
-              <td colSpan="3">{data.配達先担当者1}</td>
+              <td colSpan="3">{data[0].配達先担当者1}</td>
             </tr>
             <tr>
               <th>基本料金</th>
-              <td>{data.基本料金1}</td>
+              <td>{data[0].基本料金1}</td>
               <th>3軸料金</th>
-              <td colSpan="3">{data["3軸料金1"]}</td>
+              <td colSpan="3">{data[0]["3軸料金1"]}</td>
             </tr>
             <tr>
               <th>配達先②</th>
-              <td>{data.配達先2}</td>
+              <td>{data[0].配達先2}</td>
               <th>積日</th>
-              <td colSpan="3">{data.積日2}</td>
+              <td colSpan="3">{formatDate(data[0].積日2)}</td>
             </tr>
             <tr>
               <th>配達日</th>
-              <td>{data.配達日2}</td>
+              <td>{formatDate(data[0].配達日2)}</td>
               <th>配達時間</th>
-              <td colSpan="3">{data.配達時間2}</td>
+              <td colSpan="3">{formatTime(data[0].配達時間2)}</td>
             </tr>
             <tr>
               <th>配達先住所</th>
-              <td colSpan="5">{data.配達先住所2}</td>
+              <td colSpan="5">{data[0].配達先住所2}</td>
             </tr>
             <tr>
               <th>配達先TEL</th>
-              <td>{data.配達先TEL2}</td>
+              <td>{data[0].配達先TEL2}</td>
               <th>配達先担当者</th>
-              <td colSpan="3">{data.配達先担当者2}</td>
+              <td colSpan="3">{data[0].配達先担当者2}</td>
             </tr>
             <tr>
               <th>配達先③</th>
-              <td>{data.配達先3}</td>
+              <td>{data[0].配達先3}</td>
               <th>積日</th>
-              <td colSpan="3">{data.積日3}</td>
+              <td colSpan="3">{formatDate(data[0].積日3)}</td>
             </tr>
             <tr>
               <th>配達日</th>
-              <td>{data.配達日3}</td>
+              <td>{formatDate(data[0].配達日3)}</td>
               <th>配達時間</th>
-              <td colSpan="3">{data.配達時間3}</td>
+              <td colSpan="3">{formatTime(data[0].配達時間3)}</td>
             </tr>
             <tr>
               <th>配達先住所</th>
-              <td colSpan="5">{data.配達先住所3}</td>
+              <td colSpan="5">{data[0].配達先住所3}</td>
             </tr>
             <tr>
               <th>配達先TEL</th>
-              <td>{data.配達先TEL3}</td>
+              <td>{data[0].配達先TEL3}</td>
               <th>配達先担当者</th>
-              <td colSpan="3">{data.配達先担当者3}</td>
+              <td colSpan="3">{data[0].配達先担当者3}</td>
             </tr>
             <tr>
               <th>搬入・返却場所</th>
-              <td colSpan="5">{data.搬入返却場所}</td>
+              <td colSpan="5">{data[0].搬入返却場所}</td>
             </tr>
             <tr>
               <th>本船名</th>
-              <td>{data.船名}</td>
+              <td>{data[0].船名}</td>
               <th>VOY.№</th>
-              <td>{data.VOYNo}</td>
+              <td>{data[0].VOYNo}</td>
               <th>船社</th>
-              <td>{data.船社}</td>
+              <td>{data[0].船社}</td>
             </tr>
             <tr>
               <th>BK№</th>
-              <td>{data.BKNo}</td>
+              <td>{data[0].BKNo}</td>
               <th>BL№</th>
-              <td colSpan="3">{data.BLNo}</td>
+              <td colSpan="3">{data[0].BLNo}</td>
             </tr>
             <tr>
               <th>荷揚港</th>
-              <td>{data.荷揚港}</td>
+              <td>{data[0].荷揚港}</td>
               <th>最終仕向地</th>
-              <td colSpan="3">{data.最終仕向}</td>
+              <td colSpan="3">{data[0].最終仕向}</td>
             </tr>
             <tr>
               <th>荷主名</th>
-              <td colSpan="5">{data.荷主名}</td>
+              <td colSpan="5">{data[0].荷主名}</td>
             </tr>
             <tr>
               <th>スケール費</th>
-              <td>{data.スケール費}</td>
+              <td>{data[0].スケール費}</td>
               <th>シャーシ留置費</th>
-              <td colSpan="3">{data.シャーシ留置費}</td>
+              <td colSpan="3">{data[0].シャーシ留置費}</td>
             </tr>
             <tr>
               <th>高速費</th>
-              <td>{data.高速費}</td>
+              <td>{data[0].高速費}</td>
               <th>その他費用</th>
-              <td colSpan="3">{data.その他費用}</td>
+              <td colSpan="3">{data[0].その他費用}</td>
             </tr>
             <tr>
               <th>料金</th>
-              <td colSpan="5">{data.下払料金1}</td>
+              <td colSpan="5">{data[0].下払料金1}</td>
             </tr>
             <tr>
               <th colSpan="6">備考欄</th>
             </tr>
             <tr>
               <td className="h-36" colSpan="6">
-                {data.依頼書備考1}
+                {data[0].依頼書備考1}
               </td>
             </tr>
           </table>

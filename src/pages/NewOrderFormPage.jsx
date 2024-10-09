@@ -293,6 +293,7 @@ const SeaComponent = ({ setData }) => {
   const handleSelectDivide = (value) => {
     setSelectedValueDivide(value);
   };
+
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
     setSelectedValueDivide(null);
@@ -776,6 +777,42 @@ const SeaComponent = ({ setData }) => {
     requestRemark,
     invoiceRemark,
   ]);
+
+  useEffect(() => {
+    if (!inputValueShipper) {
+      setSelectedValueShipper("");
+    }
+  }, [inputValueShipper]);
+
+  useEffect(() => {
+    if (!inputValueShip) {
+      setSelectedValueShip("");
+    }
+  }, [inputValueShip]);
+
+  useEffect(() => {
+    if (!inputValueCustomer) {
+      setSelectedValueCustomer("");
+    }
+  }, [inputValueCustomer]);
+
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
+
+  useEffect(() => {
+    if (!inputValueLoad) {
+      setSelectedValueLoad("");
+    }
+  }, [inputValueLoad]);
+
+  useEffect(() => {
+    if (!inputValueLocation) {
+      setSelectedValueLocation("");
+    }
+  }, [inputValueLocation]);
 
   return (
     <div className="flex flex-col md:flex-row md:gap-4">

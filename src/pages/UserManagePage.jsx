@@ -17,7 +17,7 @@ const EditableCell = ({
   title,
   inputType,
   record,
-  workStations, // Add workStations prop here
+  workStations,
   index,
   children,
   ...restProps
@@ -25,7 +25,6 @@ const EditableCell = ({
   let inputNode = <Input />;
 
   if (dataIndex === "workStation") {
-    // Render Select for workStation field
     inputNode = (
       <Select>
         {workStations.map((station) => (

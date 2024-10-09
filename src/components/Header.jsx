@@ -17,7 +17,7 @@ const { Text } = Typography;
 const list = [
   { key: "dashboard", value: "ダッシュボード" },
   { key: "orders_invoices", value: "受注・請求書メニュー" },
-  { key: "calendar_schedules", value: "カレンダー・配車" },
+  // { key: "calendar_schedules", value: "カレンダー・配車" },
   { key: "containers", value: "コンテナ管理" },
   { key: "masterDatas", value: "マスタデータ" },
   { key: "analysis_reports", value: "分析・レポート" },

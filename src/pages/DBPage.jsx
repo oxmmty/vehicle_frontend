@@ -1,6 +1,7 @@
 import { DatePicker, Table, Typography, Checkbox } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import moment from "moment";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
@@ -46,13 +47,6 @@ const DBPage = () => {
     }
   };
 
-  const printPdf = async (record) => {
-    console.log(record);
-    navigate(`/orders_invoices/newRequestForm`, {
-      state: { data: record },
-    });
-  };
-
   const onCheckboxChange = async (record, field, checked) => {
     const updatedRecord = { ...record, [field]: checked };
     try {
@@ -64,9 +58,498 @@ const DBPage = () => {
         item.id === record.id ? updatedRecord : item,
       );
       setFilteredData(updatedData);
+      await handleAddRecords(record);
     } catch (err) {
       console.error("Error updating data:", err);
       setError("Failed to update data. Please try again.");
+    }
+  };
+
+  const handleAddRecords = async (record) => {
+    let axles;
+    let 危険品;
+    if (record["3軸数"] !== true) {
+      axles = "";
+    } else {
+      axles = "3";
+    }
+    if (record.危険品 !== true) {
+      危険品 = "";
+    } else {
+      危険品 = "危険品";
+    }
+    const 依頼日 = moment().format("YYYY-MM-DD");
+    const a = record.識別コード.replace(/^MA/, "HA");
+    record.区分 = "配達";
+    record.識別コード = a;
+    const {
+      識別コード,
+      区分,
+      取場所,
+      コンテナNo,
+      コンテナタイプ,
+      コンテナサイズ,
+      コンテナ種類,
+      配達先1,
+      積日1,
+      配達日1,
+      配達時間1,
+      配達先住所1,
+      配達先TEL1,
+      配達先担当者1,
+      配達先2,
+      積日2,
+      配達日2,
+      配達時間2,
+      配達先住所2,
+      配達先TEL2,
+      配達先担当者2,
+      配達先3,
+      積日3,
+      配達日3,
+      配達時間3,
+      配達先住所3,
+      配達先TEL3,
+      配達先担当者3,
+      搬入返却場所,
+      船名,
+      VOYNo,
+      船社,
+      BKNo,
+      BLNo,
+      荷揚港,
+      最終仕向,
+      荷主名,
+      依頼書備考1,
+      下払会社名1,
+      下払料金1,
+      下払スケール費1,
+      下払その他費用1,
+      下払高速費1,
+      下払シャーシ留置費1,
+      下払会社名2,
+      下払料金2,
+      下払スケール費2,
+      下払その他費用2,
+      下払高速費2,
+      下払シャーシ留置費2,
+      下払会社名3,
+      下払料金3,
+      下払スケール費3,
+      下払その他費用3,
+      下払高速費3,
+      下払シャーシ留置費3,
+      下払会社名4,
+      下払料金4,
+      下払スケール費4,
+      下払その他費用4,
+      下払高速費4,
+      下払シャーシ留置費4,
+      下払会社名5,
+      下払料金5,
+      下払スケール費5,
+      下払その他費用5,
+      下払高速費5,
+      下払シャーシ留置費5,
+      下払会社名6,
+      下払料金6,
+      下払スケール費6,
+      下払その他費用6,
+      下払高速費6,
+      下払シャーシ留置費6,
+      依頼書備考欄,
+      部署コード,
+    } = record;
+
+    if (下払会社名1) {
+      const requestsToAdd = {
+        リクエスト番号: `${record.識別コード}-0001`,
+        受注コード: 識別コード,
+        部署コード: 部署コード,
+        下払会社名: 下払会社名1,
+        区分: 区分,
+        依頼日: 依頼日,
+        搬出場所: 取場所,
+        軸数: axles,
+        コンテナNo: コンテナNo,
+        コンテナタイプ: コンテナタイプ,
+        コンテナサイズ: コンテナサイズ,
+        コンテナ種類: コンテナ種類,
+        危険品: 危険品,
+        配達先: 配達先1,
+        積日1: 積日1,
+        配達日1: 配達日1,
+        配達時間1: 配達時間1,
+        配達先住所1: 配達先住所1,
+        配達先TEL1: 配達先TEL1,
+        配達先担当者1: 配達先担当者1,
+        "3軸料金1": record["3軸料金1"],
+        配達先2: 配達先2,
+        積日2: 積日2,
+        配達日2: 配達日2,
+        配達時間2: 配達時間2,
+        配達先住所2: 配達先住所2,
+        配達先TEL2: 配達先TEL2,
+        配達先担当者2: 配達先担当者2,
+        配達先3: 配達先3,
+        積日3: 積日3,
+        配達日3: 配達日3,
+        配達時間3: 配達時間3,
+        配達先住所3: 配達先住所3,
+        配達先TEL3: 配達先TEL3,
+        配達先担当者3: 配達先担当者3,
+        搬入返却場所: 搬入返却場所,
+        船名: 船名,
+        VOYNo: VOYNo,
+        船社: 船社,
+        BKNo: BKNo,
+        BLNo: BLNo,
+        荷揚港: 荷揚港,
+        最終仕向: 最終仕向,
+        荷主名: 荷主名,
+        依頼書備考1: 依頼書備考1,
+        基本料金: 下払料金1,
+        その他費用: 下払その他費用1,
+        スケール費: 下払スケール費1,
+        高速費: 下払高速費1,
+        シャーシ留置費: 下払シャーシ留置費1,
+        備考欄: 依頼書備考欄,
+      };
+      try {
+        await axios.post(
+          `${process.env.REACT_API_BASE_URL}/pdfList`,
+          requestsToAdd,
+        );
+        console.log("Records added successfully:", requestsToAdd);
+        fetchData(); // Refresh data after adding
+      } catch (error) {
+        console.error("Error adding records:", error);
+      }
+    }
+    if (下払会社名2) {
+      const requestsToAdd = {
+        リクエスト番号: `${record.識別コード}-0002`,
+        受注コード: 識別コード,
+        部署コード: 部署コード,
+        下払会社名: 下払会社名2,
+        区分: 区分,
+        依頼日: 依頼日,
+        搬出場所: 取場所,
+        軸数: axles,
+        コンテナNo: コンテナNo,
+        コンテナタイプ: コンテナタイプ,
+        コンテナサイズ: コンテナサイズ,
+        コンテナ種類: コンテナ種類,
+        危険品: 危険品,
+        配達先: 配達先1,
+        積日1: 積日1,
+        配達日1: 配達日1,
+        配達時間1: 配達時間1,
+        配達先住所1: 配達先住所1,
+        配達先TEL1: 配達先TEL1,
+        配達先担当者1: 配達先担当者1,
+        "3軸料金1": record["3軸料金1"],
+        配達先2: 配達先2,
+        積日2: 積日2,
+        配達日2: 配達日2,
+        配達時間2: 配達時間2,
+        配達先住所2: 配達先住所2,
+        配達先TEL2: 配達先TEL2,
+        配達先担当者2: 配達先担当者2,
+        配達先3: 配達先3,
+        積日3: 積日3,
+        配達日3: 配達日3,
+        配達時間3: 配達時間3,
+        配達先住所3: 配達先住所3,
+        配達先TEL3: 配達先TEL3,
+        配達先担当者3: 配達先担当者3,
+        搬入返却場所: 搬入返却場所,
+        船名: 船名,
+        VOYNo: VOYNo,
+        船社: 船社,
+        BKNo: BKNo,
+        BLNo: BLNo,
+        荷揚港: 荷揚港,
+        最終仕向: 最終仕向,
+        荷主名: 荷主名,
+        依頼書備考1: 依頼書備考1,
+        基本料金: 下払料金2,
+        その他費用: 下払その他費用2,
+        スケール費: 下払スケール費2,
+        高速費: 下払高速費2,
+        シャーシ留置費: 下払シャーシ留置費2,
+        備考欄: 依頼書備考欄,
+      };
+      try {
+        await axios.post(
+          `${process.env.REACT_API_BASE_URL}/pdfList`,
+          requestsToAdd,
+        );
+        console.log("Records added successfully:", requestsToAdd);
+        fetchData(); // Refresh data after adding
+      } catch (error) {
+        console.error("Error adding records:", error);
+      }
+    }
+    if (下払会社名3) {
+      requestsToAdd = {
+        リクエスト番号: `${record.識別コード}-0003`,
+        受注コード: 識別コード,
+        部署コード: 部署コード,
+        下払会社名: 下払会社名3,
+        区分: 区分,
+        依頼日: 依頼日,
+        搬出場所: 取場所,
+        軸数: axles,
+        コンテナNo: コンテナNo,
+        コンテナタイプ: コンテナタイプ,
+        コンテナサイズ: コンテナサイズ,
+        コンテナ種類: コンテナ種類,
+        危険品: 危険品,
+        配達先: 配達先1,
+        積日1: 積日1,
+        配達日1: 配達日1,
+        配達時間1: 配達時間1,
+        配達先住所1: 配達先住所1,
+        配達先TEL1: 配達先TEL1,
+        配達先担当者1: 配達先担当者1,
+        "3軸料金1": record["3軸料金1"],
+        配達先2: 配達先2,
+        積日2: 積日2,
+        配達日2: 配達日2,
+        配達時間2: 配達時間2,
+        配達先住所2: 配達先住所2,
+        配達先TEL2: 配達先TEL2,
+        配達先担当者2: 配達先担当者2,
+        配達先3: 配達先3,
+        積日3: 積日3,
+        配達日3: 配達日3,
+        配達時間3: 配達時間3,
+        配達先住所3: 配達先住所3,
+        配達先TEL3: 配達先TEL3,
+        配達先担当者3: 配達先担当者3,
+        搬入返却場所: 搬入返却場所,
+        船名: 船名,
+        VOYNo: VOYNo,
+        船社: 船社,
+        BKNo: BKNo,
+        BLNo: BLNo,
+        荷揚港: 荷揚港,
+        最終仕向: 最終仕向,
+        荷主名: 荷主名,
+        依頼書備考1: 依頼書備考1,
+        基本料金: 下払料金3,
+        その他費用: 下払その他費用3,
+        スケール費: 下払スケール費3,
+        高速費: 下払高速費3,
+        シャーシ留置費: 下払シャーシ留置費3,
+        備考欄: 依頼書備考欄,
+      };
+      try {
+        await axios.post(
+          `${process.env.REACT_API_BASE_URL}/pdfList`,
+          requestsToAdd,
+        );
+        console.log("Records added successfully:", requestsToAdd);
+        fetchData(); // Refresh data after adding
+      } catch (error) {
+        console.error("Error adding records:", error);
+      }
+    }
+    if (下払会社名4) {
+      const requestsToAdd = {
+        リクエスト番号: `${record.識別コード}-0004`,
+        受注コード: 識別コード,
+        部署コード: 部署コード,
+        下払会社名: 下払会社名4,
+        区分: 区分,
+        依頼日: 依頼日,
+        搬出場所: 取場所,
+        軸数: axles,
+        コンテナNo: コンテナNo,
+        コンテナタイプ: コンテナタイプ,
+        コンテナサイズ: コンテナサイズ,
+        コンテナ種類: コンテナ種類,
+        危険品: 危険品,
+        配達先: 配達先1,
+        積日1: 積日1,
+        配達日1: 配達日1,
+        配達時間1: 配達時間1,
+        配達先住所1: 配達先住所1,
+        配達先TEL1: 配達先TEL1,
+        配達先担当者1: 配達先担当者1,
+        "3軸料金1": record["3軸料金1"],
+        配達先2: 配達先2,
+        積日2: 積日2,
+        配達日2: 配達日2,
+        配達時間2: 配達時間2,
+        配達先住所2: 配達先住所2,
+        配達先TEL2: 配達先TEL2,
+        配達先担当者2: 配達先担当者2,
+        配達先3: 配達先3,
+        積日3: 積日3,
+        配達日3: 配達日3,
+        配達時間3: 配達時間3,
+        配達先住所3: 配達先住所3,
+        配達先TEL3: 配達先TEL3,
+        配達先担当者3: 配達先担当者3,
+        搬入返却場所: 搬入返却場所,
+        船名: 船名,
+        VOYNo: VOYNo,
+        船社: 船社,
+        BKNo: BKNo,
+        BLNo: BLNo,
+        荷揚港: 荷揚港,
+        最終仕向: 最終仕向,
+        荷主名: 荷主名,
+        依頼書備考1: 依頼書備考1,
+        基本料金: 下払料金4,
+        その他費用: 下払その他費用4,
+        スケール費: 下払スケール費4,
+        高速費: 下払高速費4,
+        シャーシ留置費: 下払シャーシ留置費4,
+        備考欄: 依頼書備考欄,
+      };
+      try {
+        await axios.post(
+          `${process.env.REACT_API_BASE_URL}/pdfList`,
+          requestsToAdd,
+        );
+        console.log("Records added successfully:", requestsToAdd);
+        fetchData(); // Refresh data after adding
+      } catch (error) {
+        console.error("Error adding records:", error);
+      }
+    }
+    if (下払会社名5) {
+      const requestsToAdd = {
+        リクエスト番号: `${record.識別コード}-0005`,
+        受注コード: 識別コード,
+        部署コード: 部署コード,
+        下払会社名: 下払会社名5,
+        区分: 区分,
+        依頼日: 依頼日,
+        搬出場所: 取場所,
+        軸数: axles,
+        コンテナNo: コンテナNo,
+        コンテナタイプ: コンテナタイプ,
+        コンテナサイズ: コンテナサイズ,
+        コンテナ種類: コンテナ種類,
+        危険品: 危険品,
+        配達先: 配達先1,
+        積日1: 積日1,
+        配達日1: 配達日1,
+        配達時間1: 配達時間1,
+        配達先住所1: 配達先住所1,
+        配達先TEL1: 配達先TEL1,
+        配達先担当者1: 配達先担当者1,
+        "3軸料金1": record["3軸料金1"],
+        配達先2: 配達先2,
+        積日2: 積日2,
+        配達日2: 配達日2,
+        配達時間2: 配達時間2,
+        配達先住所2: 配達先住所2,
+        配達先TEL2: 配達先TEL2,
+        配達先担当者2: 配達先担当者2,
+        配達先3: 配達先3,
+        積日3: 積日3,
+        配達日3: 配達日3,
+        配達時間3: 配達時間3,
+        配達先住所3: 配達先住所3,
+        配達先TEL3: 配達先TEL3,
+        配達先担当者3: 配達先担当者3,
+        搬入返却場所: 搬入返却場所,
+        船名: 船名,
+        VOYNo: VOYNo,
+        船社: 船社,
+        BKNo: BKNo,
+        BLNo: BLNo,
+        荷揚港: 荷揚港,
+        最終仕向: 最終仕向,
+        荷主名: 荷主名,
+        依頼書備考1: 依頼書備考1,
+        基本料金: 下払料金5,
+        その他費用: 下払その他費用5,
+        スケール費: 下払スケール費5,
+        高速費: 下払高速費5,
+        シャーシ留置費: 下払シャーシ留置費5,
+        備考欄: 依頼書備考欄,
+      };
+      try {
+        await axios.post(
+          `${process.env.REACT_API_BASE_URL}/pdfList`,
+          requestsToAdd,
+        );
+        console.log("Records added successfully:", requestsToAdd);
+        fetchData(); // Refresh data after adding
+      } catch (error) {
+        console.error("Error adding records:", error);
+      }
+    }
+    if (下払会社名6) {
+      const requestsToAdd = {
+        リクエスト番号: `${record.識別コード}-0006`,
+        受注コード: 識別コード,
+        部署コード: 部署コード,
+        下払会社名: 下払会社名6,
+        区分: 区分,
+        依頼日: 依頼日,
+        搬出場所: 取場所,
+        軸数: axles,
+        コンテナNo: コンテナNo,
+        コンテナタイプ: コンテナタイプ,
+        コンテナサイズ: コンテナサイズ,
+        コンテナ種類: コンテナ種類,
+        危険品: 危険品,
+        配達先: 配達先1,
+        積日1: 積日1,
+        配達日1: 配達日1,
+        配達時間1: 配達時間1,
+        配達先住所1: 配達先住所1,
+        配達先TEL1: 配達先TEL1,
+        配達先担当者1: 配達先担当者1,
+        "3軸料金1": record["3軸料金1"],
+        配達先2: 配達先2,
+        積日2: 積日2,
+        配達日2: 配達日2,
+        配達時間2: 配達時間2,
+        配達先住所2: 配達先住所2,
+        配達先TEL2: 配達先TEL2,
+        配達先担当者2: 配達先担当者2,
+        配達先3: 配達先3,
+        積日3: 積日3,
+        配達日3: 配達日3,
+        配達時間3: 配達時間3,
+        配達先住所3: 配達先住所3,
+        配達先TEL3: 配達先TEL3,
+        配達先担当者3: 配達先担当者3,
+        搬入返却場所: 搬入返却場所,
+        船名: 船名,
+        VOYNo: VOYNo,
+        船社: 船社,
+        BKNo: BKNo,
+        BLNo: BLNo,
+        荷揚港: 荷揚港,
+        最終仕向: 最終仕向,
+        荷主名: 荷主名,
+        依頼書備考1: 依頼書備考1,
+        基本料金: 下払料金6,
+        その他費用: 下払その他費用6,
+        スケール費: 下払スケール費6,
+        高速費: 下払高速費6,
+        シャーシ留置費: 下払シャーシ留置費6,
+        備考欄: 依頼書備考欄,
+      };
+      try {
+        await axios.post(
+          `${process.env.REACT_API_BASE_URL}/pdfList`,
+          requestsToAdd,
+        );
+        console.log("Records added successfully:", requestsToAdd);
+        fetchData(); // Refresh data after adding
+      } catch (error) {
+        console.error("Error adding records:", error);
+      }
     }
   };
 
@@ -103,7 +586,6 @@ const DBPage = () => {
             if (!record.配車組み) {
               onCheckboxChange(record, "配車組み", e.target.checked);
             }
-            printPdf(record);
           }}
           disabled={record.配車組み} // Disable if checked
         />
@@ -208,10 +690,7 @@ const DBPage = () => {
     { key: "下払料金6", title: "下払料金6", dataIndex: "下払料金6" },
     { key: "下払課税6", title: "下払課税6", dataIndex: "下払課税6" },
     { key: "下払自車6", title: "下払自車6", dataIndex: "下払自車6" },
-    { key: "下払会社名7", title: "下払会社名7", dataIndex: "下払会社名7" },
-    { key: "下払料金7", title: "下払料金7", dataIndex: "下払料金7" },
-    { key: "下払課税7", title: "下払課税7", dataIndex: "下払課税7" },
-    { key: "下払自車7", title: "下払自車7", dataIndex: "下払自車7" },
+
     { key: "空冷", title: "空冷", dataIndex: "空冷" },
   ];
 
