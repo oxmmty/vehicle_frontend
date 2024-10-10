@@ -1,0 +1,28 @@
+.styled-table {
+  width: 100%;
+  margin-top: 50px;
+  border-collapse: collapse;
+}
+
+.styled-table th {
+  border: 1px solid black !important; /* Black borders */
+  background-color: white !important; /* White background */
+  color: black; /* Black text */
+  padding: 8px; /* Padding for cells */
+  text-align: center; /* Align text to the left */
+}
+.styled-table td {
+  border: 1px solid black !important; /* Black borders */
+  background-color: white !important; /* White background */
+  color: black; /* Black text */
+  padding: 8px; /* Padding for cells */
+  text-align: left; /* Align text to the left */
+}
+
+.styled-table th {
+  font-weight: bold; /* Bold text for headers */
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #f2f2f2; /* Optional: light gray background for even rows */
+}

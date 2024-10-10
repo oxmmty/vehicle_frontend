@@ -65,65 +65,66 @@
 
 // EmailForm.js
 
-import React, { useState } from "react";
-import emailjs from "emailjs-com";
+// import React, { useState } from "react";
+// import emailjs from "emailjs-com";
 
 const EmailForm = () => {
-  const [to, setTo] = useState("");
-  const [subject, setSubject] = useState("");
-  const [text, setText] = useState("");
-  const [message, setMessage] = useState("");
+  // const [to, setTo] = useState("");
+  // const [subject, setSubject] = useState("");
+  // const [text, setText] = useState("");
+  // const [message, setMessage] = useState("");
 
-  const sendEmail = (e) => {
-    e.preventDefault();
+  // const sendEmail = (e) => {
+  //   e.preventDefault();
 
-    emailjs
-      .send(
-        "service_nxgvp9j", // Replace with your EmailJS service ID
-        "template_eqpt0lr", // Replace with your EmailJS template ID
-        { to, subject, text },
-        "tEEiWQVbxe9mSqvix", // Replace with your EmailJS user ID
-      )
-      .then(
-        (result) => {
-          setMessage("Email sent successfully");
-        },
-        (error) => {
-          setMessage("Error sending email: " + error.text);
-        },
-      );
+  //   emailjs
+  //     .send(
+  //       "service_nxgvp9j", // Replace with your EmailJS service ID
+  //       "template_eqpt0lr", // Replace with your EmailJS template ID
+  //       { to, subject, text },
+  //       "tEEiWQVbxe9mSqvix", // Replace with your EmailJS user ID
+  //     )
+  //     .then(
+  //       (result) => {
+  //         setMessage("Email sent successfully");
+  //       },
+  //       (error) => {
+  //         setMessage("Error sending email: " + error.text);
+  //       },
+  //     );
 
-    // Clear the form
-    setTo("");
-    setSubject("");
-    setText("");
-  };
+  //   // Clear the form
+  //   setTo("");
+  //   setSubject("");
+  //   setText("");
+  // };
 
   return (
-    <form onSubmit={sendEmail}>
-      <input
-        type="email"
-        placeholder="Recipient Email"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Subject"
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Email Body"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        required
-      />
-      <button type="submit">Send Email</button>
-      {message && <p>{message}</p>}
-    </form>
+    <div>adsf</div>
+    // <form onSubmit={sendEmail}>
+    //   <input
+    //     type="email"
+    //     placeholder="Recipient Email"
+    //     value={to}
+    //     onChange={(e) => setTo(e.target.value)}
+    //     required
+    //   />
+    //   <input
+    //     type="text"
+    //     placeholder="Subject"
+    //     value={subject}
+    //     onChange={(e) => setSubject(e.target.value)}
+    //     required
+    //   />
+    //   <textarea
+    //     placeholder="Email Body"
+    //     value={text}
+    //     onChange={(e) => setText(e.target.value)}
+    //     required
+    //   />
+    //   <button type="submit">Send Email</button>
+    //   {message && <p>{message}</p>}
+    // </form>
   );
 };
 
