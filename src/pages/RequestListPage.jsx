@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Table,
-  Button,
-  Dropdown,
-  Menu,
-  Typography,
-  Select,
-  DatePicker,
-} from "antd";
+import { Table, Button, Typography, Select, DatePicker } from "antd";
 import axios from "axios";
 import moment from "moment";
 import dayjs from "dayjs";
@@ -24,12 +16,13 @@ const RequestListPage = () => {
   const [pdfDate, setPdfDate] = useState("");
   const today = dayjs().format("YYYY-MM-DD");
   const componentRef = useRef();
+
   useEffect(() => {
+    // Fetch order data
     axios.get(`${process.env.REACT_API_BASE_URL}/order`).then((response) => {
       const transformedData = response.data.map((item) => ({
         ...item,
-        配達日1: moment(item.配達日1).format("YYYY-MM"), // Change the format to Date object
-        // Change other fields from null to empty string
+        配達日1: moment(item.配達日1).format("YYYY-MM"), // Format delivery date
         配達時間1: item.配達時間1 || "",
         搬入返却場所: item.搬入返却場所 || "",
         取場所: item.取場所 || "",
@@ -47,6 +40,8 @@ const RequestListPage = () => {
       }));
       setData(transformedData);
     });
+
+    // Fetch company data
     axios
       .get(`${process.env.REACT_API_BASE_URL}/partnercompany`)
       .then((response) => {
@@ -59,37 +54,32 @@ const RequestListPage = () => {
 
   useEffect(() => {
     filterData();
-  }, [selectedCompany, selectedDate]);
+  }, [selectedCompany, selectedDate, data]); // Added 'data' to dependencies
 
   const filterData = () => {
-    if (!selectedCompany && !selectedDate) {
-      // Set table to blank if neither company nor date is selected
-      setFilteredData([]);
-      return;
-    }
-
     let filtered = data;
-    console.log(data);
+
     if (selectedCompany) {
-      filtered = filtered.filter(
-        (item) =>
-          item.下払会社名1 === selectedCompany ||
-          item.下払会社名2 === selectedCompany ||
-          item.下払会社名3 === selectedCompany ||
-          item.下払会社名4 === selectedCompany ||
-          item.下払会社名5 === selectedCompany ||
-          item.下払会社名6 === selectedCompany,
+      filtered = filtered.filter((item) =>
+        [
+          item.下払会社名1,
+          item.下払会社名2,
+          item.下払会社名3,
+          item.下払会社名4,
+          item.下払会社名5,
+          item.下払会社名6,
+        ].includes(selectedCompany),
       );
     }
 
     if (selectedDate) {
-      const formattedDate = moment(selectedDate).format("YYYY/MM");
+      const formattedDate = moment(selectedDate).format("YYYY-MM");
       filtered = filtered.filter(
-        (item) => moment(item.配達日1).format("YYYY/MM") === formattedDate,
+        (item) => moment(item.配達日1).format("YYYY-MM") === formattedDate,
       );
-
       setPdfDate(formattedDate);
     }
+
     setFilteredData(filtered);
   };
 
@@ -185,44 +175,26 @@ const RequestListPage = () => {
   ];
 
   const handlePrint = () => {
-    const printWindow = window.open("aaa", "apple");
+    const printWindow = window.open("", "_blank");
     printWindow.document.write(`
       <html>
         <head>
-          <title></title>
+          <title>配車リスト</title>
           <style>
-            body {
-              margin: 0;
-              padding: 10px;
-              font-family: Arial, sans-serif;
-              background-color: white;
-            }
-            h2 {
-              text-align: center;
-            }
-              p{
-              font-size:10px}
-            table {
-              width: 100%;
-              border-collapse: collapse;
-              text-align: left;
-              font-size: 10px;
-            }
-            th, td {
-              border: 1px solid black;
-              padding: 2px;
-            }
-            th {
-              background-color: #f2f2f2;
-            }
+            body { margin: 0; padding: 10px; font-family: Arial, sans-serif; background-color: white; }
+            h2 { text-align: center; }
+            p { font-size: 10px; }
+            table { width: 100%; border-collapse: collapse; text-align: left; font-size: 10px; }
+            th, td { border: 1px solid black; padding: 2px; }
+            th { background-color: #f2f2f2; }
           </style>
         </head>
         <body>
-        <p>配車リスト</p>
+          <p>配車リスト</p>
           <h2>${selectedCompany}</h2>
-          <div style=" display: flex; justify-content: space-between; ">
-          <div><p>${pdfDate}</p></div>
-          <div><p>翔風運輸株式会社　担当：渡邉</p><p>${today}</p></div>
+          <div style="display: flex; justify-content: space-between;">
+            <div><p>${pdfDate}</p></div>
+            <div><p>翔風運輸株式会社　担当：渡邉</p><p>${today}</p></div>
           </div>
           <table>
             <thead>
@@ -231,24 +203,25 @@ const RequestListPage = () => {
               </tr>
             </thead>
             <tbody>
-               ${filteredData
-                 .map(
-                   (row) => `
-      <tr>
-        ${columns
-          .map(
-            (col) =>
-              `<td>${
-                row[col.dataIndex] !== undefined && row[col.dataIndex] !== null
-                  ? row[col.dataIndex]
-                  : ""
-              }</td>`,
-          )
-          .join("")}
-      </tr>
-    `,
-                 )
-                 .join("")}
+              ${filteredData
+                .map(
+                  (row) => `
+                  <tr>
+                    ${columns
+                      .map(
+                        (col) =>
+                          `<td>${
+                            row[col.dataIndex] !== undefined &&
+                            row[col.dataIndex] !== null
+                              ? row[col.dataIndex]
+                              : ""
+                          }</td>`,
+                      )
+                      .join("")}
+                  </tr>
+                `,
+                )
+                .join("")}
             </tbody>
           </table>
         </body>
@@ -281,7 +254,7 @@ const RequestListPage = () => {
             allowClear
           />
         </div>
-        <div className=" text-center">
+        <div className="text-center">
           <Title level={5}>翔風運輸株式会社　担当：渡邉</Title>
           <Text>{today}</Text>
         </div>

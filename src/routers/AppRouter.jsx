@@ -44,6 +44,7 @@ import StorageContainerDBPage from "src/pages/StorageContainerDBPage";
 import DBSPage from "src/pages/DBSPage";
 import TaskSchedulePage from "src/pages/TaskSchedulePage";
 import RequestListPage from "src/pages/RequestListPage";
+import RequestPdfListPage from "src/pages/RequestPdfListPage";
 import NewOrderFormPage from "src/pages/NewOrderFormPage";
 import DispatchSpecificationPage from "src/pages/DispatchSpecificationPage";
 import DBPage from "src/pages/DBPage";
@@ -67,14 +68,12 @@ const AppRouter = () => {
               return { tokenData };
             }}>
             <Route path="/" loader={() => redirect("/dashboard")} />
-
             <Route
               path="/dashboard"
               loader={() => redirect("/dashboard/overview")}
             />
             <Route path="/dashboard/overview" element={<DashboardPage />} />
             <Route path="/dashboard/quick" element={<DashboardPage />} />
-
             <Route
               path="/orders_invoices"
               loader={() => redirect("/orders_invoices/newOrderForm")}
@@ -95,6 +94,10 @@ const AppRouter = () => {
               element={<InvoiceMSPage />}
             />
             <Route
+              path="/orders_invoices/requestPdfList"
+              element={<RequestPdfListPage />}
+            />
+            <Route
               path="/orders_invoices/requestList"
               element={<RequestListPage />}
             />
@@ -107,7 +110,6 @@ const AppRouter = () => {
               element={<InvoiceReceiptPage />}
             />
             <Route path="/orders_invoices/mail" element={<MailPage />} />
-
             <Route
               path="/containers"
               loader={() => redirect("/containers/storageContainer")}
@@ -120,13 +122,16 @@ const AppRouter = () => {
               path="/containers/inventoryContainer"
               element={<InventoryContainerPage />}
             />
-
             <Route
               path="/calendar_schedules"
               loader={() => redirect("/calendar_schedules/calendar")}
             />
             <Route
               path="/calendar_schedules/calendar"
+              element={<CalendarPage />}
+            />
+            <Route
+              path="/orders_invoices/calendar"
               element={<CalendarPage />}
             />
             <Route
@@ -137,7 +142,6 @@ const AppRouter = () => {
               path="/calendar_schedules/taskSchedule"
               element={<TaskSchedulePage />}
             />
-
             <Route
               path="/masterDatas"
               loader={() => redirect("/masterDatas/customer")}
@@ -204,7 +208,6 @@ const AppRouter = () => {
               path="/analysis_reports/transportCompanyRequest"
               element={<TransportCompanyRequestPage />}
             />
-
             <Route
               path="/document_notes"
               loader={() => redirect("/document_notes/releaseNotes")}
@@ -214,7 +217,6 @@ const AppRouter = () => {
               element={<ReleaseNotesPage />}
             />
             <Route path="/document_notes/data" element={<DataPage />} />
-
             <Route
               path="/settings_administration"
               loader={() =>

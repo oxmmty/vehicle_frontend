@@ -6,9 +6,9 @@ import axios from "axios";
 const { Title } = Typography;
 
 const OrderDBPage = () => {
-  const [date, setDate] = useState(dayjs().format("YYYY-MM")); // Default date is the current month
+  const [date, setDate] = useState(dayjs().format("YYYY-MM"));
   const [datas, setDatas] = useState([]);
-  const [filteredDatas, setFilteredDatas] = useState([]); // To store the filtered data
+  const [filteredDatas, setFilteredDatas] = useState([]);
 
   const columns = [
     {
@@ -607,24 +607,22 @@ const OrderDBPage = () => {
     const fetchData = async () => {
       const res = await axios.get("/orderlist");
       setDatas(res.data);
-      filterData(dayjs().format("YYYY-MM"), res.data); // Filter data initially based on the current month
+      filterData(dayjs().format("YYYY-MM"), res.data);
     };
     fetchData();
   }, []);
 
-  // Function to filter data based on the selected date
   const filterData = (selectedDate, dataToFilter) => {
     const filtered = dataToFilter.filter((item) => {
-      const invoiceDate = dayjs(item.請求日).format("YYYY-MM"); // Assuming '請求日' is a date field
+      const invoiceDate = dayjs(item.請求日).format("YYYY-MM"); // Assuming '
       return invoiceDate === selectedDate;
     });
     setFilteredDatas(filtered);
   };
 
-  // Handle date change in the DatePicker
   const handleDateChange = (date, dateString) => {
-    setDate(dateString); // Set the selected date in state
-    filterData(dateString, datas); // Filter the data based on the selected date
+    setDate(dateString);
+    filterData(dateString, datas);
   };
 
   return (
@@ -634,7 +632,7 @@ const OrderDBPage = () => {
           <DatePicker
             picker="month"
             value={dayjs(date, "YYYY-MM")}
-            onChange={handleDateChange} // Capture date changes
+            onChange={handleDateChange}
           />
         </Typography>
       </div>

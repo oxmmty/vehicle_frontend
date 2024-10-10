@@ -107,6 +107,12 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
     }
   };
 
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
+
   return (
     <div>
       <Form.Item label={"会社名"} required>
@@ -384,6 +390,12 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
       setFilteredCompanyData([...companyData, inputValueCompany]);
     }
   };
+
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
@@ -660,6 +672,12 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
       setFilteredCompanyData([...companyData, inputValueCompany]);
     }
   };
+
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
@@ -936,6 +954,11 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
       setFilteredCompanyData([...companyData, inputValueCompany]);
     }
   };
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
@@ -1212,6 +1235,11 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
       setFilteredCompanyData([...companyData, inputValueCompany]);
     }
   };
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
@@ -1488,6 +1516,11 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
       setFilteredCompanyData([...companyData, inputValueCompany]);
     }
   };
+  useEffect(() => {
+    if (!inputValueCompany) {
+      setSelectedValueCompany("");
+    }
+  }, [inputValueCompany]);
   return (
     <div>
       <Form.Item label={"会社名"} required>

@@ -33,6 +33,14 @@ const orders_invoices = [
     key: "orderDB",
     label: "受注DB",
   },
+  {
+    key: "calendar",
+    label: "カレンダー",
+  },
+  {
+    key: "requestPdfList",
+    label: "要求書作成リスト",
+  },
   // {
   //   key: "newRequestForm",
   //   label: "依頼書",
@@ -74,20 +82,20 @@ const containers = [
   },
 ];
 
-const calendar_schedules = [
-  {
-    key: "calendar",
-    label: "カレンダー",
-  },
-  // {
-  //   key: "dispatchSpecification",
-  //   label: "配車表仕様書",
-  // },
-  // {
-  //   key: "taskSchedule",
-  //   label: "Task Schedule",
-  // },
-];
+// const calendar_schedules = [
+//   {
+//     key: "calendar",
+//     label: "カレンダー",
+//   },
+//   // {
+//   //   key: "dispatchSpecification",
+//   //   label: "配車表仕様書",
+//   // },
+//   // {
+//   //   key: "taskSchedule",
+//   //   label: "Task Schedule",
+//   // },
+// ];
 
 const masterDatas = [
   {
@@ -181,7 +189,7 @@ const items = {
   dashboard,
   orders_invoices,
   containers,
-  calendar_schedules,
+  // calendar_schedules,
   masterDatas,
   analysis_reports,
   document_notes,

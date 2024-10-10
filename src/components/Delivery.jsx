@@ -129,14 +129,20 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
   // Delivery Datas
   const handleSelectDelivery1 = (value, key) => {
     setSelectedValueDelivery1(value);
-    let delivery = deliveryData.filter((item) => {
-      if (item._id === key.key) {
-        return item._id;
-      }
-    });
-    setAddress1(delivery[0].住所);
-    setTEL1(delivery[0].TEL);
-    setCharge1(delivery[0].担当者);
+    if (selectedValueDelivery1 == "") {
+      setAddress1("");
+      setTEL1("");
+      setCharge1("");
+    } else {
+      let delivery = deliveryData.filter((item) => {
+        if (item._id === key.key) {
+          return item._id;
+        }
+      });
+      setAddress1(delivery[0].住所);
+      setTEL1(delivery[0].TEL);
+      setCharge1(delivery[0].担当者);
+    }
   };
   const handleChangeDelivery1 = (value) => {
     setInputValueDelivery1(value);
@@ -158,6 +164,15 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
       setFilteredDeliveryData1([...deliveryData, inputValueDelivery1]); // Add to filtered list
     }
   };
+
+  useEffect(() => {
+    if (!inputValueDelivery1) {
+      setSelectedValueDelivery1("");
+      setAddress1("");
+      setTEL1("");
+      setCharge1("");
+    }
+  }, [inputValueDelivery1]);
 
   return (
     <div>
@@ -477,14 +492,20 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
   // Delivery Datas
   const handleSelectDelivery2 = (value, key) => {
     setSelectedValueDelivery2(value);
-    let delivery = deliveryData.filter((item) => {
-      if (item._id === key.key) {
-        return item._id;
-      }
-    });
-    setAddress2(delivery[0].住所);
-    setTEL2(delivery[0].TEL);
-    setCharge2(delivery[0].担当者);
+    if (selectedValueDelivery2 == "") {
+      setAddress2("");
+      setTEL2("");
+      setCharge2("");
+    } else {
+      let delivery = deliveryData.filter((item) => {
+        if (item._id === key.key) {
+          return item._id;
+        }
+      });
+      setAddress2(delivery[0].住所);
+      setTEL2(delivery[0].TEL);
+      setCharge2(delivery[0].担当者);
+    }
   };
   const handleChangeDelivery2 = (value) => {
     setInputValueDelivery2(value);
@@ -506,6 +527,15 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
       setFilteredDeliveryData2([...deliveryData, inputValueDelivery2]); // Add to filtered list
     }
   };
+
+  useEffect(() => {
+    if (!inputValueDelivery2) {
+      setSelectedValueDelivery2("");
+      setAddress2("");
+      setTEL2("");
+      setCharge2("");
+    }
+  }, [inputValueDelivery2]);
   return (
     <div>
       <Form.Item label={"配達先"} required>
@@ -824,14 +854,20 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
   // Delivery Datas
   const handleSelectDelivery3 = (value, key) => {
     setSelectedValueDelivery3(value);
-    let delivery = deliveryData.filter((item) => {
-      if (item._id === key.key) {
-        return item._id;
-      }
-    });
-    setAddress3(delivery[0].住所);
-    setTEL3(delivery[0].TEL);
-    setCharge3(delivery[0].担当者);
+    if (selectedValueDelivery3 == "") {
+      setAddress3("");
+      setTEL3("");
+      setCharge3("");
+    } else {
+      let delivery = deliveryData.filter((item) => {
+        if (item._id === key.key) {
+          return item._id;
+        }
+      });
+      setAddress3(delivery[0].住所);
+      setTEL3(delivery[0].TEL);
+      setCharge3(delivery[0].担当者);
+    }
   };
   const handleChangeDelivery3 = (value) => {
     setInputValueDelivery3(value);
@@ -853,6 +889,15 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
       setFilteredDeliveryData3([...deliveryData, inputValueDelivery3]); // Add to filtered list
     }
   };
+
+  useEffect(() => {
+    if (!inputValueDelivery3) {
+      setSelectedValueDelivery3("");
+      setAddress3("");
+      setTEL3("");
+      setCharge3("");
+    }
+  }, [inputValueDelivery3]);
   return (
     <div>
       <Form.Item label={"配達先"} required>
