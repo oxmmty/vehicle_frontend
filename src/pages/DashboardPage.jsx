@@ -523,7 +523,7 @@ const Dashboardpage = () => {
           </div>
         </div>
         <div>
-          <div className=" w-full h-full border overflow-hidden border-gray-300 pl-5 pr-5 pt-2">
+          <div className=" w-full h-[400px] border overflow-scroll border-gray-300 pl-5 pr-5 pt-2">
             <div className="pb-2">
               <DatePicker
                 picker="month"
@@ -534,7 +534,7 @@ const Dashboardpage = () => {
             </div>
             <div className="">
               <Table
-                dataSource={combined}
+                dataSource={combineds}
                 columns={columns}
                 pagination={true}
                 bordered
