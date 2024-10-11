@@ -1,56 +1,125 @@
-import React, { useContext } from 'react';
-import { DatePicker, Table } from 'antd';
-import { Line, Column } from '@ant-design/plots';
-import { ThemeContext } from 'src/components/Theme';
+import React, { useContext, useState, useEffect } from "react";
+import { DatePicker, Table } from "antd";
+import axios from "axios";
+import { Line, Column } from "@ant-design/plots";
+import { ThemeContext } from "src/components/Theme";
+import dayjs from "dayjs";
 
 const MonthlyCustomerDBGraphPage = () => {
+  const [order, setOrder] = useState([]);
+  const [customer, setCustomer] = useState([]);
+  const [company, setCompany] = useState([]);
+  const [pdfList, setPdfList] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs().startOf("month")); // Set default to this year and this month
   const { theme } = useContext(ThemeContext);
-  const dataSource = [
-    { key: '1', name: 'ユウキトランス', '2022/09': 30000, '2023/09': 50000, '2022/10': 40000, '2023/10': 60000 },
-    { key: '2', name: '南本牧日新', '2022/09': 45000, '2023/09': 50000, '2022/10': 45000, '2023/10': 60000 },
-    { key: '3', name: '有限会社鴨原商事', '2022/09': 0, '2023/09': 30000, '2022/10': 30000, '2023/10': 40000 },
-    { key: '4', name: '東洋境運株式会社', '2022/09': 100000, '2023/09': 110000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '5', name: '鈴与カーゴネット株式会社', '2022/09': 100000, '2023/09': 120000, '2022/10': 100000, '2023/10': 120000 },
-    { key: '6', name: '鈴与株式会社', '2022/09': 10000, '2023/09': 20000, '2022/10': 10000, '2023/10': 20000 },
-  ];
 
-  const columns = [
-    { title: '顧客名', dataIndex: 'name', key: 'name' },
-    { title: '2022/09', dataIndex: '2022/09', key: '2022/09' },
-    { title: '2023/09', dataIndex: '2023/09', key: '2023/09' },
-    { title: '2022/10', dataIndex: '2022/10', key: '2022/10' },
-    { title: '2023/10', dataIndex: '2023/10', key: '2023/10' },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [customers, companies, orders, pdfLists] = await Promise.all([
+          axios.get(process.env.REACT_API_BASE_URL + `/customer`),
+          axios.get(process.env.REACT_API_BASE_URL + `/partnercompany`),
+          axios.get(process.env.REACT_API_BASE_URL + `/order`),
+          axios.get(process.env.REACT_API_BASE_URL + `/pdfList`),
+        ]);
+        setOrder(orders.data);
+        setCustomer(customers.data);
+        setCompany(companies.data);
+        setPdfList(pdfLists.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const lineData = [];
-  dataSource.map((item, index) => {
-    let temp = {x: item.name, y: item['2022/09'], category: '2022/09'};
-    lineData.push(temp);
-    temp = {x: item.name, y: item['2022/10'], category: '2022/10'};
-    lineData.push(temp);
-    temp = {x: item.name, y: item['2023/09'], category: '2023/09'};
-    lineData.push(temp);
-    temp = {x: item.name, y: item['2023/10'], category: '2023/10'};
-    lineData.push(temp);
+  const customers = customer.map((item) => item.顧客名称);
+
+  const calculatePrices = (startDate, endDate) => {
+    return customers.map((customerItem) => {
+      const matchedPdfItem = order.find((orderItem) => {
+        const orderDate = dayjs(orderItem.createdAt);
+        return (
+          orderItem.顧客名 === customerItem &&
+          orderDate.isAfter(startDate) &&
+          orderDate.isBefore(endDate)
+        );
+      });
+
+      return {
+        Price: matchedPdfItem
+          ? Number(
+              matchedPdfItem.基本料金1 +
+                matchedPdfItem.基本料金2 +
+                matchedPdfItem.基本料金3,
+            )
+          : 0,
+      };
+    });
+  };
+
+  // Calculate based on selected date
+  const startOfMonth = selectedDate.startOf("month");
+  const endOfMonth = selectedDate.endOf("month");
+  const lastYearStart = startOfMonth.subtract(1, "year");
+  const lastYearEnd = endOfMonth.subtract(1, "year");
+  const lastMonthStart = startOfMonth.subtract(1, "month");
+  const lastMonthEnd = endOfMonth.subtract(1, "month");
+
+  const lastMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd);
+  const lastYearPrice = calculatePrices(lastYearStart, lastYearEnd);
+  const thisYearPrice = calculatePrices(startOfMonth, endOfMonth);
+  const thisMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd); // Assuming this for demonstration
+
+  const combined = customers.map((customer, index) => {
+    return {
+      customer: customer,
+      lastMonthPrice: lastMonthPrice[index].Price,
+      lastYearPrice: lastYearPrice[index].Price,
+      thisYearPrice: thisYearPrice[index].Price,
+      thisMonthPrice: thisMonthPrice[index].Price,
+    };
   });
 
-  const totals = dataSource.reduce((acc, item) => {
-    acc['2022/09'] += item['2022/09'];
-    acc['2023/09'] += item['2023/09'];
-    acc['2022/10'] += item['2022/10'];
-    acc['2023/10'] += item['2023/10'];
-    return acc;
-  }, { '2022/09': 0, '2023/09': 0, '2022/10': 0, '2023/10': 0 });
+  const columns = [
+    { title: "顧客名", dataIndex: "customer", key: "customer" },
+    { title: "先月", dataIndex: "lastMonthPrice", key: "lastMonthPrice" },
+    { title: "昨年", dataIndex: "lastYearPrice", key: "lastYearPrice" },
+    { title: "今月", dataIndex: "thisMonthPrice", key: "thisMonthPrice" },
+    { title: "今年", dataIndex: "thisYearPrice", key: "thisYearPrice" },
+  ];
 
-  dataSource.push({key: '7', name: '合計', '2022/09': totals['2022/09'], "2023/09": totals['2023/09'], "2022/10": totals['2022/10'], "2023/10": totals['2023/10']});
+  const lineData = combined
+    .map((item) => ({
+      x: item.customer,
+      y: item.lastMonthPrice,
+      category: "先月",
+    }))
+    .concat(
+      combined.map((item) => ({
+        x: item.customer,
+        y: item.lastYearPrice,
+        category: "昨年",
+      })),
+      combined.map((item) => ({
+        x: item.customer,
+        y: item.thisYearPrice,
+        category: "今年",
+      })),
+      combined.map((item) => ({
+        x: item.customer,
+        y: item.thisMonthPrice,
+        category: "今月",
+      })),
+    );
 
   const config = {
-    theme: theme === 'light' ? 'academy' : 'classicDark',
+    theme: theme === "light" ? "academy" : "classicDark",
     data: lineData,
-    xField: 'x',
-    yField: 'y',
+    xField: "x",
+    yField: "y",
     point: {
-      shapeField: 'square',
+      shapeField: "square",
       sizeField: 4,
     },
     interaction: {
@@ -58,58 +127,82 @@ const MonthlyCustomerDBGraphPage = () => {
         marker: false,
       },
     },
-    colorField: 'category',
+    colorField: "category",
     style: {
       lineWidth: 2,
     },
   };
 
   const barData = [
-    {type: `2022/09\r\n${dataSource[6]['2022/09']}`, value: dataSource[6]['2022/09']},
-    {type: `2023/09\r\n${dataSource[6]['2023/09']}`, value: dataSource[6]['2023/09']},
-    {type: `2022/10\r\n${dataSource[6]['2022/10']}`, value: dataSource[6]['2022/10']},
-    {type: `2023/10\r\n${dataSource[6]['2023/10']}`, value: dataSource[6]['2023/10']}
-  ]
+    {
+      type: "先月",
+      value: combined.reduce((sum, item) => sum + item.lastMonthPrice, 0),
+    },
+    {
+      type: "昨年",
+      value: combined.reduce((sum, item) => sum + item.lastYearPrice, 0),
+    },
+    {
+      type: "今月",
+      value: combined.reduce((sum, item) => sum + item.thisMonthPrice, 0),
+    },
+    {
+      type: "今年",
+      value: combined.reduce((sum, item) => sum + item.thisYearPrice, 0),
+    },
+  ];
+
   const barConfig = {
-    theme: theme === 'light' ? 'academy' : 'classicDark',
+    theme: theme === "light" ? "academy" : "classicDark",
     data: barData,
-    xField: 'type',
-    yField: 'value',
+    xField: "type",
+    yField: "value",
     style: {
-      fill: ({ type }) => {
-        if (type === '10-30分' || type === '30+分') {
-          return '#22CBCC';
-        }
-        return '#2989FF';
-      },
+      fill: "#2989FF",
     },
     label: {
       text: (originData) => {
         const val = parseFloat(originData.value);
-        if (val < 0.05) {
-          return (val * 100).toFixed(1) + '%';
-        }
-        return '';
+        return val < 0.05 ? (val * 100).toFixed(1) + "%" : "";
       },
       offset: 10,
     },
     legend: false,
   };
+
+  // Function to handle date change
+  const handleDateChange = (date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  };
+
   return (
     <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
       <div className="flex justify-end w-full pb-2">
-        <DatePicker picker="month" className='grow max-w-96' />
+        <DatePicker
+          picker="month"
+          className="grow max-w-96"
+          value={selectedDate} // Set the value of the DatePicker
+          onChange={handleDateChange} // Handle date change
+        />
       </div>
       <div className="mb-4">
-        <Table dataSource={dataSource} columns={columns} pagination={false} bordered scroll={{x: 'max-content'}} />
+        <Table
+          dataSource={combined}
+          columns={columns}
+          pagination={false}
+          bordered
+          scroll={{ x: "max-content" }}
+        />
       </div>
       <div className="flex flex-wrap flex-row items-center gap-5 w-full pt-5">
-        <div className='flex-1 min-w-[250px] text-center'>
+        <div className="flex-1 min-w-[250px] text-center">
           <h2>月次比較</h2>
           <Line {...config} />
         </div>
-        <div className='flex-1 min-w-[250px] text-center'>
+        <div className="flex-1 min-w-[250px] text-center">
           <h2>月次合計</h2>
           <Column {...barConfig} />
         </div>
