@@ -1,14 +1,27 @@
-import { Button, DatePicker, Form, Select, Table } from "antd";
+import { Button, DatePicker, Form, Select, Table, Checkbox } from "antd";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Assuming react-router-dom is used for navigation
 import axios from "axios";
 import dayjs from "dayjs";
 
 const BillingListPage = () => {
   const [datas, setDatas] = useState([]);
-  const [filteredData, setFilteredData] = useState([]); // For storing filtered data
-  const [selectedMonth, setSelectedMonth] = useState(dayjs()); // State to store the selected month
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
+  const [selectedRows, setSelectedRows] = useState([]); // State for storing selected rows
+  const navigate = useNavigate(); // Navigation hook
 
   const columns = [
+    {
+      title: "選択",
+      key: "select",
+      render: (_, record) => (
+        <Checkbox
+          checked={selectedRows.includes(record.識別コード)}
+          onChange={(e) => handleRowSelection(e.target.checked, record)}
+        />
+      ),
+    },
     {
       title: "受注コード",
       dataIndex: "識別コード",
@@ -85,7 +98,7 @@ const BillingListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/order");
-      console.log("Fetched Data:", res.data); // Log the fetched data
+      console.log("Fetched Data:", res.data);
       setDatas(res.data);
       filterDataByMonth(dayjs(), res.data); // Initialize with current month data
     };
@@ -105,7 +118,27 @@ const BillingListPage = () => {
     setFilteredData(filtered);
   };
 
+  const handleRowSelection = (isSelected, record) => {
+    if (isSelected) {
+      setSelectedRows([...selectedRows, record.識別コード]);
+    } else {
+      setSelectedRows(selectedRows.filter((id) => id !== record.識別コード));
+    }
+  };
+
+  const handleCreateButton = () => {
+    console.log("Selected Rows' 識別コード:", selectedRows);
+    if (selectedRows.length > 0) {
+      navigate("/orders_invoices/invoice", {
+        state: { data: selectedRows },
+      });
+    } else {
+      alert("Please select at least one row.");
+    }
+  };
+
   const status = ["すべて", "未請求", "請求済"];
+
   return (
     <div className="flex flex-col items-center w-full">
       <Form layout="vertical">
@@ -119,18 +152,14 @@ const BillingListPage = () => {
           </Form.Item>
           <Form.Item label={"請求状況"} className="grow">
             <Select defaultValue={"すべて"} style={{ width: 100 }}>
-              {status.length > 0 ? (
-                status.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : (
-                <Option disabled>Loading...</Option>
-              )}
+              {status.map((data) => (
+                <Select.Option key={data} value={data}>
+                  {data}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
-          <Button type="primary" className="grow">
+          <Button type="primary" className="grow" onClick={handleCreateButton}>
             作成
           </Button>
         </div>
@@ -140,6 +169,7 @@ const BillingListPage = () => {
         dataSource={filteredData}
         scroll={{ x: "max-content" }}
         className="w-full"
+        rowKey="識別コード"
       />
     </div>
   );

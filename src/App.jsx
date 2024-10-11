@@ -57,14 +57,14 @@ const orders_invoices = [
     key: "billingList",
     label: "請求一覧",
   },
-  {
-    key: "invoice",
-    label: "請求書",
-  },
-  {
-    key: "invoice_Ms",
-    label: "請求書_エムズ",
-  },
+  // {
+  //   key: "invoice",
+  //   label: "請求書",
+  // },
+  // {
+  //   key: "invoice_Ms",
+  //   label: "請求書_エムズ",
+  // },
   {
     key: "invoice_receipt",
     label: "送り状・受領書",
