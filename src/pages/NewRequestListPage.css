@@ -1,0 +1,41 @@
+.w-full {
+  background-color: white;
+  color: black;
+  padding: 20px;
+}
+
+.ant-select,
+.ant-picker {
+  background-color: white !important;
+  color: black !important;
+}
+
+.ant-table {
+  background-color: white !important;
+  color: black !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: white !important;
+  color: black !important;
+}
+
+.ant-table-tbody > tr > td,
+.ant-table-cell {
+  background-color: white !important;
+  color: black !important;
+}
+.ant-table-tbody {
+  background-color: white !important;
+  color: black !important;
+}
+
+.text-black {
+  color: black !important;
+}
+
+.ant-select-selector,
+.ant-select-selection-search-input {
+  background-color: white !important;
+  color: black !important;
+}

@@ -16,12 +16,13 @@ const RequestPdfListPage = () => {
   const columns = [
     {
       title: "選択",
-      dataIndex: "selection",
+      dataIndex: "選択",
       render: (_, record) => (
         <input
           type="checkbox"
           checked={selectedRowKeys.includes(record.リクエスト番号)}
           onChange={() => handleCheckboxChange(record.リクエスト番号)}
+          disabled={record.選択} // Disable if record.選択 is true
         />
       ),
       fixed: "left",
@@ -320,10 +321,8 @@ const RequestPdfListPage = () => {
 
   const handleCheckboxChange = (リクエスト番号) => {
     console.log("Checkbox changed for:", リクエスト番号); // Log which checkbox was changed
-    setSelectedRowKeys((prevKeys) =>
-      prevKeys.includes(リクエスト番号)
-        ? prevKeys.filter((key) => key !== リクエスト番号)
-        : [...prevKeys, リクエスト番号],
+    setSelectedRowKeys(
+      (prevKeys) => (prevKeys.includes(リクエスト番号) ? [] : [リクエスト番号]), // Only keep the current selected key, uncheck others
     );
   };
 

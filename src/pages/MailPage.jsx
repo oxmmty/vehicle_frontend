@@ -1,131 +1,254 @@
-// import React from 'react';
-// import { Table } from 'antd';
-// import Mail from 'src/components/Mail';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import dayjs from "dayjs";
+import { Table, Input, DatePicker, Select, Button } from "antd";
+const { TextArea } = Input;
+const { Option } = Select;
 
-// const MailPage = () => {
-//   const fileColumns = [
-//     {
-//       title: 'ファイル名',
-//       dataIndex: 'fileName',
-//       key: 'fileName',
-//     },
-//     {
-//       title: '協力会社',
-//       dataIndex: 'cooperationCompany',
-//       key: 'cooperationCompany',
-//     },
-//     {
-//       title: '配達先',
-//       dataIndex: 'deliveryDestination',
-//       key: 'deliveryDestination',
-//     },
-//     {
-//       title: '配達日',
-//       dataIndex: 'deliveryDate',
-//       key: 'deliveryDate',
-//     },
-//     {
-//       title: '配信日',
-//       dataIndex: 'transmissionDate',
-//       key: 'transmissionDate',
-//     },
-//   ];
+const MailPage = () => {
+  const [data, setData] = useState([]);
+  const [recipient, setRecipient] = useState("");
+  const [subject, setSubject] = useState("輸送依頼書の送信");
+  const [body, setBody] = useState(
+    "いつもお世話になっております。輸送リストと輸送依頼書をお送りいたします。\nよろしくお願いいたします。",
+  );
+  const [filterDate, setFilterDate] = useState(null);
+  const [filterCompany, setFilterCompany] = useState("");
+  const [selectedRowKey, setSelectedRowKey] = useState(null);
+  // Fetch data from backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/pdfList");
+        const responseData = response.data.filter((item) => item.選択 === true);
+        console.log(responseData);
+        setData(responseData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-//   const fileData = [
-//     {
-//       key: '1',
-//       fileName: 'エムズ物流株式会社2401030100 株式会社アルプス物流 HA240419-0001.pdf',
-//       cooperationCompany: 'エムズ物流株式会社',
-//       deliveryDestination: '株式会社アルプス物流',
-//       deliveryDate: '1/3',
-//       transmissionDate: '4/25',
-//     },
-//   ];
+    fetchData();
+  }, []);
 
-//   const emailContent = {
-//     start: 'いつもお世話になっております。<br /><br />輸送リストと輸送依頼書をお送りいたします。',
-//     end: 'よろしくお願いいたします。',
-//   };
+  // Fetch recipient email based on selected company
+  const fetchRecipientEmail = async (companyName) => {
+    console.log(companyName);
+    try {
+      const response = await axios.get("/partnerCompany/filter", {
+        params: {
+          companyName,
+        },
+      });
+      // Assume the response contains the email address
+      setRecipient(response.data.アドレス); // Adjust based on your actual API response structure
+    } catch (error) {
+      console.error("Error fetching recipient email:", error);
+    }
+  };
 
-//   return (
-//     <div className="flex flex-col gap-2">
-//       <Table
-//         columns={fileColumns}
-//         dataSource={fileData}
-//         pagination={false}
-//         bordered
-//         scroll={{ x: 'max-content' }}
-//       />
-//       <Mail data={emailContent} className='w-full' />
-//     </div>
-//   );
-// };
+  // Filter data based on date and company
+  const filteredData = data.filter((item) => {
+    const matchesDate = filterDate
+      ? dayjs(item.updatedAt).format("YYYY-MM-DD") ===
+        filterDate.format("YYYY-MM-DD")
+      : true;
+    const matchesCompany = filterCompany
+      ? item.下払会社名.includes(filterCompany)
+      : true;
+    return matchesDate && matchesCompany;
+  });
 
-// export default MailPage;
+  const handleSendEmail = async () => {
+    if (!recipient) {
+      alert("Please enter the recipient's email address.");
+      return;
+    }
 
-// EmailForm.js
+    if (selectedRowKey === null) {
+      alert("Please select a row before sending an email.");
+      return;
+    }
 
-// import React, { useState } from "react";
-// import emailjs from "emailjs-com";
+    const selectedRow = filteredData.find(
+      (item) => item.リクエスト番号 === selectedRowKey,
+    );
 
-const EmailForm = () => {
-  // const [to, setTo] = useState("");
-  // const [subject, setSubject] = useState("");
-  // const [text, setText] = useState("");
-  // const [message, setMessage] = useState("");
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
 
-  // const sendEmail = (e) => {
-  //   e.preventDefault();
+    const mailtoLink = `mailto:${recipient}?subject=${encodedSubject}&body=${encodedBody}`;
 
-  //   emailjs
-  //     .send(
-  //       "service_nxgvp9j", // Replace with your EmailJS service ID
-  //       "template_eqpt0lr", // Replace with your EmailJS template ID
-  //       { to, subject, text },
-  //       "tEEiWQVbxe9mSqvix", // Replace with your EmailJS user ID
-  //     )
-  //     .then(
-  //       (result) => {
-  //         setMessage("Email sent successfully");
-  //       },
-  //       (error) => {
-  //         setMessage("Error sending email: " + error.text);
-  //       },
-  //     );
+    console.log(mailtoLink); // Debug: check the constructed mailto link
 
-  //   // Clear the form
-  //   setTo("");
-  //   setSubject("");
-  //   setText("");
-  // };
+    // Open the email client
+    window.location.href = mailtoLink;
+
+    // Update the delivery date after opening the email client
+    const updatedDeliveryDate = dayjs().format("YYYY-MM-DD HH:mm:ss"); // Set the current date and time
+
+    try {
+      await axios.put(`/order`, {
+        selectedRowKey: selectedRowKey,
+        mail作成日: updatedDeliveryDate,
+      });
+
+      // Optionally, update the state to reflect the change in the frontend
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.リクエスト番号 === selectedRow.リクエスト番号
+            ? { ...item, 配信日: updatedDeliveryDate }
+            : item,
+        ),
+      );
+
+      console.log("Delivery date updated successfully.");
+    } catch (error) {
+      console.error("Error updating delivery date:", error);
+    }
+  };
+
+  const handleRowSelect = (record) => {
+    setSelectedRowKey(record.リクエスト番号);
+    fetchRecipientEmail(record.下払会社名); // Fetch the email when a row is selected
+  };
+
+  const columns = [
+    {
+      title: "選択",
+      render: (_, record) => (
+        <input
+          type="radio"
+          checked={selectedRowKey === record.リクエスト番号}
+          onChange={() => handleRowSelect(record)} // Update selection handling
+        />
+      ),
+      fixed: "left",
+    },
+    {
+      title: "ファイル名",
+      dataIndex: "fileName",
+      key: "fileName",
+      render: (text, record) => {
+        return `${record.下払会社名} ${dayjs(record.配達日1).format(
+          "YYMMDD",
+        )} ${dayjs(record.配達時間1).format("HHmm")} ${record.配達先} ${
+          record.受注コード
+        }.pdf`;
+      },
+    },
+    {
+      title: "協力会社",
+      dataIndex: "下払会社名",
+      key: "下払会社名",
+    },
+    {
+      title: "配達先",
+      dataIndex: "配達先",
+      key: "配達先",
+    },
+    {
+      title: "配達日",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (text) => {
+        return dayjs(text).format("YYYY-MM-DD");
+      },
+    },
+    {
+      title: "配信日",
+      dataIndex: "配信日",
+      key: "配信日",
+      render: (text) => {
+        return dayjs(text).format("YYYY-MM-DD");
+      },
+    },
+  ];
 
   return (
-    <div>adsf</div>
-    // <form onSubmit={sendEmail}>
-    //   <input
-    //     type="email"
-    //     placeholder="Recipient Email"
-    //     value={to}
-    //     onChange={(e) => setTo(e.target.value)}
-    //     required
-    //   />
-    //   <input
-    //     type="text"
-    //     placeholder="Subject"
-    //     value={subject}
-    //     onChange={(e) => setSubject(e.target.value)}
-    //     required
-    //   />
-    //   <textarea
-    //     placeholder="Email Body"
-    //     value={text}
-    //     onChange={(e) => setText(e.target.value)}
-    //     required
-    //   />
-    //   <button type="submit">Send Email</button>
-    //   {message && <p>{message}</p>}
-    // </form>
+    <div className="flex flex-col gap-2">
+      <div className="filter-controls">
+        <DatePicker
+          onChange={(date) => setFilterDate(date)}
+          placeholder="Filter by Date"
+          style={{ marginRight: 10 }}
+        />
+        <Select
+          placeholder="Filter by Company"
+          onChange={(value) => setFilterCompany(value)}
+          style={{ width: 200, marginRight: 10 }}>
+          {data
+            .map((item) => item.下払会社名)
+            .filter((value, index, self) => self.indexOf(value) === index)
+            .map((company) => (
+              <Option key={company} value={company}>
+                {company}
+              </Option>
+            ))}
+        </Select>
+        <Button onClick={() => setFilterDate(null) || setFilterCompany("")}>
+          Clear Filters
+        </Button>
+      </div>
+
+      <Table
+        columns={columns}
+        dataSource={filteredData}
+        pagination={false}
+        bordered
+        scroll={{ x: "max-content" }}
+      />
+
+      <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
+        <div>
+          <label htmlFor="recipient">Recipient Email:</label>
+          <Input
+            type="email"
+            id="recipient"
+            placeholder="recipient@example.com"
+            value={recipient}
+            onChange={(e) => setRecipient(e.target.value)}
+            required
+            style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="subject">Subject:</label>
+          <Input
+            type="text"
+            id="subject"
+            placeholder="Email Subject"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            required
+            style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="body">Email Body:</label>
+          <TextArea
+            id="body"
+            placeholder="Write your message here..."
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginBottom: "10px",
+              height: "100px",
+            }}
+          />
+        </div>
+
+        <Button onClick={handleSendEmail} style={{ padding: "10px 20px" }}>
+          Send Email
+        </Button>
+      </div>
+    </div>
   );
 };
 
-export default EmailForm;
+export default MailPage;

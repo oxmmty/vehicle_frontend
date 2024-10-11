@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Table, Button, Typography, Select, DatePicker } from "antd";
+import { Button, Typography, Select, DatePicker } from "antd";
 import axios from "axios";
 import moment from "moment";
 import dayjs from "dayjs";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -18,11 +20,10 @@ const RequestListPage = () => {
   const componentRef = useRef();
 
   useEffect(() => {
-    // Fetch order data
     axios.get(`${process.env.REACT_API_BASE_URL}/order`).then((response) => {
       const transformedData = response.data.map((item) => ({
         ...item,
-        配達日1: moment(item.配達日1).format("YYYY-MM"), // Format delivery date
+        配達日1: moment(item.配達日1).format("MM-DD"),
         配達時間1: item.配達時間1 || "",
         搬入返却場所: item.搬入返却場所 || "",
         取場所: item.取場所 || "",
@@ -41,7 +42,6 @@ const RequestListPage = () => {
       setData(transformedData);
     });
 
-    // Fetch company data
     axios
       .get(`${process.env.REACT_API_BASE_URL}/partnercompany`)
       .then((response) => {
@@ -54,7 +54,7 @@ const RequestListPage = () => {
 
   useEffect(() => {
     filterData();
-  }, [selectedCompany, selectedDate, data]); // Added 'data' to dependencies
+  }, [selectedCompany, selectedDate, data]);
 
   const filterData = () => {
     let filtered = data;
@@ -73,11 +73,11 @@ const RequestListPage = () => {
     }
 
     if (selectedDate) {
-      const formattedDate = moment(selectedDate).format("YYYY-MM");
+      const formattedDate = moment(selectedDate).format("MM-DD");
       filtered = filtered.filter(
-        (item) => moment(item.配達日1).format("YYYY-MM") === formattedDate,
+        (item) => moment(item.配達日1).format("MM-DD") === formattedDate,
       );
-      setPdfDate(formattedDate);
+      setPdfDate(selectedDate);
     }
 
     setFilteredData(filtered);
@@ -91,145 +91,29 @@ const RequestListPage = () => {
     setSelectedDate(date);
   };
 
-  const columns = [
-    {
-      title: "No",
-      render: (_, __, index) => index + 1,
-      fixed: "left",
-    },
-    {
-      title: "配達日",
-      dataIndex: "配達日1",
-      key: "配達日1",
-    },
-    {
-      title: "時間",
-      dataIndex: "配達時間1",
-      key: "配達時間1",
-    },
-    {
-      title: "搬出・搬入",
-      dataIndex: "搬入返却場所",
-      key: "搬入返却場所",
-    },
-    {
-      title: "作業先",
-      dataIndex: "取場所",
-      key: "取場所",
-    },
-    {
-      title: "サイズ",
-      dataIndex: "コンテナサイズ",
-      key: "コンテナサイズ",
-    },
-    {
-      title: "コンテナ番号",
-      dataIndex: "コンテナNo",
-      key: "コンテナNo",
-    },
-    {
-      title: "シャーシ",
-      dataIndex: "シャーシ留置費",
-      key: "シャーシ留置費",
-    },
-    {
-      title: "作業 1",
-      dataIndex: "work1",
-      key: "work1",
-    },
-    {
-      title: "作業 2",
-      dataIndex: "work2",
-      key: "work2",
-    },
-    {
-      title: "作業 3",
-      dataIndex: "work3",
-      key: "work3",
-    },
-    {
-      title: "作業 4",
-      dataIndex: "work4",
-      key: "work4",
-    },
-    {
-      title: "作業 5",
-      dataIndex: "work5",
-      key: "work5",
-    },
-    {
-      title: "作業 6",
-      dataIndex: "work6",
-      key: "work6",
-    },
-    {
-      title: "識別コード",
-      dataIndex: "識別コード",
-      key: "識別コード",
-    },
-    {
-      title: "備考",
-      dataIndex: "請求書備考",
-      key: "請求書備考",
-    },
-  ];
+  const handleDownloadPDF = () => {
+    html2canvas(componentRef.current, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgWidth = 190;
+      const pageHeight = pdf.internal.pageSize.height;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
 
-  const handlePrint = () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>配車リスト</title>
-          <style>
-            body { margin: 0; padding: 10px; font-family: Arial, sans-serif; background-color: white; }
-            h2 { text-align: center; }
-            p { font-size: 10px; }
-            table { width: 100%; border-collapse: collapse; text-align: left; font-size: 10px; }
-            th, td { border: 1px solid black; padding: 2px; }
-            th { background-color: #f2f2f2; }
-          </style>
-        </head>
-        <body>
-          <p>配車リスト</p>
-          <h2>${selectedCompany}</h2>
-          <div style="display: flex; justify-content: space-between;">
-            <div><p>${pdfDate}</p></div>
-            <div><p>翔風運輸株式会社　担当：渡邉</p><p>${today}</p></div>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                ${columns.map((col) => `<th>${col.title}</th>`).join("")}
-              </tr>
-            </thead>
-            <tbody>
-              ${filteredData
-                .map(
-                  (row) => `
-                  <tr>
-                    ${columns
-                      .map(
-                        (col) =>
-                          `<td>${
-                            row[col.dataIndex] !== undefined &&
-                            row[col.dataIndex] !== null
-                              ? row[col.dataIndex]
-                              : ""
-                          }</td>`,
-                      )
-                      .join("")}
-                  </tr>
-                `,
-                )
-                .join("")}
-            </tbody>
-          </table>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-    printWindow.print();
-    printWindow.close();
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`${selectedCompany} ${moment(pdfDate).format("YYMMDD")}.pdf`);
+    });
   };
 
   return (
@@ -248,30 +132,93 @@ const RequestListPage = () => {
             ))}
           </Select>
           <DatePicker
-            picker="month"
-            onChange={handleDateChange}
-            format="YYYY/MM"
+            picker="date"
+            onChange={(date, dateString) => {
+              handleDateChange(dateString);
+            }}
+            format="YYYY/MM/DD"
             allowClear
           />
         </div>
-        <div className="text-center">
-          <Title level={5}>翔風運輸株式会社　担当：渡邉</Title>
-          <Text>{today}</Text>
-        </div>
 
-        <Button type="primary" onClick={handlePrint}>
+        <Button type="primary" onClick={handleDownloadPDF}>
           PDF作成
         </Button>
       </div>
 
-      <div ref={componentRef}>
-        <Table
-          columns={columns}
-          dataSource={filteredData}
-          pagination={false}
-          scroll={{ x: "max-content" }}
-          bordered
-        />
+      <div ref={componentRef} className="bg-white p-4">
+        <div className="text-center text-black">
+          <Title level={5} className="text-black pt-5">
+            翔風運輸株式会社　担当：渡邉
+          </Title>
+          <Text className="text-black">{today}</Text>
+        </div>
+        <div className="flex justify-between ml-48 mr-48 mt-6 mb-4">
+          <Text className="text-black">{selectedCompany} 御中</Text>
+          <Text className="text-black">
+            {moment(pdfDate).format("YYYY-MM-DD")}
+          </Text>
+        </div>
+        <table className="w-full table-auto border-collapse border border-black">
+          <thead>
+            <tr className="bg-gray-200 text-black">
+              <th className="border border-black px-4 py-2">No</th>
+              <th className="border border-black px-4 py-2">配達日</th>
+              <th className="border border-black px-4 py-2">時間</th>
+              <th className="border border-black px-4 py-2">搬出・搬入</th>
+              <th className="border border-black px-4 py-2">作業先</th>
+              <th className="border border-black px-4 py-2">サイズ</th>
+              <th className="border border-black px-4 py-2">コンテナ番号</th>
+              <th className="border border-black px-4 py-2">シャーシ</th>
+              <th className="border border-black px-4 py-2">作業 1</th>
+              <th className="border border-black px-4 py-2">作業 2</th>
+              <th className="border border-black px-4 py-2">作業 3</th>
+              <th className="border border-black px-4 py-2">作業 4</th>
+              <th className="border border-black px-4 py-2">作業 5</th>
+              <th className="border border-black px-4 py-2">作業 6</th>
+              <th className="border border-black px-4 py-2">識別コード</th>
+              <th className="border border-black px-4 py-2">備考</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredData.map((item, index) => (
+              <tr key={index} className="text-black">
+                <td className="border border-black px-4 py-2">{index + 1}</td>
+                <td className="border border-black px-4 py-2">
+                  {item.配達日1}
+                </td>
+                <td className="border border-black px-4 py-2">
+                  {item.配達時間1}
+                </td>
+                <td className="border border-black px-4 py-2">
+                  {item.搬入返却場所}
+                </td>
+                <td className="border border-black px-4 py-2">{item.取場所}</td>
+                <td className="border border-black px-4 py-2">
+                  {item.コンテナサイズ}
+                </td>
+                <td className="border border-black px-4 py-2">
+                  {item.コンテナNo}
+                </td>
+                <td className="border border-black px-4 py-2">
+                  {item.シャーシ留置費}
+                </td>
+                <td className="border border-black px-4 py-2">{item.work1}</td>
+                <td className="border border-black px-4 py-2">{item.work2}</td>
+                <td className="border border-black px-4 py-2">{item.work3}</td>
+                <td className="border border-black px-4 py-2">{item.work4}</td>
+                <td className="border border-black px-4 py-2">{item.work5}</td>
+                <td className="border border-black px-4 py-2">{item.work6}</td>
+                <td className="border border-black px-4 py-2">
+                  {item.識別コード}
+                </td>
+                <td className="border border-black px-4 py-2">
+                  {item.請求書備考}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

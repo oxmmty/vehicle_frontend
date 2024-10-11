@@ -4,6 +4,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas"; // Import html2canvas
 import { useLocation } from "react-router-dom";
 import dayjs from "dayjs";
+import axios from "axios";
 import "./NewRequestFormPage.css"; // Import your CSS file
 
 const { Title, Text } = Typography;
@@ -15,35 +16,46 @@ const NewRequestFormPage = () => {
   const componentRef = useRef();
 
   const handleDownloadPDF = () => {
-    html2canvas(componentRef.current, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 190; // Adjust width as needed
-      const pageHeight = pdf.internal.pageSize.height;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
+    axios
+      .put("/pdfList", {
+        リクエスト番号: data[0].リクエスト番号,
+      })
+      .then((response) => {
+        console.log("Database updated successfully", response);
 
-      let position = 0;
+        // Generate the PDF after the database is successfully updated
+        html2canvas(componentRef.current, { scale: 2 }).then((canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+          const imgWidth = 190;
+          const pageHeight = pdf.internal.pageSize.height;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          let heightLeft = imgHeight;
 
-      // Add the image to the PDF
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+          let position = 0;
 
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
+          pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
 
-      pdf.save(
-        `${data[0].下払会社名} ${dayjs(data[0].配達日1).format(
-          "YYMMDD",
-        )}${dayjs(data[0].配達時間1).format("HHmm")} ${data[0].配達先} ${
-          data[0].受注コード
-        }.pdf`,
-      ); // Save the PDF with a specific name
-    });
+          while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+          }
+
+          pdf.save(
+            `${data[0].下払会社名} ${dayjs(data[0].配達日1).format(
+              "YYMMDD",
+            )}${dayjs(data[0].配達時間1).format("HHmm")} ${data[0].配達先} ${
+              data[0].受注コード
+            }.pdf`,
+          );
+        });
+      })
+      .catch((error) => {
+        console.error("Error updating the database", error);
+      });
   };
 
   const formatDate = (date) => {
