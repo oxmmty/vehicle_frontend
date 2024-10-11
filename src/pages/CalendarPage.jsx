@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Badge, Button, Calendar } from "antd";
+import axios from "axios";
+import dayjs from "dayjs";
+
 const getListData = (value) => {
   let listData = [];
   switch (value.date()) {
-    case 8:
+    case 1:
       listData = [
         {
           type: "warning",
@@ -15,7 +18,7 @@ const getListData = (value) => {
         },
       ];
       break;
-    case 10:
+    case 2:
       listData = [
         {
           type: "warning",
@@ -31,7 +34,7 @@ const getListData = (value) => {
         },
       ];
       break;
-    case 15:
+    case 3:
       listData = [
         {
           type: "warning",
@@ -63,14 +66,22 @@ const getListData = (value) => {
   }
   return listData || [];
 };
-const getMonthData = (value) => {
-  if (value.month() === 8) {
-    return 1394;
-  }
+const getMonthData = (value, datas) => {
+  const filteredDatas = datas.filter(dayjs(datas.請求日).format("MM") == value);
+  return filteredDatas.length;
 };
 const CalendarPage = () => {
-  const monthCellRender = (value) => {
-    const num = getMonthData(value);
+  const [datas, setDatas] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_API_BASE_URL}/orderList`)
+      .then((response) => {
+        setDatas(response.data);
+      });
+  }, []);
+  const monthCellRender = (value, datas) => {
+    const num = getMonthData(value, datas);
     return num ? (
       <div className="notes-month">
         <section>{num}</section>
