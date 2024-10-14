@@ -222,7 +222,7 @@ const Dashboardpage = () => {
               pagination={true}
               pn={5}
               bordered
-              scroll={{ x: "max-content", y: "no-scroll" }}
+              scroll={{ x: "max-content" }}
             />
           </div>
           <div className="w-1/3 h-[400px] bg-bg-light rounded-lg">
