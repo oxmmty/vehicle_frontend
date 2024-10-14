@@ -60,14 +60,14 @@ const Header = ({ items, ...props }) => {
           </button>
         </div>
         <Navbar list={list} className="h-full hidden 2xl:inline" />
-        <div className="pr-2">
+        {/* <div className="pr-2">
           <Input
             placeholder="Type keywords..."
             prefix={<SearchOutlined />}
             suffix={<Text keyboard>Ctrl K</Text>}
             className="hidden sm:inline-flex rounded-full bg-transparent"
           />
-        </div>
+        </div> */}
         <div className="flex justify-center items-center gap-2">
           <Badge count={5} color="hsl(102, 70%, 61%)">
             <Button shape="circle" icon={<BellOutlined />} />

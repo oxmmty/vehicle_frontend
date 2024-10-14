@@ -267,10 +267,11 @@ const BussinessLocation = () => {
           }}
           rowKey="_id"
           bordered
+          className="max-h-[600px]"
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={false}
+          pagination={true}
         />
       </Form>
 

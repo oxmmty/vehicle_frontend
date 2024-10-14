@@ -73,7 +73,7 @@ const AppRouter = () => {
               loader={() => redirect("/dashboard/overview")}
             />
             <Route path="/dashboard/overview" element={<DashboardPage />} />
-            <Route path="/dashboard/quick" element={<DashboardPage />} />
+
             <Route
               path="/orders_invoices"
               loader={() => redirect("/orders_invoices/newOrderForm")}

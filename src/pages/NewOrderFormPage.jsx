@@ -345,22 +345,16 @@ const SeaComponent = ({ setData }) => {
   const a = dayjs(today).format("YYMMDD");
   if (selectedValueDivide == "実入り取り") {
     const b = "MA" + a + "-";
-    console.log(b);
   } else if (selectedValueDivide == "空バン取り") {
     const b = "KA" + a + "-";
-    console.log(b);
   } else if (selectedValueDivide == "実入り取りCRU") {
     const b = "MA" + a + "-";
-    console.log(b);
   } else if (selectedValueDivide == "実入り取りFDR") {
     const b = "MA" + a + "-";
-    console.log(b);
   } else if (selectedValueDivide == "実入り取りPIC") {
     const b = "PA" + a + "-";
-    console.log(b);
   } else if (selectedValueDivide == "保管") {
     const b = "XA" + a + "-";
-    console.log(b);
   }
   useEffect(() => {
     setData({
@@ -1202,7 +1196,6 @@ const NewOrderFormPage = () => {
       const res = await axios.post(process.env.REACT_API_BASE_URL + "/order", {
         jsonObject,
       });
-      console.log(res);
     } catch (error) {
       console.log(error, res.message);
     }

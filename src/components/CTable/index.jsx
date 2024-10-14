@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Pagination } from "antd";
 import PropTypes from "prop-types";
-import SuspenseContent from "../../containers/SuspenseContent";
 const CTable = (props) => {
   const [page, setPage] = useState({ pn: 1, ps: 200 });
   const [data, setData] = useState([]);
@@ -27,25 +26,24 @@ const CTable = (props) => {
   }, [props]);
 
   return (
-    <div className="flex h-full flex-col w-full">
+    <div className="flex h-full flex-col w-full rounded-lg">
       <Table
         loading={!data.length}
         {...props}
         dataSource={data}
         sticky
         pagination={false}
-        className="h-full overflow-auto pr-1"
+        className="h-full overflow-hidden"
       />
-      <div className="flex justify-center w-full bg-base-200 rounded-md mt-2">
+      <div className="flex justify-center w-full bg-bg-light border-gray-500 border border-spacing-1 rounded-md ">
         <Pagination
-          pageSizeOptions={[20, 50, 100, 200, 500, 1000]}
+          pageSizeOptions={[5, 10, 15, 20]}
           current={pn}
           pageSize={ps}
           showSizeChanger
           className="p-1"
-          defaultPageSize={100}
+          defaultPageSize={5}
           onChange={(pn, ps) => setPage({ pn, ps })}
-          // hideOnSinglePage
           total={props.dataSource?.length}
         />
       </div>

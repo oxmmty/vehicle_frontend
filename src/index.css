@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans JP", sans-serif !important;
   line-height: 1;
   font-weight: 400;
 
@@ -12,16 +14,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --colorPrimary: #1677FF;
-  --colorSuccess: #52C41A;
-  --colorWarning: #FAAD14;
-  --colorError: #FF4D4F;
-  --colorLink: #1668DC;
+  --colorPrimary: #1677ff;
+  --colorSuccess: #52c41a;
+  --colorWarning: #faad14;
+  --colorError: #ff4d4f;
+  --colorLink: #1668dc;
 
-  --bg-dark: #F4F6F9;
+  --bg-dark: #f4f6f9;
   --bg-light: #ffffff;
   --bg-light-dark: #ffffffea;
-  --base-200: #E8EEF6;
+  --base-200: #e8eef6;
   --base-500: #f3f3f3;
   --base-600: #f2f2f2;
   --base-700: #f1f1f1;
@@ -30,24 +32,24 @@
   --txt-100: #5b5c5f;
   --text-200: #5c5c5c;
   --text-300: #a7a7a7;
-  --border-100: #CCD7E9;
+  --border-100: #ccd7e9;
   --base-primary: #00b96b;
-  --hover-primary: #DFFBEC;
+  --hover-primary: #dffbec;
 }
 
 .dark {
   --bg-dark: #111621;
-  --bg-light: #1F2634;
+  --bg-light: #1f2634;
   --bg-light-dark: #2a3142;
   --base-200: #1d1d1d;
   --base-500: #464646;
   --base-600: #565656;
   --base-700: #666666;
   --base-800: #767676;
-  --txt-100: #8E9DB2;
+  --txt-100: #8e9db2;
   --text-200: #b4b4b4;
   --text-300: #7a7a7a;
-  --border-100: #313D50;
+  --border-100: #313d50;
   --base-primary: #dde000;
   --hover-primary: #242813;
 }
@@ -81,7 +83,7 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  
+
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -106,4 +108,31 @@ ul.ant-menu {
 
 .ant-form-item-label {
   padding: 0 !important;
+}
+
+html,
+body {
+  font-family: "Noto Sans JP", sans-serif !important;
+  font-size: 16px; /* optional to set a default size */
+  line-height: 1.5; /* optional to set line-height for readability */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+div {
+  font-family: "Noto Sans", sans-serif;
+}
+
+/* Optional: Override other text elements */
+input,
+button,
+textarea {
+  font-family: "Noto Sans", sans-serif;
 }

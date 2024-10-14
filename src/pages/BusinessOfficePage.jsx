@@ -50,7 +50,6 @@ const BusinessOffice = () => {
     try {
       const res = await axios.get(`${process.env.REACT_API_BASE_URL}/work`);
       setDatas(res.data);
-      console.log(res.data);
     } catch (error) {
       notification.error({
         message: "Failed to Load Data",

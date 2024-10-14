@@ -57,7 +57,6 @@ const DBPage = () => {
         item.id === record.id ? updatedRecord : item,
       );
       setFilteredData(updatedData);
-      console.log(field);
       if (field == "配車組み") {
         const train = "true";
         await handleAddRecords(record, train);

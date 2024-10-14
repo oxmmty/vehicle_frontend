@@ -98,7 +98,6 @@ const BillingListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/order");
-      console.log("Fetched Data:", res.data);
       setDatas(res.data);
       filterDataByMonth(dayjs(), res.data); // Initialize with current month data
     };
