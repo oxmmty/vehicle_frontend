@@ -74,7 +74,7 @@ const CompanyChart = (props) => {
           fontWeight: 400,
           color: textColor,
         },
-        formatter: (value) => (value >= 1000 ? `${value / 1000}k円` : value),
+        formatter: (value) => (value >= 1000 ? `${value / 1000}k` : value),
       },
     },
     tooltip: {

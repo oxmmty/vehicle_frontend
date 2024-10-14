@@ -77,9 +77,7 @@ const BarChart = (props) => {
           fontFamily: "Noto Sans JP, Inter, sans-serif",
           cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
         },
-        formatter: function (value) {
-          return value + "円";
-        },
+        formatter: (value) => (value >= 1000 ? `${value / 1000}k` : value),
       },
       categories: generateLast7Days(),
       axisTicks: {
