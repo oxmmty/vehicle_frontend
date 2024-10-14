@@ -17,7 +17,10 @@ const CompanyPage = (props) => {
 
   const localStorageTheme = localStorage.getItem("theme");
 
-  const textColor = localStorageTheme === "dark" ? "#AFB6C1D9" : "#5B5C5FE0";
+  const textColor =
+    localStorageTheme === "dark"
+      ? "#AFB6C1D9 !important"
+      : "#5B5C5FE0 !important";
 
   const getChartOptions = () => {
     return {
@@ -48,16 +51,13 @@ const CompanyPage = (props) => {
               total: {
                 showAlways: true,
                 show: true,
-                label: "Total Amount",
+                label: "合計料金",
                 fontFamily: "Noto Sans JP, Inter, sans-serif",
                 formatter: function (w) {
                   const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                   return sum + "円";
                 },
-                color: textColor,
-                style: {
-                  colors: textColor, // Set the total label text color
-                },
+                colors: textColor,
               },
               value: {
                 show: true,
@@ -67,9 +67,6 @@ const CompanyPage = (props) => {
                   return value + "円";
                 },
                 color: textColor,
-                style: {
-                  colors: textColor, // Set the value text color
-                },
               },
             },
             size: "80%",

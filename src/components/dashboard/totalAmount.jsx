@@ -5,6 +5,9 @@ import dayjs from "dayjs";
 const TotalAmount = (props) => {
   const companyData = props.company;
   const customerData = props.customer;
+  const localStorageTheme = localStorage.getItem("theme");
+
+  const textColor = localStorageTheme === "dark" ? "#AFB6C1D9" : "#5B5C5FE0";
   const generateLast7Days = () => {
     const dates = [];
     for (let i = 6; i >= 0; i--) {

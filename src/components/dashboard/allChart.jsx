@@ -6,6 +6,11 @@ import dayjs from "dayjs";
 const BarChart = (props) => {
   const companyData = props.company;
   const customerData = props.customer;
+  const localStorageTheme = localStorage.getItem("theme");
+  const textColor =
+    localStorageTheme === "dark"
+      ? "#AFB6C1D9 !important"
+      : "#5B5C5FE0 !important";
   const generateLast7Days = () => {
     const dates = [];
     for (let i = 6; i >= 0; i--) {
@@ -16,12 +21,12 @@ const BarChart = (props) => {
   const options = {
     series: [
       {
-        name: "Income",
+        name: "顧客",
         color: "#31C48D",
         data: customerData,
       },
       {
-        name: "Expense",
+        name: "協力会社",
         color: "#F05252",
         data: companyData,
       },
@@ -52,7 +57,7 @@ const BarChart = (props) => {
       },
     },
     legend: {
-      show: true,
+      show: false,
       position: "bottom",
     },
     dataLabels: {

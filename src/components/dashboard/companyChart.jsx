@@ -7,7 +7,10 @@ const CompanyChart = (props) => {
   const data = props.data;
   const category = props.category;
   const localStorageTheme = localStorage.getItem("theme");
-  const textColor = localStorageTheme === "dark" ? "#AFB6C1D9" : "#5B5C5FE0";
+  const textColor =
+    localStorageTheme === "dark"
+      ? "#AFB6C1D9 !important"
+      : "#5B5C5FE0 !important";
   const chartOptions = {
     chart: {
       type: "bar",
@@ -53,10 +56,10 @@ const CompanyChart = (props) => {
       },
       labels: {
         style: {
-          color: textColor,
           fontSize: "10px",
           fontFamily: "Noto Sans JP,Inter, ui-sans-serif",
           fontWeight: 400,
+          color: textColor,
         },
         offsetX: -2,
         // formatter: (title) => title.slice(0, 3),
@@ -66,17 +69,19 @@ const CompanyChart = (props) => {
       labels: {
         align: "left",
         style: {
-          color: textColor,
-          fontSize: "13px",
+          fontSize: "10px",
           fontFamily: "Noto Sans JP, Inter, ui-sans-serif",
           fontWeight: 400,
+          color: textColor,
         },
-        formatter: (value) => (value >= 1000 ? `${value / 1000}k` : value),
+        formatter: (value) => (value >= 1000 ? `${value / 1000}k円` : value),
       },
     },
     tooltip: {
+      cssClass: "bg-bg-light",
+      color: textColor,
       y: {
-        formatter: (value) => `$${value}`,
+        formatter: (value) => `${value}円`,
       },
     },
     responsive: [
@@ -98,13 +103,14 @@ const CompanyChart = (props) => {
             labels: {
               align: "left",
               style: {
-                color: textColor,
                 fontSize: "11px",
                 fontFamily: "Noto Sans JP, Inter, ui-sans-serif",
                 fontWeight: 400,
+                color: textColor,
               },
+
               formatter: (value) =>
-                value >= 1000 ? `${value / 1000}k` : value,
+                value >= 1000 ? `${value / 1000}k円` : value,
             },
           },
         },
