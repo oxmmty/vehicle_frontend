@@ -65,7 +65,7 @@ const LoginPage = () => {
             </Form.Item>
             <div className="flex justify-between px-2">
               <Form.Item name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
+                <Checkbox className="text-white">Remember me</Checkbox>
               </Form.Item>
               <Form.Item name="forget">
                 <Button
