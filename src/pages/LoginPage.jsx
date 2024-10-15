@@ -19,7 +19,7 @@ const LoginPage = () => {
     navigate("/dashboard");
   };
   return (
-    <div className="w-full  flex justify-center items-center p-2 bg-[url('../../../public/background.webp')] bg-cover bg-center h-screen">
+    <div className="w-full  flex justify-center items-center p-2 bg-[url('./background.webp')] bg-cover bg-center h-screen">
       <Form
         className="w-full flex justify-between h-3/6 border border-[#707070] max-w-[1000px] rounded-2xl bg-[#00000070] "
         layout="vertical"
