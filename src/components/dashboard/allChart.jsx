@@ -57,15 +57,25 @@ const BarChart = (props) => {
       },
     },
     legend: {
-      show: false,
+      show: true,
       position: "bottom",
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      style: {
+        color: textColor,
+      },
+      dropShadow: {
+        enabled: true,
+      },
     },
     tooltip: {
       shared: true,
       intersect: false,
+      style: {
+        color: textColor,
+        "background-color": textColor,
+      },
       formatter: function (value) {
         return value + "円";
       },
@@ -81,10 +91,10 @@ const BarChart = (props) => {
       },
       categories: generateLast7Days(),
       axisTicks: {
-        show: false,
+        show: true,
       },
       axisBorder: {
-        show: false,
+        show: true,
       },
     },
     yaxis: {

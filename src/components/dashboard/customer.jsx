@@ -81,7 +81,7 @@ const CustomerPage = (props) => {
       },
       labels: labels,
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       legend: {
         position: "bottom",
