@@ -36,7 +36,7 @@ const CTable = (props) => {
         scroll={{ x: "max-content" }}
         className="w-full h-full"
       />
-      <div className="flex justify-center w-full bg-bg-light border-gray-500 border border-spacing-1 rounded-md ">
+      <div className="flex justify-center w-full bg-bg-light  rounded-md ">
         <Pagination
           pageSizeOptions={[5, 10, 15, 20]}
           current={pn}
