@@ -42,7 +42,7 @@ const CompanyPage = (props) => {
               show: true,
               name: {
                 show: true,
-                fontFamily: "Noto Sans JP, Inter, sans-serif",
+                fontFamily: "Noto Sans JP",
                 offsetY: 20,
                 style: {
                   color: textColor, // Set the text color
@@ -52,7 +52,7 @@ const CompanyPage = (props) => {
                 showAlways: true,
                 show: true,
                 label: "合計料金",
-                fontFamily: "Noto Sans JP, Inter, sans-serif",
+                fontFamily: "Noto Sans JP",
                 formatter: function (w) {
                   const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                   return sum + "円";
@@ -61,7 +61,7 @@ const CompanyPage = (props) => {
               },
               value: {
                 show: true,
-                fontFamily: "Noto Sans JP, Inter, sans-serif",
+                fontFamily: "Noto Sans JP",
                 offsetY: -20,
                 formatter: function (value) {
                   return value + "円";

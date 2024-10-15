@@ -76,7 +76,7 @@ const InventoryContainerPage = () => {
       <Table
         columns={fileColumns}
         dataSource={fileData}
-        pagination={true}
+        pagination={{ pageSize: 14, position: ["bottomCenter"] }}
         bordered
         scroll={{ x: "max-content" }}
         locale={{

@@ -36,6 +36,7 @@ const Sidebar = ({ items, ...props }) => {
           collapsed ? "w-fit" : "w-[250px]"
         }`}>
         <Menu
+          className="font-bold"
           onSelect={handleSubmenu}
           selectedKeys={[currentPath]}
           mode="inline"

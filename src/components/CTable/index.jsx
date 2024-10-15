@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Table, Pagination } from "antd";
 import PropTypes from "prop-types";
 const CTable = (props) => {
-  const [page, setPage] = useState({ pn: 1, ps: 5 });
+  const [page, setPage] = useState({ pn: 1, ps: props.ps });
   const [data, setData] = useState([]);
   const { pn, ps } = page;
 
@@ -26,14 +26,15 @@ const CTable = (props) => {
   }, [props]);
 
   return (
-    <div className="flex h-full flex-col w-full rounded-lg overflow-hidden">
+    <div className="flex h-full flex-col  rounded-lg ">
       <Table
         loading={!data.length}
         {...props}
         dataSource={data}
         sticky
         pagination={false}
-        className="h-full overflow-hidden "
+        scroll={{ x: "max-content" }}
+        className="w-full h-full"
       />
       <div className="flex justify-center w-full bg-bg-light border-gray-500 border border-spacing-1 rounded-md ">
         <Pagination

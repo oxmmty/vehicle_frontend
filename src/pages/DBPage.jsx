@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import CTable from "src/components/CTable";
 const { Title } = Typography;
 
 const DBPage = () => {
@@ -39,7 +39,7 @@ const DBPage = () => {
     if (selectedDate) {
       const formattedDate = selectedDate.format("YYYY-MM-DD");
       setDate(formattedDate);
-      const filtered = allData.filter();
+      const filtered = allData.filter(date);
       setFilteredData(filtered);
     } else {
       setFilteredData(allData);
@@ -607,7 +607,14 @@ const DBPage = () => {
       title: "No",
       render: (_, __, index) => index + 1,
     },
-    { key: "識別コード", title: "識別コード", dataIndex: "識別コード" },
+    {
+      key: "識別コード",
+      title: "識別コード",
+      dataIndex: "識別コード",
+      sorter: function (a, b) {
+        return b.識別コード.localeCompare(a.識別コード);
+      },
+    },
     {
       key: "ピックチェック",
       title: "ピックチェック",
@@ -673,9 +680,23 @@ const DBPage = () => {
       ),
     },
     // Add other columns here as needed
-    { key: "部署コード", title: "部署コード", dataIndex: "部署コード" },
+    {
+      key: "部署コード",
+      title: "部署コード",
+      dataIndex: "部署コード",
+      sorter: function (a, b) {
+        return b.部署コード.localeCompare(a.部署コード);
+      },
+    },
     { key: "区分", title: "区分", dataIndex: "区分" },
-    { key: "荷主名", title: "荷主名", dataIndex: "荷主名" },
+    {
+      key: "荷主名",
+      title: "荷主名",
+      dataIndex: "荷主名",
+      sorter: function (a, b) {
+        return b.荷主名.localeCompare(a.荷主名);
+      },
+    },
     { key: "顧客名", title: "顧客名", dataIndex: "顧客名" },
     { key: "配達先", title: "配達先", dataIndex: "配達先" },
     { key: "配達先住所", title: "配達先住所", dataIndex: "配達先住所" },
@@ -760,9 +781,9 @@ const DBPage = () => {
           <Table
             dataSource={filteredData} // Use the filtered data
             columns={columns}
-            pagination={{ pageSize: 50 }}
+            pagination={{ pageSize: 10, position: ["bottomCenter"] }}
             scroll={{ x: "max-content" }}
-            className="w-full"
+            className="w-full h-full"
             rowKey="id" // Ensure each row has a unique key
           />
         )}

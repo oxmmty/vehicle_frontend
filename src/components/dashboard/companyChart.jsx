@@ -37,6 +37,10 @@ const CompanyChart = (props) => {
     },
     legend: {
       show: true,
+      style: {
+        color: textColor,
+        fontFamily: "Noto Sans JP",
+      },
     },
     dataLabels: {
       enabled: true,
@@ -60,8 +64,8 @@ const CompanyChart = (props) => {
       labels: {
         style: {
           fontSize: "10px",
-          fontFamily: "Noto Sans JP,Inter, ui-sans-serif",
-          fontWeight: 400,
+          fontFamily: "Noto Sans JP",
+          fontWeight: 200,
           color: textColor,
         },
         offsetX: -2,
@@ -72,8 +76,8 @@ const CompanyChart = (props) => {
       labels: {
         align: "left",
         style: {
-          fontSize: "10px",
-          fontFamily: "Noto Sans JP, Inter, ui-sans-serif",
+          fontSize: "10px !important",
+          fontFamily: "Noto Sans JP !important",
           fontWeight: 400,
           color: textColor,
         },
@@ -92,11 +96,11 @@ const CompanyChart = (props) => {
         breakpoint: 568,
         options: {
           chart: {
-            height: 300,
+            height: 400,
           },
           plotOptions: {
             bar: {
-              columnWidth: "14px",
+              columnWidth: "8px",
             },
           },
           stroke: {
@@ -107,7 +111,7 @@ const CompanyChart = (props) => {
               align: "left",
               style: {
                 fontSize: "11px",
-                fontFamily: "Noto Sans JP, Inter, ui-sans-serif",
+                fontFamily: "Noto Sans JP",
                 fontWeight: 400,
                 color: textColor,
               },
@@ -131,7 +135,7 @@ const CompanyChart = (props) => {
         options={chartOptions}
         series={chartOptions.series}
         type="bar"
-        height={300}
+        height={380}
       />
     </div>
   );

@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-import { Menu as AntdMenu } from 'antd';
+import React, { useState } from "react";
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { Menu as AntdMenu } from "antd";
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -12,31 +16,31 @@ function getItem(label, key, icon, children, type) {
   };
 }
 const items = [
-  getItem('Navigation One', '1', <MailOutlined />, [
-    getItem('Option 1', '11'),
-    getItem('Option 2', '12'),
-    getItem('Option 3', '13'),
-    getItem('Option 4', '14'),
+  getItem("Navigation One", "1", <MailOutlined />, [
+    getItem("Option 1", "11"),
+    getItem("Option 2", "12"),
+    getItem("Option 3", "13"),
+    getItem("Option 4", "14"),
   ]),
-  getItem('Navigation Two', '2', <AppstoreOutlined />, [
-    getItem('Option 1', '21'),
-    getItem('Option 2', '22'),
-    getItem('Submenu', '23', null, [
-      getItem('Option 1', '231'),
-      getItem('Option 2', '232'),
-      getItem('Option 3', '233'),
+  getItem("Navigation Two", "2", <AppstoreOutlined />, [
+    getItem("Option 1", "21"),
+    getItem("Option 2", "22"),
+    getItem("Submenu", "23", null, [
+      getItem("Option 1", "231"),
+      getItem("Option 2", "232"),
+      getItem("Option 3", "233"),
     ]),
-    getItem('Submenu 2', '24', null, [
-      getItem('Option 1', '241'),
-      getItem('Option 2', '242'),
-      getItem('Option 3', '243'),
+    getItem("Submenu 2", "24", null, [
+      getItem("Option 1", "241"),
+      getItem("Option 2", "242"),
+      getItem("Option 3", "243"),
     ]),
   ]),
-  getItem('Navigation Three', '3', <SettingOutlined />, [
-    getItem('Option 1', '31'),
-    getItem('Option 2', '32'),
-    getItem('Option 3', '33'),
-    getItem('Option 4', '34'),
+  getItem("Navigation Three", "3", <SettingOutlined />, [
+    getItem("Option 1", "31"),
+    getItem("Option 2", "32"),
+    getItem("Option 3", "33"),
+    getItem("Option 4", "34"),
   ]),
 ];
 const getLevelKeys = (items1) => {
@@ -57,9 +61,11 @@ const getLevelKeys = (items1) => {
 const levelKeys = getLevelKeys(items);
 
 const Menu = () => {
-  const [stateOpenKeys, setStateOpenKeys] = useState(['2', '23']);
+  const [stateOpenKeys, setStateOpenKeys] = useState(["2", "23"]);
   const onOpenChange = (openKeys) => {
-    const currentOpenKey = openKeys.find((key) => stateOpenKeys.indexOf(key) === -1);
+    const currentOpenKey = openKeys.find(
+      (key) => stateOpenKeys.indexOf(key) === -1,
+    );
     // open
     if (currentOpenKey !== undefined) {
       const repeatIndex = openKeys
@@ -79,11 +85,12 @@ const Menu = () => {
   };
   return (
     <div>
-      <div className='h-[65px]' />
-      <div className='h-[879px] overflow-y-auto no-scrollbar'>
+      <div className="h-[65px]" />
+      <div className="h-[879px] overflow-y-auto no-scrollbar font-bold">
         <AntdMenu
+          className="font-bold"
           mode="inline"
-          defaultSelectedKeys={['231']}
+          defaultSelectedKeys={["231"]}
           openKeys={stateOpenKeys}
           onOpenChange={onOpenChange}
           style={{

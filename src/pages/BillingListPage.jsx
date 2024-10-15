@@ -169,6 +169,7 @@ const BillingListPage = () => {
         scroll={{ x: "max-content" }}
         className="w-full"
         rowKey="識別コード"
+        pagination={{ position: ["bottomCenter"] }}
       />
     </div>
   );
