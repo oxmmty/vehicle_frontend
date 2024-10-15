@@ -6,7 +6,7 @@ import { HomeOutlined } from "@ant-design/icons";
 const Main = ({ ...props }) => {
   const location = useLocation();
   const [breadcrumbItems, setBreadcrumbItems] = useState([]);
-
+  const currentPath = location.pathname;
   useEffect(() => {
     const paths = location.pathname.split("/").filter(Boolean);
     const breadcrumbList = [
@@ -38,7 +38,12 @@ const Main = ({ ...props }) => {
 
   return (
     <main className={props.className}>
-      <div className="bg-bg-light-dark p-1 sm:p-2 rounded-lg shadow-custom">
+      <div
+        className={` p-1 sm:p-2 rounded-lg shadow-custom ${
+          currentPath === "/dashboard/overview"
+            ? `bg-bg-dark`
+            : `bg-bg-light-dark`
+        }`}>
         {/* <Breadcrumb className='p-4'>
           {breadcrumbItems.map((breadcrumb, index) => (
             <Breadcrumb.Item key={index}>{breadcrumb.title}</Breadcrumb.Item>

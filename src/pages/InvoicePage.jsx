@@ -69,13 +69,11 @@ const InvoicePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/order/invoice", { params: { data } });
-      console.log("Fetched Data:", res.data);
 
       setDatas(res.data);
     };
     fetchData();
   }, []);
-  console.log(datas);
   const columns = [
     { title: "Name", dataIndex: "name", key: "name" },
     {

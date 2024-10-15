@@ -215,11 +215,11 @@ const CalendarPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2 w-full">
-      <div className="flex justify-evenly max-w-[500px] w-full">
+    <div className="flex flex-col items-center gap-2 w-full max-h-[700px]">
+      {/* <div className="flex justify-evenly max-w-[500px] w-full">
         <Button>カレンダー</Button>
         <Button>カレンダー全件</Button>
-      </div>
+      </div> */}
       <Calendar cellRender={cellRender} />
     </div>
   );

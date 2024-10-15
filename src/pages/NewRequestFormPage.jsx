@@ -67,7 +67,6 @@ const NewRequestFormPage = () => {
     if (time === null) return ""; // Return empty string if the time is null
     return dayjs(time, "HH:mm:ss").format("HH:mm"); // Format time
   };
-  console.log(data);
   return (
     <div className="relative bg-white">
       <Button

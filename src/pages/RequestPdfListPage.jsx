@@ -297,7 +297,6 @@ const RequestPdfListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/pdfList");
-      console.log("Fetched Data:", res.data); // Log the fetched data
       setDatas(res.data);
       filterData(dayjs().format("YYYY-MM"), res.data);
     };
@@ -330,7 +329,6 @@ const RequestPdfListPage = () => {
     const selectedRows = filteredDatas.filter((row) =>
       selectedRowKeys.includes(row.リクエスト番号),
     );
-    console.log("Selected Rows:", selectedRows); // Log selected rows
     if (selectedRows.length > 0) {
       navigate("/orders_invoices/newRequestForm", {
         state: { data: selectedRows },

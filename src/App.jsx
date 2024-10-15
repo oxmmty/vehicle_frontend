@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import Main from "./components/Main";
 import { Processbar } from "src/components/Processbar";
 import "nprogress/nprogress.css";
+import { useLocation } from "react-router-dom"; // Use location from react-router-dom
 
 axiosSetting();
 
@@ -13,10 +14,6 @@ const dashboard = [
   {
     key: "overview",
     label: "Overview",
-  },
-  {
-    key: "quick",
-    label: "Quick",
   },
 ];
 
@@ -41,10 +38,6 @@ const orders_invoices = [
     key: "requestPdfList",
     label: "要求書作成リスト",
   },
-  // {
-  //   key: "newRequestForm",
-  //   label: "依頼書",
-  // },
   {
     key: "requestList",
     label: "依頼リスト",
@@ -57,14 +50,6 @@ const orders_invoices = [
     key: "billingList",
     label: "請求一覧",
   },
-  // {
-  //   key: "invoice",
-  //   label: "請求書",
-  // },
-  // {
-  //   key: "invoice_Ms",
-  //   label: "請求書_エムズ",
-  // },
   {
     key: "invoice_receipt",
     label: "送り状・受領書",
@@ -81,21 +66,6 @@ const containers = [
     label: "空バン在庫コンテナ一覧",
   },
 ];
-
-// const calendar_schedules = [
-//   {
-//     key: "calendar",
-//     label: "カレンダー",
-//   },
-//   // {
-//   //   key: "dispatchSpecification",
-//   //   label: "配車表仕様書",
-//   // },
-//   // {
-//   //   key: "taskSchedule",
-//   //   label: "Task Schedule",
-//   // },
-// ];
 
 const masterDatas = [
   {
@@ -189,7 +159,6 @@ const items = {
   dashboard,
   orders_invoices,
   containers,
-  // calendar_schedules,
   masterDatas,
   analysis_reports,
   document_notes,
@@ -197,10 +166,16 @@ const items = {
 };
 
 function App() {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   return (
-    <div className="bg-bg-light min-h-screen grid grid-rows-[64px_1fr_auto] grid-cols-1 xl:grid-cols-[auto_minmax(0,1fr)] grid-areas-layout">
-      {" "}
-      {/* 2xl:grid-cols-[auto_minmax(0,1fr)_200px] */}
+    <div
+      className={`bg-bg-light min-h-screen grid grid-rows-[64px_1fr_auto] grid-cols-1 grid-areas-layout ${
+        currentPath === "/dashboard/overview"
+          ? ``
+          : `xl:grid-cols-[auto_minmax(0,1fr)]`
+      }`}>
       <Processbar />
       <Header
         items={items}
@@ -211,7 +186,7 @@ function App() {
         className="bg-bg-dark hidden xl:inline row-span-2 overflow-auto sticky top-[64px] max-h-[calc(100vh-64px)] box-border grid-in-sidebar pr-[10px]"
       />
       <div className="bg-bg-dark">
-        <Main className="z-10 ml-[14px] mr-6 flex flex-col grid-in-main pt-4" />
+        <Main className="z-10 ml-[14px] mr-6 flex flex-col grid-in-main pt-4 bg-bg-dark" />
       </div>
       <Footer className="xl:col-start-2 xl:col-span-1 2xl:col-span-2 2xl:col-start-2 text-center text-txt-100 grid-in-footer bg-bg-dark" />
     </div>
