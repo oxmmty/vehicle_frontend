@@ -194,45 +194,43 @@ const Dashboardpage = () => {
 
   /////////////////
   return (
-    <>
-      <div className=" h-[100%] w-full gap-2 ">
-        <div className="h-[400px] justify-between flex gap-2">
-          <div className="w-1/3 gap-2 mb-2">
-            <div className="h-[180px]  bg-bg-light rounded-lg mb-2">
-              <TotalAmount company={weeklyCompany} customer={weeklyCustomer} />
-            </div>
-            <div className="h-[200px] bg-bg-light rounded-lg">
-              <AllChart company={weeklyCompany} customer={weeklyCustomer} />
-            </div>
+    <div className="flex flex-col xl:flex-col h-[100%] w-full gap-2">
+      <div className="flex-col xl:flex-row flex gap-2">
+        <div className="xl:w-1/3 mb-2">
+          <div className="h-[180px] bg-bg-light rounded-lg mb-2">
+            <TotalAmount company={weeklyCompany} customer={weeklyCustomer} />
           </div>
-          <div className="w-2/3 h-[390px] bg-bg-light rounded-lg">
-            <CompanyCharts category={companyList} data={companyPriceList} />
+          <div className="h-[200px] bg-bg-light rounded-lg">
+            <AllChart company={weeklyCompany} customer={weeklyCustomer} />
           </div>
         </div>
-        <div className="flex justify-between gap-2">
-          <div className="w-1/3 h-[400px] bg-bg-light rounded-lg">
-            {customerList.length > 0 && (
-              <Customer label={customerList} series={customerPrice} />
-            )}
-          </div>
-          <div className="w-1/3 h-[400px] bg-bg-light rounded-lg">
-            <CTable
-              dataSource={combineds}
-              columns={columns}
-              pagination={true}
-              ps={5}
-              bordered
-              scroll={{ x: "max-content" }}
-            />
-          </div>
-          <div className="w-1/3 h-[400px] bg-bg-light rounded-lg">
-            {companyList.length > 0 && (
-              <Comapany label={companyList} series={companyPrice} />
-            )}
-          </div>
+        <div className="xl:w-2/3 h-[390px] bg-bg-light rounded-lg">
+          <CompanyCharts category={companyList} data={companyPriceList} />
         </div>
       </div>
-    </>
+      <div className="flex flex-col xl:flex-row justify-between gap-2 w-full">
+        <div className="xl:w-1/3 h-[400px] bg-bg-light rounded-lg">
+          {customerList.length > 0 && (
+            <Customer label={customerList} series={customerPrice} />
+          )}
+        </div>
+        <div className="xl:w-1/3 h-[400px] bg-bg-light rounded-lg">
+          <CTable
+            dataSource={combineds}
+            columns={columns}
+            pagination={true}
+            ps={5}
+            bordered
+            scroll={{ x: "max-content" }}
+          />
+        </div>
+        <div className="xl:w-1/3 h-[400px] bg-bg-light rounded-lg">
+          {companyList.length > 0 && (
+            <Comapany label={companyList} series={companyPrice} />
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
