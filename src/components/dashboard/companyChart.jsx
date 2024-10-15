@@ -16,7 +16,7 @@ const CompanyChart = (props) => {
       type: "bar",
       height: 400,
       toolbar: {
-        show: false,
+        show: true,
       },
       zoom: {
         enabled: false,
@@ -36,10 +36,13 @@ const CompanyChart = (props) => {
       },
     },
     legend: {
-      show: false,
+      show: true,
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
+      dropShadow: {
+        enabled: true,
+      },
     },
     stroke: {
       show: true,

@@ -66,10 +66,10 @@ const TotalAmount = (props) => {
       type: "area",
       fontFamily: "Noto Sans, Inter, sans-serif",
       dropShadow: {
-        enabled: false,
+        enabled: true,
       },
       toolbar: {
-        show: false,
+        show: true,
       },
     },
     tooltip: {
@@ -88,7 +88,7 @@ const TotalAmount = (props) => {
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
     },
     stroke: {
       width: 6,
