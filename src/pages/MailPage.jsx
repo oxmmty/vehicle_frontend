@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
-import { Table, Input, DatePicker, Select, Button } from "antd";
+import CTable from "src/components/CTable";
+import { Modal, Input, DatePicker, Select, Button } from "antd";
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -15,6 +16,17 @@ const MailPage = () => {
   const [filterDate, setFilterDate] = useState(null);
   const [filterCompany, setFilterCompany] = useState("");
   const [selectedRowKey, setSelectedRowKey] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   // Fetch data from backend
   useEffect(() => {
     const fetchData = async () => {
@@ -102,6 +114,7 @@ const MailPage = () => {
     } catch (error) {
       console.error("Error updating delivery date:", error);
     }
+    setIsModalOpen(false);
   };
 
   const handleRowSelect = (record) => {
@@ -116,7 +129,10 @@ const MailPage = () => {
         <input
           type="radio"
           checked={selectedRowKey === record.リクエスト番号}
-          onChange={() => handleRowSelect(record)} // Update selection handling
+          onChange={() => {
+            handleRowSelect(record);
+            showModal();
+          }} // Update selection handling
         />
       ),
       fixed: "left",
@@ -187,62 +203,62 @@ const MailPage = () => {
         </Button>
       </div>
 
-      <Table
+      <CTable
         columns={columns}
         dataSource={filteredData}
         pagination={false}
         bordered
+        ps={10}
         scroll={{ x: "max-content" }}
       />
+      <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
+        <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
+          <div>
+            <label htmlFor="recipient">Recipient Email:</label>
+            <Input
+              type="email"
+              id="recipient"
+              placeholder="recipient@example.com"
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+              required
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+            />
+          </div>
 
-      <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
-        <div>
-          <label htmlFor="recipient">Recipient Email:</label>
-          <Input
-            type="email"
-            id="recipient"
-            placeholder="recipient@example.com"
-            value={recipient}
-            onChange={(e) => setRecipient(e.target.value)}
-            required
-            style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-          />
+          <div>
+            <label htmlFor="subject">Subject:</label>
+            <Input
+              type="text"
+              id="subject"
+              placeholder="Email Subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              required
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="body">Email Body:</label>
+            <TextArea
+              id="body"
+              placeholder="Write your message here..."
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginBottom: "10px",
+                height: "100px",
+              }}
+            />
+          </div>
+
+          <Button onClick={handleSendEmail}>Send Email</Button>
         </div>
-
-        <div>
-          <label htmlFor="subject">Subject:</label>
-          <Input
-            type="text"
-            id="subject"
-            placeholder="Email Subject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            required
-            style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="body">Email Body:</label>
-          <TextArea
-            id="body"
-            placeholder="Write your message here..."
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "10px",
-              height: "100px",
-            }}
-          />
-        </div>
-
-        <Button onClick={handleSendEmail} style={{ padding: "10px 20px" }}>
-          Send Email
-        </Button>
-      </div>
+      </Modal>
     </div>
   );
 };

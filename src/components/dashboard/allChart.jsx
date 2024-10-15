@@ -59,6 +59,14 @@ const BarChart = (props) => {
     legend: {
       show: true,
       position: "bottom",
+      cssClass:
+        localStorageTheme === "dark" ? "text-customDark" : "text-customLight",
+      text: {
+        style: {
+          color: "white !important",
+          fontFamily: "Noto Sans JP !important",
+        },
+      },
     },
     dataLabels: {
       enabled: true,

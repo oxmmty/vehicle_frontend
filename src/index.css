@@ -112,7 +112,7 @@ ul.ant-menu {
 
 html,
 body {
-  font-family: "Noto Sans JP", sans-serif !important;
+  font-family: "Noto Sans JP" !important;
   font-size: 16px; /* optional to set a default size */
   line-height: 1.5; /* optional to set line-height for readability */
 }
@@ -127,12 +127,12 @@ p,
 a,
 span,
 div {
-  font-family: "Noto Sans", sans-serif;
+  font-family: "Noto Sans JP";
 }
 
 /* Optional: Override other text elements */
 input,
 button,
 textarea {
-  font-family: "Noto Sans", sans-serif;
+  font-family: "Noto Sans JP";
 }

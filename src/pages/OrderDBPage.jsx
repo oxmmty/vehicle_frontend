@@ -644,7 +644,7 @@ const OrderDBPage = () => {
           scroll={{ x: "max-content" }}
           size="small"
           className="table-fixed"
-          pagination={{ pageSize: 20 }}
+          pagination={{ pageSize: 14, position: ["bottomCenter"] }}
         />
       </div>
     </div>

@@ -63,7 +63,7 @@ const StorageContainerDBPage = () => {
     <div className="flex flex-col items-center w-full p-4">
       <Table
         columns={columns}
-        pagination={true}
+        pagination={{ pageSize: 14, position: ["bottomCenter"] }}
         bordered
         scroll={({ x: "max-content" }, { y: 900 })}
       />

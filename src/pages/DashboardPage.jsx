@@ -205,7 +205,7 @@ const Dashboardpage = () => {
               <AllChart company={weeklyCompany} customer={weeklyCustomer} />
             </div>
           </div>
-          <div className="w-2/3 h-[390px] bg-bg-light rounded-lg ">
+          <div className="w-2/3 h-[390px] bg-bg-light rounded-lg">
             <CompanyCharts category={companyList} data={companyPriceList} />
           </div>
         </div>
@@ -220,7 +220,7 @@ const Dashboardpage = () => {
               dataSource={combineds}
               columns={columns}
               pagination={true}
-              pn={5}
+              ps={5}
               bordered
               scroll={{ x: "max-content" }}
             />
