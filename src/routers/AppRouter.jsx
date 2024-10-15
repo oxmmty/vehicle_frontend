@@ -231,10 +231,10 @@ const AppRouter = () => {
               path="/settings_administration/businessOffice"
               element={<BusinessOffice />}
             />
-            <Route
+            {/* <Route
               path="/settings_administration/systemSettings"
               element={<DashboardPage />}
-            />
+            /> */}
           </Route>
         </Route>
         <Route

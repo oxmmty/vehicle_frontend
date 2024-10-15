@@ -149,10 +149,10 @@ const settings_administration = [
     label: "ユーザー管理",
   },
   { key: "businessOffice", label: "事業所" },
-  {
-    key: "systemSettings",
-    label: "システム設定",
-  },
+  // {
+  //   key: "systemSettings",
+  //   label: "システム設定",
+  // },
 ];
 
 const items = {

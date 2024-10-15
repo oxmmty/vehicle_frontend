@@ -39,7 +39,7 @@ const BarChart = (props) => {
       width: "100%",
       height: 200,
       toolbar: {
-        show: false,
+        show: true,
       },
     },
     fill: {
