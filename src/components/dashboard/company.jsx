@@ -57,7 +57,7 @@ const CompanyPage = (props) => {
                   const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                   return sum + "円";
                 },
-                colors: textColor,
+                color: textColor,
               },
               value: {
                 show: true,

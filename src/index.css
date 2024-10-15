@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Noto Sans JP", sans-serif !important;
+  font-family: "Noto Sans JP" !important;
   line-height: 1;
   font-weight: 400;
 
@@ -135,4 +135,12 @@ input,
 button,
 textarea {
   font-family: "Noto Sans JP";
+}
+.apexcharts-legend-text,
+.apexcharts-text tspan,
+.apexcharts-datalabels-group {
+  font-family: "Noto Sans JP" !important;
+  fill: var(--txt-100);
+  font-size: 12px;
+  color: var(--txt-100) !important;
 }
