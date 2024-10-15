@@ -59,7 +59,7 @@ const Header = ({ items, ...props }) => {
             <Image src="/logo.png" width={40} preview={false} />
           </button>
         </div>
-        <Navbar list={list} className="h-full hidden 2xl:inline" />
+        <Navbar list={list} className="h-full hidden  xl:inline 2xl:inline" />
         {/* <div className="pr-2">
           <Input
             placeholder="Type keywords..."
