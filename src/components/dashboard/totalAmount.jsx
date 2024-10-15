@@ -64,7 +64,7 @@ const TotalAmount = (props) => {
       height: "100%",
       width: "100%",
       type: "area",
-      fontFamily: "Noto Sans, Inter, sans-serif",
+      fontFamily: "Noto Sans JP, Inter, sans-serif",
       dropShadow: {
         enabled: true,
       },
