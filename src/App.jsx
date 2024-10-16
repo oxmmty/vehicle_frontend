@@ -20,7 +20,7 @@ const dashboard = [
 const orders_invoices = [
   {
     key: "newOrderForm",
-    label: "新依頼書",
+    label: "受注入力",
   },
   {
     key: "db",
@@ -36,7 +36,7 @@ const orders_invoices = [
   },
   {
     key: "requestPdfList",
-    label: "要求書作成リスト",
+    label: "依頼書作成",
   },
   {
     key: "requestList",
