@@ -1199,6 +1199,7 @@ const NewOrderFormPage = () => {
     } catch (error) {
       console.log(error, res.message);
     }
+    window.location.reload();
   };
 
   return (
@@ -1215,17 +1216,17 @@ const NewOrderFormPage = () => {
         })}
       />
       <div className="flex flex-row flex-wrap justify-center items-center gap-4 mb-[24px]">
-        <Button>デバックボタン</Button>
-        <Button>動作確認設定</Button>
+        {/* <Button>デバックボタン</Button> */}
+        {/* <Button>動作確認設定</Button>
         <Button>画面リフレッシュ</Button>
-        <Button>記録データ削除</Button>
+        <Button>記録データ削除</Button> */}
+        <Button onClick={() => window.location.reload()}>初期化</Button>
         <Button onClick={sendData}>保存</Button>
-        <Button>閉じる</Button>
+        {/* <Button>閉じる</Button> */}
       </div>
-      <div className="flex justify-around max-w-96 w-full">
-        <Button type="primary">初期化</Button>
-        <Button type="default">請求済削除</Button>
-      </div>
+      {/* <div className="flex justify-around max-w-96 w-full"> */}
+      {/* <Button type="default">請求済削除</Button> */}
+      {/* </div> */}
     </div>
   );
 };

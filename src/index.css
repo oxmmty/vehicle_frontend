@@ -144,3 +144,6 @@ textarea {
   font-size: 12px;
   color: var(--txt-100) !important;
 }
+.ant-anchor-link {
+  padding-left: 4px !important;
+}

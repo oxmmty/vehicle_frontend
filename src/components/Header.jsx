@@ -16,12 +16,12 @@ const { Text } = Typography;
 
 const list = [
   { key: "dashboard", value: "ダッシュボード" },
-  { key: "orders_invoices", value: "受注・請求書メニュー" },
+  { key: "orders_invoices", value: "受注・請求書" },
   // { key: "calendar_schedules", value: "カレンダー・配車" },
   { key: "containers", value: "コンテナ管理" },
   { key: "masterDatas", value: "マスタデータ" },
   { key: "analysis_reports", value: "分析・レポート" },
-  { key: "document_notes", value: "ドキュメント・ノート" },
+  { key: "document_notes", value: "ドキュメント" },
   { key: "settings_administration", value: "設定・管理" },
 ];
 
@@ -59,7 +59,10 @@ const Header = ({ items, ...props }) => {
             <Image src="/logo.png" width={40} preview={false} />
           </button>
         </div>
-        <Navbar list={list} className="h-full hidden  xl:inline 2xl:inline" />
+        <Navbar
+          list={list}
+          className="h-full hidden lg:inline lg:font-[6px] xl:inline 2xl:inline"
+        />
         {/* <div className="pr-2">
           <Input
             placeholder="Type keywords..."
