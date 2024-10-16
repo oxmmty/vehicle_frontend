@@ -48,9 +48,9 @@ const Header = ({ items, ...props }) => {
 
   return (
     <header className={props.className}>
-      <div className="flex justify-between items-center h-full px-4 2xl:px-6 m-auto">
+      <div className="flex justify-between items-center h-full px-2 2xl:px-6 m-auto">
         <div className="flex justify-center items-center">
-          <div className="xl:hidden">
+          <div className=" xl:hidden">
             <Button onClick={showDrawerSide} icon={<MenuOutlined />} />
           </div>
           <button
@@ -90,7 +90,7 @@ const Header = ({ items, ...props }) => {
               className="rounded-full"
             />
           </LogoMenu>
-          <div className="2xl:hidden">
+          <div className="lg:hidden">
             <Button onClick={showDrawerNav} icon={<MenuOutlined />} />
           </div>
         </div>
