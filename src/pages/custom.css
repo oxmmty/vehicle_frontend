@@ -1,0 +1,62 @@
+/* override day number color and size */
+.fc-day-number {
+  font-size: 1.5em;
+  color: #5c005c;
+}
+
+/* override day title color and size */
+.fc-day-header {
+  font-size: 1.5em;
+  color: #00b294;
+}
+.fc-button {
+  color: var(--txt-100) !important;
+  background-color: var(--bg-light-dark) !important;
+}
+.modal {
+  font-family: "Noto Sans JP";
+  position: fixed;
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+}
+.modal-content {
+  border: 1px solid var(--txt-100);
+  background-color: var(--bg-light-dark);
+  margin: auto;
+  padding: 20px;
+  width: 20%;
+}
+.exit-icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+.modal-title {
+  color: var(--txt-100);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 28px;
+}
+.modalText {
+  text-align: justify;
+  color: var(--txt-100);
+}
+.modal-button button {
+  border: 1px solid #6821c3;
+  padding: 6px;
+  width: 8rem;
+  background-color: #6821c3;
+  color: white;
+  border-radius: 7px;
+}
+.fc-timegrid-slot,
+.fc-daygrid-day-frame,
+.fc-daygrid-day {
+  overflow: scroll !important;
+  height: 70px !important;
+}
