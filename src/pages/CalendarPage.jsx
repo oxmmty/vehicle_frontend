@@ -137,6 +137,8 @@ const CalendarPage = () => {
   const [start, setStart] = useState(new Date());
   const [deliveryLocation, setDeliveryLocation] = useState("");
   const [pickupLocation, setPickupLocation] = useState("");
+  const [eventPickupLocation, setEventPickupLocation] = useState("");
+  const [eventDeliveryLocation, setEventDeliveryLocation] = useState("");
 
   const fetchData = async () => {
     try {
@@ -165,7 +167,6 @@ const CalendarPage = () => {
             item["配達先1"],
           );
         }
-
         if (item["配達日2"]) {
           const content = `${item["識別コード"]}-02`;
           addEvent(
@@ -241,8 +242,8 @@ const CalendarPage = () => {
           ? new Date(date).toISOString().slice(0, 10)
           : null;
         const formattedTime = time ? `T${time}` : "";
-        setPickupLocation(pickupLocation);
-        setDeliveryLocation(deliveryLocation);
+        setEventPickupLocation(pickupLocation);
+        setEventDeliveryLocation(deliveryLocation);
 
         if (formattedDate) {
           eventsList.push({
@@ -252,8 +253,8 @@ const CalendarPage = () => {
             backgroundColor,
             borderColor,
             textColor,
-            pickupLocation: pickupLocation,
-            deliveryLocation: deliveryLocation,
+            eventPickupLocation: pickupLocation,
+            eventDeliveryLocation: deliveryLocation,
           });
         }
       }
@@ -272,6 +273,8 @@ const CalendarPage = () => {
   function handleEventClick(clickInfo) {
     setTitle(clickInfo.event.title);
     setStart(clickInfo.event.start);
+    setPickupLocation(clickInfo.event.pickupLocation);
+    setDeliveryLocation(clickInfo.event.deliveryLocation);
     setModal(true);
   }
 
@@ -319,11 +322,11 @@ const CalendarPage = () => {
           </div>
           <div className="block">
             <strong>取場所:</strong>
-            <Label> {pickupLocation}</Label>
+            <Label> {eventPickupLocation}</Label>
           </div>
           <div className="block">
             <strong>配達先:</strong>
-            <Label> {deliveryLocation}</Label>
+            <Label> {eventDeliveryLocation}</Label>
           </div>
         </FormGroup>
       </CustomModal>

@@ -1,4 +1,4 @@
-import { DatePicker, Table, Typography } from "antd";
+import { DatePicker, Table, Typography, Input, Form, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -8,183 +8,197 @@ const { Title } = Typography;
 const CustomerListPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [datas, setDatas] = useState([]);
+  const [editingKey, setEditingKey] = useState(""); // Track which row is being edited
+  const [loading, setLoading] = useState(false); // Loading state for saving data
+
+  const isEditing = (record) => record._id === editingKey; // Use _id as the key for editing
+
+  const edit = (record) => {
+    setEditingKey(record._id); // Set the editing key to the selected row's _id
+  };
+
+  const save = async (_id) => {
+    try {
+      const row = await form.validateFields(); // Get edited values from the form
+      const newData = [...datas];
+      const index = newData.findIndex((item) => _id === item._id);
+
+      if (index > -1) {
+        const item = newData[index];
+        const updatedRow = { ...item, ...row };
+
+        // Set loading state during the update process
+        setLoading(true);
+
+        // Send the updated row data to the backend using _id as the identifier
+        await axios.put(`/customerPriceList/${_id}`, updatedRow);
+
+        // Update the local data
+        newData.splice(index, 1, updatedRow);
+        setDatas(newData);
+        setEditingKey(""); // Exit edit mode
+        message.success("データが更新されました。");
+
+        setLoading(false);
+      }
+    } catch (errInfo) {
+      console.log("Save failed:", errInfo);
+      setLoading(false);
+      message.error("更新に失敗しました。");
+    }
+  };
+
+  const cancel = () => {
+    setEditingKey(""); // Exit edit mode without saving
+  };
 
   const columns = [
     {
-      key: "1",
       title: "顧客名",
-      dataIndex: "name",
+      dataIndex: "顧客名",
       onCell: (_, index) => {
-        if (index === 0) {
-          return {
-            rowSpan: 7,
-          };
-        }
-        if (index === 7) {
-          return {
-            rowSpan: 5,
-          };
-        }
-        if (index > 0 && index < 7) {
-          return {
-            rowSpan: 0,
-          };
-        }
-        if (index > 7 && index < 12) {
-          return {
-            rowSpan: 0,
-          };
-        }
+        const rowSpan = getRowSpan(index, "顧客名");
+        return {
+          rowSpan,
+        };
       },
     },
     {
-      key: "2",
       title: "配達先名称",
-      dataIndex: "deliver",
+      dataIndex: "配達先",
     },
     {
-      key: "3",
       title: "サイズ",
-      dataIndex: "size",
+      dataIndex: "サイズ",
     },
     {
-      key: "4",
       title: "料金",
-      dataIndex: "fee",
+      dataIndex: "料金",
     },
     {
-      key: "5",
       title: "距離",
-      dataIndex: "distance",
+      dataIndex: "距離",
+      editable: true, // Mark as editable
     },
     {
-      key: "6",
       title: "タリフ比率",
-      dataIndex: "ratio",
+      dataIndex: "タリフ比率",
+      editable: true, // Mark as editable
+    },
+    {
+      title: "操作",
+      render: (_, record) => {
+        const editable = isEditing(record); // Check if the current row is being edited
+        return editable ? (
+          <span>
+            <a onClick={() => save(record._id)} style={{ marginRight: 8 }}>
+              保存
+            </a>
+            <a onClick={cancel}>キャンセル</a>
+          </span>
+        ) : (
+          <a disabled={editingKey !== ""} onClick={() => edit(record)}>
+            編集
+          </a>
+        ); // Disable editing for multiple rows
+      },
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      name: "株式会社エスワイプロモーション",
-      deliver:
-        "①キューソー流通システム栗橋第二　➁キューソー流通システム五霞第二　2ヵ所降ろし",
-      size: "40F",
-      fee: "50000",
-      distance: "150",
-      ratio: "",
-    },
-    {
-      key: "2",
-      name: "株式会社エスワイプロモーション",
-      deliver: "キューソー流通システム栗橋第二営業所",
-      size: "40F",
-      fee: "45000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "3",
-      name: "株式会社エスワイプロモーション",
-      deliver: "キューソー流通システム五霞第二営業所",
-      size: "40F",
-      fee: "40000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "4",
-      name: "株式会社エスワイプロモーション",
-      deliver: "キューソー流通システム川崎営業所",
-      size: "40F",
-      fee: "50000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "5",
-      name: "株式会社エスワイプロモーション",
-      deliver: "ヒューテックノオリン埼玉支店",
-      size: "40F",
-      fee: "35000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "6",
-      name: "株式会社エスワイプロモーション",
-      deliver: "ヒューテックノオリン埼玉支店",
-      size: "40F",
-      fee: "48000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "7",
-      name: "株式会社エスワイプロモーション",
-      deliver: "",
-      size: "20F",
-      fee: "450000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "8",
-      name: "株式会社ハズプランニング",
-      deliver: "①合同流通　➁しまむら桶川商品センター　2ヵ所降ろし",
-      size: "40F",
-      fee: "90000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "9",
-      name: "株式会社ハズプランニング",
-      deliver: "",
-      size: "20F",
-      fee: "80000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "10",
-      name: "株式会社ハズプランニング",
-      deliver: "①合同流通　➁しまむら東村山商品センター　2ヵ所降ろし",
-      size: "40F",
-      fee: "78000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "11",
-      name: "株式会社ハズプランニング",
-      deliver: "しまむら東松山商品センター",
-      size: "20F",
-      fee: "60000",
-      distance: "",
-      ratio: "",
-    },
-    {
-      key: "12",
-      name: "株式会社ハズプランニング",
-      deliver: "株式会社　合同流通",
-      size: "20F",
-      fee: "50000",
-      distance: "",
-      ratio: "",
-    },
-  ];
+  // Define how editable cells are rendered
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
+
+  // Helper function to get row span for 顧客名
+  const getRowSpan = (index, key) => {
+    const currentData = datas[index];
+    const previousData = index > 0 ? datas[index - 1] : null;
+
+    if (index === 0 || currentData[key] !== previousData?.[key]) {
+      let rowSpan = 1;
+      let i = index + 1;
+      while (i < datas.length && datas[i][key] === currentData[key]) {
+        rowSpan += 1;
+        i += 1;
+      }
+      return rowSpan;
+    }
+
+    return 0;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get("/customerPriceList");
+      const dataWithKey = res.data.map((item) => ({ ...item, key: item._id })); // Ensure each row has a key as _id
+      setDatas(dataWithKey);
+    };
+    fetchData();
+  }, []);
+
+  // Editable cell component
+  const EditableCell = ({
+    editing,
+    dataIndex,
+    title,
+    record,
+    children,
+    ...restProps
+  }) => {
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex}
+            style={{ margin: 0 }}
+            rules={[
+              {
+                required: true,
+                message: `Please Input ${title}!`,
+              },
+            ]}>
+            <Input />
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
+
+  const [form] = Form.useForm();
 
   return (
     <div className="flex flex-col gap-0">
-      <Table
-        dataSource={data}
-        columns={columns}
-        scroll={{ x: "max-content" }}
-        pagination={false}
-        className="w-full"
-      />
+      <Form form={form} component={false}>
+        <Table
+          components={{
+            body: {
+              cell: EditableCell,
+            },
+          }}
+          dataSource={datas}
+          columns={mergedColumns}
+          scroll={{ x: "max-content" }}
+          pagination={false}
+          className="w-full"
+          rowClassName="editable-row"
+          loading={loading} // Show loading spinner while saving
+        />
+      </Form>
     </div>
   );
 };
