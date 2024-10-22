@@ -1,18 +1,51 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Typography,
-  Button,
-  Form,
-  Input,
-  Popconfirm,
-  Modal,
-  notification,
-} from "antd";
+import CTable from "src/components/CTable";
+import { Button, Form, Input, Popconfirm, Modal, notification } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 
-const { Title } = Typography;
+const validateEmail = (_, value) => {
+  if (value && !/\S+@\S+\.\S+/.test(value)) {
+    return Promise.reject(
+      new Error("有効なメールアドレスを入力してください！"),
+    );
+  }
+  return Promise.resolve();
+};
+
+const validateCC = (_, value) => {
+  if (value) {
+    const emails = value.split(",");
+    const emailRegex = /\S+@\S+\.\S+/;
+    const isValid = emails.every((email) => emailRegex.test(email.trim()));
+    return isValid
+      ? Promise.resolve()
+      : Promise.reject(
+          new Error("有効なメールアドレスをカンマで区切って入力してください！"),
+        );
+  }
+  return Promise.resolve(); // Allow empty value
+};
+
+const validatePhoneNumber = (_, value) => {
+  if (value && !/^[0-9\-+()]+$/.test(value)) {
+    return Promise.reject(new Error("有効な電話番号を入力してください！"));
+  }
+  return Promise.resolve(); // Allow empty value
+};
+
+const validateFaxNumber = (_, value) => {
+  if (value && !/^[0-9\-+()]+$/.test(value)) {
+    return Promise.reject(new Error("有効なFAX番号を入力してください！"));
+  }
+  return Promise.resolve(); // Allow empty value
+};
+
+const validateAddress = (_, value) => {
+  if (value && value.length < 5) {
+    return Promise.reject(new Error("住所は5文字以上で入力してください！"));
+  }
+  return Promise.resolve(); // Allow empty value
+};
 
 const EditableCell = ({
   editing,
@@ -23,14 +56,31 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
+  const getValidationRules = (dataIndex) => {
+    switch (dataIndex) {
+      case "アドレス":
+        return [{ validator: validateEmail }];
+      case "CC":
+        return [{ validator: validateCC }];
+      case "TEL":
+        return [{ validator: validatePhoneNumber }];
+      case "FAX":
+        return [{ validator: validateFaxNumber }];
+      case "住所":
+        return [{ validator: validateAddress }];
+      default:
+        return [{ required: true, message: `${title}を入力してください！` }];
+    }
+  };
+
   return (
-    <td {...restProps}>
+    <td {...restProps} className="scrollable-cell">
       {editing ? (
         <Form.Item
           name={dataIndex}
           style={{ margin: 0 }}
-          rules={[{ required: true, message: `Please Input ${title}!` }]}>
-          <Input />
+          rules={getValidationRules(dataIndex)}>
+          <Input className="scrollable-input" />
         </Form.Item>
       ) : (
         children
@@ -56,11 +106,13 @@ export default function PartnerCompanyPage() {
       const res = await axios.get(
         `${process.env.REACT_API_BASE_URL}/partnercompany`,
       );
-      setDatas(res.data);
+      // Sort data by カウント before setting it to state
+      const sortedData = res.data.sort((a, b) => b.カウント - a.カウント);
+      setDatas(sortedData);
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to load partner companies.",
+        message: "エラー",
+        description: "協力会社の読み込みに失敗しました。",
       });
     }
   };
@@ -89,14 +141,14 @@ export default function PartnerCompanyPage() {
       );
 
       notification.success({
-        message: "Success",
+        message: "成功",
         description: "Partner company updated successfully.",
       });
       setEditingKey("");
       fetchPartnerCompanies(); // Reload data after editing
     } catch (errInfo) {
       notification.error({
-        message: "Save Failed",
+        message: "エラー",
         description: "Unable to save changes.",
       });
     }
@@ -106,17 +158,17 @@ export default function PartnerCompanyPage() {
   const handleDelete = async (key) => {
     try {
       await axios.delete(
-        `${process.env.REACT_API_BASE_URL}/partnercompany/${key}`,
+        process.env.REACT_API_BASE_URL + `/partnercompany/${key}`,
       );
       notification.success({
-        message: "Deleted",
-        description: "Partner company deleted successfully.",
+        message: "成功",
+        description: "協力会社が正常に削除されました。",
       });
       fetchPartnerCompanies(); // Reload data after deletion
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to delete partner company.",
+        message: "エラー",
+        description: "協力会社の削除に失敗しました。",
       });
     }
   };
@@ -129,15 +181,15 @@ export default function PartnerCompanyPage() {
         values,
       );
       notification.success({
-        message: "Added",
-        description: "Partner company added successfully.",
+        message: "成功",
+        description: "協力会社が正常に追加されました。",
       });
       setIsModalVisible(false);
       fetchPartnerCompanies(); // Reload data after adding
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to add partner company.",
+        message: "エラー",
+        description: "協力会社の追加に失敗しました。",
       });
     }
   };
@@ -149,11 +201,6 @@ export default function PartnerCompanyPage() {
       editable: true,
     },
     {
-      title: "カウント",
-      dataIndex: "カウント",
-      editable: true,
-    },
-    {
       title: "担当",
       dataIndex: "担当",
       editable: true,
@@ -162,26 +209,31 @@ export default function PartnerCompanyPage() {
       title: "アドレス",
       dataIndex: "アドレス",
       editable: true,
+      validationRules: [{ validator: validateEmail }],
     },
     {
       title: "CC",
       dataIndex: "CC",
       editable: true,
+      validationRules: [{ validator: validateCC }],
     },
     {
       title: "TEL",
       dataIndex: "TEL",
       editable: true,
+      validationRules: [{ validator: validatePhoneNumber }],
     },
     {
       title: "FAX",
       dataIndex: "FAX",
       editable: true,
+      validationRules: [{ validator: validateFaxNumber }],
     },
     {
       title: "住所",
       dataIndex: "住所",
       editable: true,
+      validationRules: [{ validator: validateAddress }],
     },
     {
       title: "操作",
@@ -194,10 +246,12 @@ export default function PartnerCompanyPage() {
               onClick={() => save(record._id)}
               type="link"
               style={{ marginRight: 8 }}>
-              Save
+              保存
             </Button>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <Button type="link">Cancel</Button>
+            <Popconfirm
+              title="キャンセルしてもよろしいですか？"
+              onConfirm={cancel}>
+              <Button type="link">キャンセル</Button>
             </Popconfirm>
           </span>
         ) : (
@@ -206,13 +260,13 @@ export default function PartnerCompanyPage() {
               type="link"
               disabled={editingKey !== ""}
               onClick={() => edit(record)}>
-              Edit
+              編集
             </Button>
             <Popconfirm
               title="Are you sure to delete?"
               onConfirm={() => handleDelete(record._id)}>
               <Button type="link" danger>
-                Delete
+                削除
               </Button>
             </Popconfirm>
           </>
@@ -248,78 +302,72 @@ export default function PartnerCompanyPage() {
   return (
     <div className="flex flex-col gap-0">
       <Form form={form} component={false}>
-        <Button
-          onClick={showAddModal}
-          type="primary"
-          style={{ marginBottom: 16 }}>
-          Add Partner Company
-        </Button>
-        <Table
+        <div className="flex justify-end p-4">
+          <Button
+            onClick={showAddModal}
+            type="primary"
+            className=" w-32 h-12 z-1">
+            協力会社を追加
+          </Button>
+        </div>
+
+        <CTable
           components={{
             body: {
               cell: EditableCell,
             },
           }}
-          className=" overflow-scroll"
+          virtualscroll={{ x: 2000, y: 500 }}
+          className="overflow-scroll"
           rowKey="_id"
           bordered
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={false}
+          pagination={true}
+          ps={10}
         />
       </Form>
 
       <Modal
-        title="Add Partner Company"
+        title="協力会社を追加"
         visible={isModalVisible}
         onCancel={handleCancelModal}
         footer={null}>
         <Form form={addForm} onFinish={handleAdd}>
           <Form.Item
             name="協力会社"
-            rules={[{ required: true, message: "Please input 協力会社!" }]}>
+            rules={[
+              { required: true, message: "「協力会社を入力してください！" },
+            ]}>
             <Input placeholder="協力会社" />
           </Form.Item>
           <Form.Item
-            name="カウント"
-            rules={[{ required: true, message: "Please input カウント!" }]}>
-            <Input placeholder="カウント" />
-          </Form.Item>
-          <Form.Item
             name="担当"
-            rules={[{ required: true, message: "Please input 担当!" }]}>
+            rules={[{ required: true, message: "担当を入力してください！" }]}>
             <Input placeholder="担当" />
           </Form.Item>
-          <Form.Item
-            name="アドレス"
-            rules={[{ required: true, message: "Please input アドレス!" }]}>
+          <Form.Item name="アドレス" rules={[{ validator: validateEmail }]}>
             <Input placeholder="アドレス" />
           </Form.Item>
-          <Form.Item
-            name="CC"
-            rules={[{ required: true, message: "Please input CC!" }]}>
+          <Form.Item name="CC" rules={[{ validator: validateCC }]}>
             <Input placeholder="CC" />
           </Form.Item>
-          <Form.Item
-            name="TEL"
-            rules={[{ required: true, message: "Please input TEL!" }]}>
+          <Form.Item name="TEL" rules={[{ validator: validatePhoneNumber }]}>
             <Input placeholder="TEL" />
           </Form.Item>
-          <Form.Item
-            name="FAX"
-            rules={[{ required: true, message: "Please input FAX!" }]}>
+          <Form.Item name="FAX" rules={[{ validator: validateFaxNumber }]}>
             <Input placeholder="FAX" />
           </Form.Item>
-          <Form.Item
-            name="住所"
-            rules={[{ required: true, message: "Please input 住所!" }]}>
+          <Form.Item name="住所" rules={[{ validator: validateAddress }]}>
             <Input placeholder="住所" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Add
-            </Button>
+            <div className="flex justify-end">
+              <Button type="primary" htmlType="submit">
+                追加
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Modal>

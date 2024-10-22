@@ -1,19 +1,35 @@
-import {
-  Table,
-  Typography,
-  Button,
-  Form,
-  Input,
-  Popconfirm,
-  Modal,
-  notification,
-} from "antd";
+import { Button, Form, Input, Popconfirm, Modal, notification } from "antd";
 import axios from "axios";
+import CTable from "src/components/CTable";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 
-const { Title } = Typography;
+const getShipperNameRules = () => [
+  { required: true, message: "荷主名称を入力してください！" },
+  { max: 50, message: "荷主名称は50文字以内で入力してください。" },
+];
 
+const getTelRules = () => [
+  { message: "TELを入力してください！" },
+  {
+    pattern: /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/,
+    message: "TELは数字とハイフンのみ入力可能です。",
+  },
+];
+
+const getFaxRules = () => [
+  { message: "FAXを入力してください！" },
+  {
+    pattern: /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/,
+    message: "FAXは数字とハイフンのみ入力可能です。",
+  },
+];
+
+const getAddressRules = () => [
+  { message: "住所を入力してください！" },
+  { min: 10, message: "住所は最低10文字必要です。" },
+];
+
+// Editable cell with validation
 const EditableCell = ({
   editing,
   dataIndex,
@@ -24,14 +40,30 @@ const EditableCell = ({
   children,
   ...restProps
 }) => {
-  const inputNode = <Input />;
+  let inputNode = <Input />;
+
+  const getValidationRules = () => {
+    switch (dataIndex) {
+      case "荷主名称":
+        return getShipperNameRules();
+      case "TEL":
+        return getTelRules();
+      case "FAX":
+        return getFaxRules();
+      case "住所":
+        return getAddressRules();
+      default:
+        return [];
+    }
+  };
+
   return (
     <td {...restProps}>
       {editing ? (
         <Form.Item
           name={dataIndex}
           style={{ margin: 0 }}
-          rules={[{ required: true, message: `Please Input ${title}!` }]}>
+          rules={getValidationRules()}>
           {inputNode}
         </Form.Item>
       ) : (
@@ -49,18 +81,17 @@ const ShipperList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    fetchCustomers();
+    fetchShippers();
   }, []);
 
-  // Fetch customer data from the API
-  const fetchCustomers = async () => {
+  const fetchShippers = async () => {
     try {
       const res = await axios.get(process.env.REACT_API_BASE_URL + `/shipper`);
       setDatas(res.data);
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to load shippers.",
+        message: "エラー",
+        description: "荷主の読み込みに失敗しました。",
       });
     }
   };
@@ -76,63 +107,59 @@ const ShipperList = () => {
     setEditingKey("");
   };
 
-  // Save changes to the customer
   const save = async (key) => {
     try {
       const row = await form.validateFields();
-      const updatedCustomer = { ...row };
+      const updatedShipper = { ...row };
 
-      // Update customer via API
       await axios.put(
         process.env.REACT_API_BASE_URL + `/shipper/${key}`,
-        updatedCustomer,
+        updatedShipper,
       );
 
       notification.success({
-        message: "Success",
-        description: "Customer updated successfully.",
+        message: "成功",
+        description: "荷主情報が正常に更新されました。",
       });
       setEditingKey("");
-      fetchCustomers(); // Reload data after editing
+      fetchShippers();
     } catch (errInfo) {
       notification.error({
-        message: "Save Failed",
-        description: "Unable to save changes.",
+        message: "エラー",
+        description: "変更を保存できません。",
       });
     }
   };
 
-  // Delete customer
   const handleDelete = async (key) => {
     try {
       await axios.delete(process.env.REACT_API_BASE_URL + `/shipper/${key}`);
       notification.success({
-        message: "Deleted",
-        description: "Customer deleted successfully.",
+        message: "削除成功",
+        description: "荷主が正常に削除されました。",
       });
-      fetchCustomers(); // Reload data after deletion
+      fetchShippers();
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to delete customer.",
+        message: "エラー",
+        description: "荷主の削除に失敗しました。",
       });
     }
   };
 
-  // Add a new customer
   const handleAdd = async (values) => {
     try {
       await axios.post(process.env.REACT_API_BASE_URL + `/shipper`, values);
       notification.success({
-        message: "Added",
-        description: "Customer added successfully.",
+        message: "追加成功",
+        description: "荷主が正常に追加されました。",
       });
       setIsModalVisible(false);
-      fetchCustomers(); // Reload data after adding
+      fetchShippers();
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to add customer.",
+        message: "エラー",
+        description: "荷主の追加に失敗しました。",
       });
     }
   };
@@ -143,11 +170,11 @@ const ShipperList = () => {
       dataIndex: "荷主名称",
       editable: true,
     },
-    {
-      title: "カウント",
-      dataIndex: "カウント",
-      editable: true,
-    },
+    // {
+    //   title: "カウント",
+    //   dataIndex: "カウント",
+    //   editable: true,
+    // },
     {
       title: "担当",
       dataIndex: "担当",
@@ -179,10 +206,12 @@ const ShipperList = () => {
               onClick={() => save(record._id)}
               type="link"
               style={{ marginRight: 8 }}>
-              Save
+              保存
             </Button>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <Button type="link">Cancel</Button>
+            <Popconfirm
+              title="キャンセルしてもよろしいですか？"
+              onConfirm={cancel}>
+              <Button type="link">キャンセル</Button>
             </Popconfirm>
           </span>
         ) : (
@@ -191,13 +220,13 @@ const ShipperList = () => {
               type="link"
               disabled={editingKey !== ""}
               onClick={() => edit(record)}>
-              Edit
+              編集
             </Button>
             <Popconfirm
-              title="Are you sure to delete?"
+              title="本当に削除しますか？"
               onConfirm={() => handleDelete(record._id)}>
               <Button type="link" danger>
-                Delete
+                削除
               </Button>
             </Popconfirm>
           </>
@@ -233,13 +262,12 @@ const ShipperList = () => {
   return (
     <div className="flex flex-col gap-0">
       <Form form={form} component={false}>
-        <Button
-          onClick={showAddModal}
-          type="primary"
-          style={{ marginBottom: 16 }}>
-          Add Customer
-        </Button>
-        <Table
+        <div className="flex justify-end mb-4">
+          <Button onClick={showAddModal} type="primary">
+            荷主を追加
+          </Button>
+        </div>
+        <CTable
           components={{
             body: {
               cell: EditableCell,
@@ -250,54 +278,48 @@ const ShipperList = () => {
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={false}
+          pagination={true}
+          ps={10}
         />
       </Form>
 
       <Modal
-        title="Add Customer"
+        title="荷主を追加"
         visible={isModalVisible}
         onCancel={handleCancelModal}
         footer={null}>
         <Form form={addForm} onFinish={handleAdd}>
-          <Form.Item
-            name="顧客名称"
-            rules={[{ required: true, message: "Please input 顧客名称!" }]}>
-            <Input placeholder="顧客名称" />
+          <Form.Item name="荷主名称" rules={getShipperNameRules()}>
+            <Input placeholder="荷主名称" />
           </Form.Item>
-          <Form.Item
-            name="カウント"
-            rules={[{ required: true, message: "Please input カウント!" }]}>
-            <Input placeholder="カウント" />
-          </Form.Item>
-          <Form.Item
-            name="担当"
-            rules={[{ required: true, message: "Please input 担当!" }]}>
+
+          <Form.Item name="担当">
             <Input placeholder="担当" />
           </Form.Item>
-          <Form.Item
-            name="TEL"
-            rules={[{ required: true, message: "Please input TEL!" }]}>
+
+          <Form.Item name="TEL" rules={getTelRules()}>
             <Input placeholder="TEL" />
           </Form.Item>
-          <Form.Item
-            name="FAX"
-            rules={[{ required: true, message: "Please input FAX!" }]}>
+
+          <Form.Item name="FAX" rules={getFaxRules()}>
             <Input placeholder="FAX" />
           </Form.Item>
-          <Form.Item
-            name="住所"
-            rules={[{ required: true, message: "Please input 住所!" }]}>
+
+          <Form.Item name="住所" rules={getAddressRules()}>
             <Input placeholder="住所" />
           </Form.Item>
+
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Add
-            </Button>
+            <div className="flex justify-end">
+              <Button type="primary" htmlType="submit">
+                追加
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Modal>
     </div>
   );
 };
+
 export default ShipperList;

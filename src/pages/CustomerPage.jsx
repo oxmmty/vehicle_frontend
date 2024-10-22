@@ -1,37 +1,27 @@
-import {
-  Table,
-  Typography,
-  Button,
-  Form,
-  Input,
-  Popconfirm,
-  Modal,
-  notification,
-} from "antd";
+import { Button, Form, Input, Popconfirm, Modal, notification } from "antd";
+import CTable from "src/components/CTable";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-
-const { Title } = Typography;
 
 const EditableCell = ({
   editing,
   dataIndex,
   title,
-  inputType,
   record,
   index,
   children,
+  validationRules = [],
   ...restProps
 }) => {
   const inputNode = <Input />;
+
   return (
     <td {...restProps}>
       {editing ? (
         <Form.Item
           name={dataIndex}
           style={{ margin: 0 }}
-          rules={[{ required: true, message: `Please Input ${title}!` }]}>
+          rules={[...validationRules]}>
           {inputNode}
         </Form.Item>
       ) : (
@@ -56,13 +46,44 @@ export default function CustomerPage() {
   const fetchCustomers = async () => {
     try {
       const res = await axios.get(process.env.REACT_API_BASE_URL + `/customer`);
-      setDatas(res.data);
+      const sortedData = res.data.sort((a, b) => b.カウント - a.カウント);
+      setDatas(sortedData);
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to load customers.",
+        message: "エラー",
+        description: "顧客の読み込みに失敗しました。",
       });
     }
+  };
+
+  // Validators
+  const addressValidator = (_, value) => {
+    if (value && value.length < 10) {
+      return Promise.reject(
+        new Error("有効な住所を入力してください！(最低10文字)"),
+      );
+    }
+    return Promise.resolve();
+  };
+
+  const phoneNumberValidator = (_, value) => {
+    if (
+      value &&
+      !/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/.test(value)
+    ) {
+      return Promise.reject(new Error("有効な電話番号を入力してください！"));
+    }
+    return Promise.resolve();
+  };
+
+  const faxNumberValidator = (_, value) => {
+    if (
+      value &&
+      !/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/.test(value)
+    ) {
+      return Promise.reject(new Error("有効なFAX番号を入力してください！"));
+    }
+    return Promise.resolve();
   };
 
   const isEditing = (record) => record._id === editingKey;
@@ -76,63 +97,63 @@ export default function CustomerPage() {
     setEditingKey("");
   };
 
-  // Save changes to the customer
   const save = async (key) => {
     try {
-      const row = await form.validateFields();
-      const updatedCustomer = { ...row };
+      const values = await form.validateFields();
 
-      // Update customer via API
+      const updatedCustomer = {};
+      for (let field in values) {
+        updatedCustomer[field] = values[field] === null ? "" : values[field];
+      }
+
       await axios.put(
         process.env.REACT_API_BASE_URL + `/customer/${key}`,
         updatedCustomer,
       );
 
       notification.success({
-        message: "Success",
-        description: "Customer updated successfully.",
+        message: "成功",
+        description: "顧客が正常に更新されました。",
       });
       setEditingKey("");
-      fetchCustomers(); // Reload data after editing
+      fetchCustomers();
     } catch (errInfo) {
       notification.error({
-        message: "Save Failed",
-        description: "Unable to save changes.",
+        message: "エラー",
+        description: "変更を保存できません。",
       });
     }
   };
 
-  // Delete customer
   const handleDelete = async (key) => {
     try {
       await axios.delete(process.env.REACT_API_BASE_URL + `/customer/${key}`);
       notification.success({
-        message: "Deleted",
-        description: "Customer deleted successfully.",
+        message: "成功",
+        description: "顧客を正常に削除しました。",
       });
-      fetchCustomers(); // Reload data after deletion
+      fetchCustomers();
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to delete customer.",
+        message: "エラー",
+        description: "顧客の削除に失敗しました。",
       });
     }
   };
 
-  // Add a new customer
   const handleAdd = async (values) => {
     try {
       await axios.post(process.env.REACT_API_BASE_URL + `/customer`, values);
       notification.success({
-        message: "Added",
-        description: "Customer added successfully.",
+        message: "成功",
+        description: "顧客が正常に追加されました。",
       });
       setIsModalVisible(false);
-      fetchCustomers(); // Reload data after adding
+      fetchCustomers();
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to add customer.",
+        message: "エラー",
+        description: "顧客の追加に失敗しました。",
       });
     }
   };
@@ -142,31 +163,31 @@ export default function CustomerPage() {
       title: "顧客名称",
       dataIndex: "顧客名称",
       editable: true,
-    },
-    {
-      title: "カウント",
-      dataIndex: "カウント",
-      editable: true,
+      validationRules: [], // No required validation here
     },
     {
       title: "担当",
       dataIndex: "担当",
       editable: true,
+      validationRules: [], // No required validation here
     },
     {
       title: "TEL",
       dataIndex: "TEL",
       editable: true,
+      validationRules: [{ validator: phoneNumberValidator }],
     },
     {
       title: "FAX",
       dataIndex: "FAX",
       editable: true,
+      validationRules: [{ validator: faxNumberValidator }],
     },
     {
       title: "住所",
       dataIndex: "住所",
       editable: true,
+      validationRules: [{ validator: addressValidator }],
     },
     {
       title: "操作",
@@ -179,10 +200,12 @@ export default function CustomerPage() {
               onClick={() => save(record._id)}
               type="link"
               style={{ marginRight: 8 }}>
-              Save
+              保存
             </Button>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <Button type="link">Cancel</Button>
+            <Popconfirm
+              title="キャンセルしてもよろしいですか？"
+              onConfirm={cancel}>
+              <Button type="link">キャンセル</Button>
             </Popconfirm>
           </span>
         ) : (
@@ -191,13 +214,13 @@ export default function CustomerPage() {
               type="link"
               disabled={editingKey !== ""}
               onClick={() => edit(record)}>
-              Edit
+              編集
             </Button>
             <Popconfirm
               title="Are you sure to delete?"
               onConfirm={() => handleDelete(record._id)}>
               <Button type="link" danger>
-                Delete
+                削除
               </Button>
             </Popconfirm>
           </>
@@ -218,6 +241,7 @@ export default function CustomerPage() {
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
+        validationRules: col.validationRules || [], // Pass validation rules to EditableCell
       }),
     };
   });
@@ -233,13 +257,17 @@ export default function CustomerPage() {
   return (
     <div className="flex flex-col gap-0">
       <Form form={form} component={false}>
-        <Button
-          onClick={showAddModal}
-          type="primary"
-          style={{ marginBottom: 16 }}>
-          Add Customer
-        </Button>
-        <Table
+        {/* Wrap the button in a div with flexbox and justify-content */}
+        <div className="flex justify-end p-4">
+          <Button
+            onClick={showAddModal}
+            type="primary"
+            className=" w-28 h-12 z-1">
+            顧客を追加
+          </Button>
+        </div>
+
+        <CTable
           components={{
             body: {
               cell: EditableCell,
@@ -250,40 +278,62 @@ export default function CustomerPage() {
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={false}
+          pagination={true}
+          ps={10}
         />
       </Form>
 
       <Modal
-        title="Add Customer"
+        title="顧客を追加"
         visible={isModalVisible}
         onCancel={handleCancelModal}
         footer={null}>
         <Form form={addForm} onFinish={handleAdd}>
           <Form.Item
             name="顧客名称"
-            rules={[{ required: true, message: "Please input 顧客名称!" }]}>
+            rules={[
+              { required: true, message: "顧客名称を入力してください!" },
+            ]}>
             <Input placeholder="顧客名称" />
           </Form.Item>
 
           <Form.Item
             name="担当"
-            rules={[{ required: true, message: "Please input 担当!" }]}>
+            rules={[{ required: true, message: "担当を入力してください！" }]}>
             <Input placeholder="担当" />
           </Form.Item>
-          <Form.Item name="TEL" rules={[{ message: "Please input TEL!" }]}>
+          <Form.Item
+            name="TEL"
+            rules={[
+              { message: "電話番号を入力してください！" },
+              { validator: phoneNumberValidator },
+            ]}>
             <Input placeholder="TEL" />
           </Form.Item>
-          <Form.Item name="FAX" rules={[{ message: "Please input FAX!" }]}>
+          <Form.Item
+            name="FAX"
+            rules={[
+              { message: "FAXを入力してください！" },
+              { validator: faxNumberValidator },
+            ]}>
             <Input placeholder="FAX" />
           </Form.Item>
-          <Form.Item name="住所" rules={[{ message: "Please input 住所!" }]}>
+          <Form.Item
+            name="住所"
+            rules={[
+              { message: "住所を入力してください！" },
+              { validator: addressValidator },
+            ]}>
             <Input placeholder="住所" />
           </Form.Item>
+
+          {/* Align submit button to the right */}
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Add
-            </Button>
+            <div className="flex justify-end">
+              <Button type="primary" htmlType="submit">
+                追加
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Modal>
