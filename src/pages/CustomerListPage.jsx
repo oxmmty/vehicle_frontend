@@ -42,7 +42,7 @@ const CustomerListPage = () => {
         setLoading(false);
       }
     } catch (errInfo) {
-      console.log("Save failed:", errInfo);
+      console.log("保存に失敗しました！:", errInfo);
       setLoading(false);
       message.error("更新に失敗しました。");
     }

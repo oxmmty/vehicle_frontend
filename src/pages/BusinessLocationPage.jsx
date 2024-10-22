@@ -98,7 +98,7 @@ const BussinessLocation = () => {
       fetchCustomers(); // Reload data after editing
     } catch (errInfo) {
       notification.error({
-        message: "Save Failed",
+        message: "保存に失敗しました！",
         description: "Unable to save changes.",
       });
     }
@@ -201,7 +201,9 @@ const BussinessLocation = () => {
               style={{ marginRight: 8 }}>
               Save
             </Button>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm
+              title="キャンセルしてもよろしいですか？"
+              onConfirm={cancel}>
               <Button type="link">Cancel</Button>
             </Popconfirm>
           </span>

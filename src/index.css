@@ -147,3 +147,13 @@ textarea {
 .ant-anchor-link {
   padding-left: 4px !important;
 }
+.scrollable-cell {
+  max-height: 20px !important;
+  max-width: 100px !important;
+  overflow-y: auto !important;
+  /* overflow-x: scroll !important; */
+  /* white-space: nowrap !important; */
+}
+.scrollable-input {
+  height: 40px; /* Set a specific height */
+}

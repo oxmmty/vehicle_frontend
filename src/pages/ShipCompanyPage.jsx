@@ -1,18 +1,28 @@
-import {
-  Table,
-  Typography,
-  Button,
-  Form,
-  Input,
-  Popconfirm,
-  Modal,
-  notification,
-} from "antd";
+import { Button, Form, Input, Popconfirm, Modal, notification } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
+import CTable from "src/components/CTable";
 
-const { Title } = Typography;
+const getTelRules = () => [
+  { message: "TELを入力してください！" },
+  {
+    pattern: /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/,
+    message: "TELは数字とハイフンのみ入力可能です。",
+  },
+];
+
+const getFaxRules = () => [
+  { message: "FAXを入力してください！" },
+  {
+    pattern: /^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/,
+    message: "FAXは数字とハイフンのみ入力可能です。",
+  },
+];
+
+const getAddressRules = () => [
+  { message: "住所を入力してください！" },
+  { min: 10, message: "住所は最低10文字必要です。" },
+];
 
 const EditableCell = ({
   editing,
@@ -96,7 +106,7 @@ const ShipCompany = () => {
       fetchCustomers(); // Reload data after editing
     } catch (errInfo) {
       notification.error({
-        message: "Save Failed",
+        message: "保存に失敗しました！",
         description: "Unable to save changes.",
       });
     }
@@ -143,11 +153,11 @@ const ShipCompany = () => {
       dataIndex: "船社名称",
       editable: true,
     },
-    {
-      title: "カウント",
-      dataIndex: "カウント",
-      editable: true,
-    },
+    // {
+    //   title: "カウント",
+    //   dataIndex: "カウント",
+    //   editable: true,
+    // },
     {
       title: "担当",
       dataIndex: "担当",
@@ -181,7 +191,9 @@ const ShipCompany = () => {
               style={{ marginRight: 8 }}>
               Save
             </Button>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm
+              title="キャンセルしてもよろしいですか？"
+              onConfirm={cancel}>
               <Button type="link">Cancel</Button>
             </Popconfirm>
           </span>
@@ -239,7 +251,7 @@ const ShipCompany = () => {
           style={{ marginBottom: 16 }}>
           Add Customer
         </Button>
-        <Table
+        <CTable
           components={{
             body: {
               cell: EditableCell,
@@ -250,7 +262,8 @@ const ShipCompany = () => {
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={false}
+          pagination={true}
+          ps={10}
         />
       </Form>
 
