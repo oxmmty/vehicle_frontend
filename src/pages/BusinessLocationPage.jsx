@@ -1,18 +1,15 @@
 import {
-  Table,
-  Typography,
   Button,
   Form,
   Input,
   Popconfirm,
   Modal,
   notification,
+  Select,
 } from "antd";
+import CTable from "src/components/CTable";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-
-const { Title } = Typography;
 
 const EditableCell = ({
   editing,
@@ -52,7 +49,6 @@ const BussinessLocation = () => {
     fetchCustomers();
   }, []);
 
-  // Fetch customer data from the API
   const fetchCustomers = async () => {
     try {
       const res = await axios.get(
@@ -78,7 +74,6 @@ const BussinessLocation = () => {
     setEditingKey("");
   };
 
-  // Save changes to the customer
   const save = async (key) => {
     try {
       const row = await form.validateFields();
@@ -104,7 +99,6 @@ const BussinessLocation = () => {
     }
   };
 
-  // Delete customer
   const handleDelete = async (key) => {
     try {
       await axios.delete(
@@ -123,7 +117,6 @@ const BussinessLocation = () => {
     }
   };
 
-  // Add a new customer
   const handleAdd = async (values) => {
     try {
       await axios.post(process.env.REACT_API_BASE_URL + `/workstation`, values);
@@ -254,6 +247,11 @@ const BussinessLocation = () => {
 
   return (
     <div className="flex flex-col gap-0">
+      <Select>
+        <option>aaa</option>
+        <option>aaa</option>
+        <option>aaa</option>
+      </Select>
       <Form form={form} component={false}>
         <Button
           onClick={showAddModal}
@@ -261,7 +259,7 @@ const BussinessLocation = () => {
           style={{ marginBottom: 16 }}>
           Add Customer
         </Button>
-        <Table
+        <CTable
           components={{
             body: {
               cell: EditableCell,
@@ -269,11 +267,11 @@ const BussinessLocation = () => {
           }}
           rowKey="_id"
           bordered
-          className="max-h-[600px]"
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
           pagination={true}
+          ps={10}
         />
       </Form>
 

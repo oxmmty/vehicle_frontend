@@ -1,35 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
-import { DatePicker, Table } from "antd";
+import { Table } from "antd";
 import axios from "axios";
 import { Line, Column } from "@ant-design/plots";
 import { ThemeContext } from "src/components/Theme";
 import dayjs from "dayjs";
 
 const MonthlyCustomerDBPage = () => {
-  const { RangePicker } = DatePicker;
   const { theme } = useContext(ThemeContext);
   const [order, setOrder] = useState([]);
   const [customer, setCustomer] = useState([]);
-  const [company, setCompany] = useState([]);
-  const [pdfList, setPdfList] = useState([]);
-  const [selectedDates, setSelectedDates] = useState([
-    dayjs().startOf("month"),
-    dayjs().endOf("month"),
-  ]); // Default date range
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [customers, companies, orders, pdfLists] = await Promise.all([
+        const [customers, orders] = await Promise.all([
           axios.get(process.env.REACT_API_BASE_URL + `/customer`),
-          axios.get(process.env.REACT_API_BASE_URL + `/partnercompany`),
           axios.get(process.env.REACT_API_BASE_URL + `/order`),
-          axios.get(process.env.REACT_API_BASE_URL + `/pdfList`),
         ]);
         setOrder(orders.data);
         setCustomer(customers.data);
-        setCompany(companies.data);
-        setPdfList(pdfLists.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -65,43 +54,106 @@ const MonthlyCustomerDBPage = () => {
     });
   };
 
-  // Calculate prices based on selected date range
-  const startOfRange = selectedDates[0];
-  const endOfRange = selectedDates[1];
-  const lastYearStart = startOfRange.subtract(1, "year");
-  const lastYearEnd = endOfRange.subtract(1, "year");
-  const lastMonthStart = startOfRange.subtract(1, "month");
-  const lastMonthEnd = endOfRange.subtract(1, "month");
+  // Calculate date ranges for each of the required periods
+  const startOfCurrentMonth = dayjs().startOf("month");
+  const endOfCurrentMonth = dayjs().endOf("month");
 
-  const lastMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd);
-  const lastYearPrice = calculatePrices(lastYearStart, lastYearEnd);
-  const thisYearPrice = calculatePrices(startOfRange, endOfRange);
-  const thisMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd);
+  const startOfLastMonth = dayjs().subtract(1, "month").startOf("month");
+  const endOfLastMonth = dayjs().subtract(1, "month").endOf("month");
 
+  const startOfThisMonthLastYear = dayjs().subtract(1, "year").startOf("month");
+  const endOfThisMonthLastYear = dayjs().subtract(1, "year").endOf("month");
+
+  const startOfLastMonthLastYear = dayjs()
+    .subtract(1, "year")
+    .subtract(1, "month")
+    .startOf("month");
+  const endOfLastMonthLastYear = dayjs()
+    .subtract(1, "year")
+    .subtract(1, "month")
+    .endOf("month");
+
+  // Format date values for year-month display (e.g., "2024-09")
+  const thisYearThisMonth = startOfCurrentMonth.format("YYYY-MM");
+  const lastYearThisMonth = startOfThisMonthLastYear.format("YYYY-MM");
+  const thisYearLastMonth = startOfLastMonth.format("YYYY-MM");
+  const lastYearLastMonth = startOfLastMonthLastYear.format("YYYY-MM");
+
+  // Calculate prices for each specific period
+  const thisYearThisMonthPrice = calculatePrices(
+    startOfCurrentMonth,
+    endOfCurrentMonth,
+  );
+  const lastYearThisMonthPrice = calculatePrices(
+    startOfThisMonthLastYear,
+    endOfThisMonthLastYear,
+  );
+  const thisYearLastMonthPrice = calculatePrices(
+    startOfLastMonth,
+    endOfLastMonth,
+  );
+  const lastYearLastMonthPrice = calculatePrices(
+    startOfLastMonthLastYear,
+    endOfLastMonthLastYear,
+  );
+
+  // Combine data for each customer and the respective prices for each period
   const combined = customers.map((customer, index) => {
     return {
       customer: customer,
-      lastMonthPrice: lastMonthPrice[index].Price,
-      lastYearPrice: lastYearPrice[index].Price,
-      thisYearPrice: thisYearPrice[index].Price,
-      thisMonthPrice: thisMonthPrice[index].Price,
+      [lastYearLastMonth]: lastYearLastMonthPrice[index].Price,
+      [thisYearLastMonth]: thisYearLastMonthPrice[index].Price,
+      [lastYearThisMonth]: lastYearThisMonthPrice[index].Price,
+      [thisYearThisMonth]: thisYearThisMonthPrice[index].Price,
     };
   });
 
   const columns = [
     { title: "顧客名", dataIndex: "customer", key: "customer" },
-    { title: "先月", dataIndex: "lastMonthPrice", key: "lastMonthPrice" },
-    { title: "昨年", dataIndex: "lastYearPrice", key: "lastYearPrice" },
-    { title: "今月", dataIndex: "thisMonthPrice", key: "thisMonthPrice" },
-    { title: "今年", dataIndex: "thisYearPrice", key: "thisYearPrice" },
+    {
+      title: lastYearLastMonth,
+      dataIndex: lastYearLastMonth,
+      key: "lastYearLastMonth",
+    },
+    {
+      title: thisYearLastMonth,
+      dataIndex: thisYearLastMonth,
+      key: "thisYearLastMonth",
+    },
+    {
+      title: lastYearThisMonth,
+      dataIndex: lastYearThisMonth,
+      key: "lastYearThisMonth",
+    },
+    {
+      title: thisYearThisMonth,
+      dataIndex: thisYearThisMonth,
+      key: "thisYearThisMonth",
+    },
   ];
 
   const lineData = combined
     .map((item) => [
-      { x: item.customer, y: item.lastMonthPrice, category: "先月" },
-      { x: item.customer, y: item.lastYearPrice, category: "昨年" },
-      { x: item.customer, y: item.thisYearPrice, category: "今年" },
-      { x: item.customer, y: item.thisMonthPrice, category: "今月" },
+      {
+        x: item.customer,
+        y: item[lastYearLastMonth],
+        category: lastYearLastMonth,
+      },
+      {
+        x: item.customer,
+        y: item[thisYearLastMonth],
+        category: thisYearLastMonth,
+      },
+      {
+        x: item.customer,
+        y: item[lastYearThisMonth],
+        category: lastYearThisMonth,
+      },
+      {
+        x: item.customer,
+        y: item[thisYearThisMonth],
+        category: thisYearThisMonth,
+      },
     ])
     .flat();
 
@@ -110,29 +162,25 @@ const MonthlyCustomerDBPage = () => {
     data: lineData,
     xField: "x",
     yField: "y",
-    point: {
-      shapeField: "square",
-      sizeField: 4,
-    },
     colorField: "category",
   };
 
   const barData = [
     {
-      type: "先月",
-      value: combined.reduce((sum, item) => sum + item.lastMonthPrice, 0),
+      type: lastYearLastMonth,
+      value: combined.reduce((sum, item) => sum + item[lastYearLastMonth], 0),
     },
     {
-      type: "昨年",
-      value: combined.reduce((sum, item) => sum + item.lastYearPrice, 0),
+      type: thisYearLastMonth,
+      value: combined.reduce((sum, item) => sum + item[thisYearLastMonth], 0),
     },
     {
-      type: "今月",
-      value: combined.reduce((sum, item) => sum + item.thisMonthPrice, 0),
+      type: lastYearThisMonth,
+      value: combined.reduce((sum, item) => sum + item[lastYearThisMonth], 0),
     },
     {
-      type: "今年",
-      value: combined.reduce((sum, item) => sum + item.thisYearPrice, 0),
+      type: thisYearThisMonth,
+      value: combined.reduce((sum, item) => sum + item[thisYearThisMonth], 0),
     },
   ];
 
@@ -143,27 +191,9 @@ const MonthlyCustomerDBPage = () => {
     yField: "value",
   };
 
-  // Function to handle date change
-  const handleDateChange = (dates) => {
-    if (dates) {
-      setSelectedDates(dates); // Update selected dates
-    } else {
-      setSelectedDates([dayjs().startOf("month"), dayjs().endOf("month")]); // Reset to default if cleared
-    }
-  };
-
   return (
     <div className="mx-auto p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">
-        協力会社別月次グラフ
-      </h1>
-      <div className="flex justify-end w-full pb-2">
-        <RangePicker
-          className="grow max-w-96"
-          value={selectedDates}
-          onChange={handleDateChange}
-        />
-      </div>
+      <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
       <div className="mb-4">
         <Table
           dataSource={combined}

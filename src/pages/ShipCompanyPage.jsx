@@ -35,13 +35,26 @@ const EditableCell = ({
   ...restProps
 }) => {
   const inputNode = <Input />;
+
+  const getValidationRules = () => {
+    switch (dataIndex) {
+      case "TEL":
+        return getTelRules();
+      case "FAX":
+        return getFaxRules();
+      case "住所":
+        return getAddressRules();
+      default:
+        return [];
+    }
+  };
   return (
     <td {...restProps}>
       {editing ? (
         <Form.Item
           name={dataIndex}
           style={{ margin: 0 }}
-          rules={[{ required: true, message: `Please Input ${title}!` }]}>
+          rules={getValidationRules()}>
           {inputNode}
         </Form.Item>
       ) : (
@@ -69,8 +82,8 @@ const ShipCompany = () => {
       setDatas(res.data);
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to load ships.",
+        message: "エラー",
+        description: "船社の読み込みに失敗しました。",
       });
     }
   };
@@ -99,15 +112,15 @@ const ShipCompany = () => {
       );
 
       notification.success({
-        message: "Success",
-        description: "Customer updated successfully.",
+        message: "成功",
+        description: "船社が正常に更新されました。",
       });
       setEditingKey("");
       fetchCustomers(); // Reload data after editing
     } catch (errInfo) {
       notification.error({
-        message: "保存に失敗しました！",
-        description: "Unable to save changes.",
+        message: "エラー",
+        description: "変更を保存できませんでした。",
       });
     }
   };
@@ -117,14 +130,14 @@ const ShipCompany = () => {
     try {
       await axios.delete(process.env.REACT_API_BASE_URL + `/ship/${key}`);
       notification.success({
-        message: "Deleted",
-        description: "Customer deleted successfully.",
+        message: "削除成功",
+        description: "船社が正常に削除されました。",
       });
       fetchCustomers(); // Reload data after deletion
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to delete customer.",
+        message: "エラー",
+        description: "船社の削除に失敗しました。",
       });
     }
   };
@@ -134,15 +147,15 @@ const ShipCompany = () => {
     try {
       await axios.post(process.env.REACT_API_BASE_URL + `/ship`, values);
       notification.success({
-        message: "Added",
-        description: "Customer added successfully.",
+        message: "追加成功",
+        description: "船社が正常に追加されました。",
       });
       setIsModalVisible(false);
       fetchCustomers(); // Reload data after adding
     } catch (error) {
       notification.error({
-        message: "Error",
-        description: "Failed to add customer.",
+        message: "エラー",
+        description: "船社の追加に失敗しました。",
       });
     }
   };
@@ -189,12 +202,12 @@ const ShipCompany = () => {
               onClick={() => save(record._id)}
               type="link"
               style={{ marginRight: 8 }}>
-              Save
+              保存
             </Button>
             <Popconfirm
               title="キャンセルしてもよろしいですか？"
               onConfirm={cancel}>
-              <Button type="link">Cancel</Button>
+              <Button type="link">キャンセル</Button>
             </Popconfirm>
           </span>
         ) : (
@@ -203,13 +216,13 @@ const ShipCompany = () => {
               type="link"
               disabled={editingKey !== ""}
               onClick={() => edit(record)}>
-              Edit
+              編集
             </Button>
             <Popconfirm
-              title="Are you sure to delete?"
+              title="本当に削除しますか？"
               onConfirm={() => handleDelete(record._id)}>
               <Button type="link" danger>
-                Delete
+                削除
               </Button>
             </Popconfirm>
           </>
@@ -245,12 +258,11 @@ const ShipCompany = () => {
   return (
     <div className="flex flex-col gap-0">
       <Form form={form} component={false}>
-        <Button
-          onClick={showAddModal}
-          type="primary"
-          style={{ marginBottom: 16 }}>
-          Add Customer
-        </Button>
+        <div className="flex justify-end mb-4">
+          <Button onClick={showAddModal} type="primary">
+            荷主を追加
+          </Button>
+        </div>
         <CTable
           components={{
             body: {
@@ -275,26 +287,30 @@ const ShipCompany = () => {
         <Form form={addForm} onFinish={handleAdd}>
           <Form.Item
             name="船社名称"
-            rules={[{ required: true, message: "Please input 船社名称	!" }]}>
+            rules={[
+              { required: true, message: "船社名称を入力してください！" },
+            ]}>
             <Input placeholder="船社名称" />
           </Form.Item>
 
-          <Form.Item name="担当" rules={[{ message: "Please input 担当!" }]}>
+          <Form.Item name="担当">
             <Input placeholder="担当" />
           </Form.Item>
-          <Form.Item name="TEL" rules={[{ message: "Please input TEL!" }]}>
+          <Form.Item name="TEL" rules={getTelRules()}>
             <Input placeholder="TEL" />
           </Form.Item>
-          <Form.Item name="FAX" rules={[{ message: "Please input FAX!" }]}>
+          <Form.Item name="FAX" rules={getFaxRules()}>
             <Input placeholder="FAX" />
           </Form.Item>
-          <Form.Item name="住所" rules={[{ message: "Please input 住所!" }]}>
+          <Form.Item name="住所" rules={getAddressRules()}>
             <Input placeholder="住所" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Add
-            </Button>
+            <div className="flex justify-end">
+              <Button type="primary" htmlType="submit">
+                追加
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Modal>

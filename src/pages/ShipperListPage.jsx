@@ -29,7 +29,6 @@ const getAddressRules = () => [
   { min: 10, message: "住所は最低10文字必要です。" },
 ];
 
-// Editable cell with validation
 const EditableCell = ({
   editing,
   dataIndex,
