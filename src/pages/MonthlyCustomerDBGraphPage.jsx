@@ -6,26 +6,20 @@ import { ThemeContext } from "src/components/Theme";
 import dayjs from "dayjs";
 
 const MonthlyCustomerDBGraphPage = () => {
+  const { theme } = useContext(ThemeContext);
   const [order, setOrder] = useState([]);
   const [customer, setCustomer] = useState([]);
-  const [company, setCompany] = useState([]);
-  const [pdfList, setPdfList] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs().startOf("month")); // Set default to this year and this month
-  const { theme } = useContext(ThemeContext);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs()); // Default to the current month
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [customers, companies, orders, pdfLists] = await Promise.all([
+        const [customers, orders] = await Promise.all([
           axios.get(process.env.REACT_API_BASE_URL + `/customer`),
-          axios.get(process.env.REACT_API_BASE_URL + `/partnercompany`),
           axios.get(process.env.REACT_API_BASE_URL + `/order`),
-          axios.get(process.env.REACT_API_BASE_URL + `/pdfList`),
         ]);
         setOrder(orders.data);
         setCustomer(customers.data);
-        setCompany(companies.data);
-        setPdfList(pdfLists.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -37,7 +31,7 @@ const MonthlyCustomerDBGraphPage = () => {
 
   const calculatePrices = (startDate, endDate) => {
     return customers.map((customerItem) => {
-      const matchedPdfItem = order.find((orderItem) => {
+      const matchedOrders = order.filter((orderItem) => {
         const orderDate = dayjs(orderItem.createdAt);
         return (
           orderItem.顧客名 === customerItem &&
@@ -46,109 +40,158 @@ const MonthlyCustomerDBGraphPage = () => {
         );
       });
 
+      const totalPrice = matchedOrders.reduce((sum, orderItem) => {
+        return (
+          sum +
+          (Number(orderItem.基本料金1) +
+            Number(orderItem.基本料金2) +
+            Number(orderItem.基本料金3))
+        );
+      }, 0);
+
       return {
-        Price: matchedPdfItem
-          ? Number(
-              matchedPdfItem.基本料金1 +
-                matchedPdfItem.基本料金2 +
-                matchedPdfItem.基本料金3,
-            )
-          : 0,
+        Price: totalPrice,
       };
     });
   };
 
-  // Calculate based on selected date
-  const startOfMonth = selectedDate.startOf("month");
-  const endOfMonth = selectedDate.endOf("month");
-  const lastYearStart = startOfMonth.subtract(1, "year");
-  const lastYearEnd = endOfMonth.subtract(1, "year");
-  const lastMonthStart = startOfMonth.subtract(1, "month");
-  const lastMonthEnd = endOfMonth.subtract(1, "month");
+  // Calculate date ranges for the selected month or the current month by default
+  const startOfSelectedMonth = selectedMonth.startOf("month");
+  const endOfSelectedMonth = selectedMonth.endOf("month");
 
-  const lastMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd);
-  const lastYearPrice = calculatePrices(lastYearStart, lastYearEnd);
-  const thisYearPrice = calculatePrices(startOfMonth, endOfMonth);
-  const thisMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd); // Assuming this for demonstration
+  const startOfLastMonth = selectedMonth.subtract(1, "month").startOf("month");
+  const endOfLastMonth = selectedMonth.subtract(1, "month").endOf("month");
 
+  const startOfSelectedMonthLastYear = selectedMonth
+    .subtract(1, "year")
+    .startOf("month");
+  const endOfSelectedMonthLastYear = selectedMonth
+    .subtract(1, "year")
+    .endOf("month");
+
+  const startOfLastMonthLastYear = selectedMonth
+    .subtract(1, "year")
+    .subtract(1, "month")
+    .startOf("month");
+  const endOfLastMonthLastYear = selectedMonth
+    .subtract(1, "year")
+    .subtract(1, "month")
+    .endOf("month");
+
+  // Format date values for year-month display (e.g., "2024-09")
+  const selectedYearThisMonth = startOfSelectedMonth.format("YYYY-MM");
+  const lastYearThisMonth = startOfSelectedMonthLastYear.format("YYYY-MM");
+  const selectedYearLastMonth = startOfLastMonth.format("YYYY-MM");
+  const lastYearLastMonth = startOfLastMonthLastYear.format("YYYY-MM");
+
+  // Calculate prices for each specific period
+  const selectedYearThisMonthPrice = calculatePrices(
+    startOfSelectedMonth,
+    endOfSelectedMonth,
+  );
+  const lastYearThisMonthPrice = calculatePrices(
+    startOfSelectedMonthLastYear,
+    endOfSelectedMonthLastYear,
+  );
+  const selectedYearLastMonthPrice = calculatePrices(
+    startOfLastMonth,
+    endOfLastMonth,
+  );
+  const lastYearLastMonthPrice = calculatePrices(
+    startOfLastMonthLastYear,
+    endOfLastMonthLastYear,
+  );
+
+  // Combine data for each customer and the respective prices for each period
   const combined = customers.map((customer, index) => {
     return {
       customer: customer,
-      lastMonthPrice: lastMonthPrice[index].Price,
-      lastYearPrice: lastYearPrice[index].Price,
-      thisYearPrice: thisYearPrice[index].Price,
-      thisMonthPrice: thisMonthPrice[index].Price,
+      [lastYearLastMonth]: lastYearLastMonthPrice[index]?.Price || 0,
+      [selectedYearLastMonth]: selectedYearLastMonthPrice[index]?.Price || 0,
+      [lastYearThisMonth]: lastYearThisMonthPrice[index]?.Price || 0,
+      [selectedYearThisMonth]: selectedYearThisMonthPrice[index]?.Price || 0,
     };
   });
 
   const columns = [
     { title: "顧客名", dataIndex: "customer", key: "customer" },
-    { title: "先月", dataIndex: "lastMonthPrice", key: "lastMonthPrice" },
-    { title: "昨年", dataIndex: "lastYearPrice", key: "lastYearPrice" },
-    { title: "今月", dataIndex: "thisMonthPrice", key: "thisMonthPrice" },
-    { title: "今年", dataIndex: "thisYearPrice", key: "thisYearPrice" },
+    {
+      title: lastYearLastMonth,
+      dataIndex: lastYearLastMonth,
+      key: "lastYearLastMonth",
+    },
+    {
+      title: selectedYearLastMonth,
+      dataIndex: selectedYearLastMonth,
+      key: "selectedYearLastMonth",
+    },
+    {
+      title: lastYearThisMonth,
+      dataIndex: lastYearThisMonth,
+      key: "lastYearThisMonth",
+    },
+    {
+      title: selectedYearThisMonth,
+      dataIndex: selectedYearThisMonth,
+      key: "selectedYearThisMonth",
+    },
   ];
 
   const lineData = combined
-    .map((item) => ({
-      x: item.customer,
-      y: item.lastMonthPrice,
-      category: "先月",
-    }))
-    .concat(
-      combined.map((item) => ({
+    .map((item) => [
+      {
         x: item.customer,
-        y: item.lastYearPrice,
-        category: "昨年",
-      })),
-      combined.map((item) => ({
+        y: item[lastYearLastMonth],
+        category: lastYearLastMonth,
+      },
+      {
         x: item.customer,
-        y: item.thisYearPrice,
-        category: "今年",
-      })),
-      combined.map((item) => ({
+        y: item[selectedYearLastMonth],
+        category: selectedYearLastMonth,
+      },
+      {
         x: item.customer,
-        y: item.thisMonthPrice,
-        category: "今月",
-      })),
-    );
+        y: item[lastYearThisMonth],
+        category: lastYearThisMonth,
+      },
+      {
+        x: item.customer,
+        y: item[selectedYearThisMonth],
+        category: selectedYearThisMonth,
+      },
+    ])
+    .flat();
 
   const config = {
     theme: theme === "light" ? "academy" : "classicDark",
     data: lineData,
     xField: "x",
     yField: "y",
-    point: {
-      shapeField: "square",
-      sizeField: 4,
-    },
-    interaction: {
-      tooltip: {
-        marker: false,
-      },
-    },
     colorField: "category",
-    style: {
-      lineWidth: 2,
-    },
   };
 
   const barData = [
     {
-      type: "先月",
-      value: combined.reduce((sum, item) => sum + item.lastMonthPrice, 0),
+      type: lastYearLastMonth,
+      value: combined.reduce((sum, item) => sum + item[lastYearLastMonth], 0),
     },
     {
-      type: "昨年",
-      value: combined.reduce((sum, item) => sum + item.lastYearPrice, 0),
+      type: selectedYearLastMonth,
+      value: combined.reduce(
+        (sum, item) => sum + item[selectedYearLastMonth],
+        0,
+      ),
     },
     {
-      type: "今月",
-      value: combined.reduce((sum, item) => sum + item.thisMonthPrice, 0),
+      type: lastYearThisMonth,
+      value: combined.reduce((sum, item) => sum + item[lastYearThisMonth], 0),
     },
     {
-      type: "今年",
-      value: combined.reduce((sum, item) => sum + item.thisYearPrice, 0),
+      type: selectedYearThisMonth,
+      value: combined.reduce(
+        (sum, item) => sum + item[selectedYearThisMonth],
+        0,
+      ),
     },
   ];
 
@@ -157,37 +200,22 @@ const MonthlyCustomerDBGraphPage = () => {
     data: barData,
     xField: "type",
     yField: "value",
-    style: {
-      fill: "#2989FF",
-    },
-    label: {
-      text: (originData) => {
-        const val = parseFloat(originData.value);
-        return val < 0.05 ? (val * 100).toFixed(1) + "%" : "";
-      },
-      offset: 10,
-    },
-    legend: false,
-  };
-
-  // Function to handle date change
-  const handleDateChange = (date) => {
-    if (date) {
-      setSelectedDate(date);
-    }
   };
 
   return (
     <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
-      <div className="flex justify-end w-full pb-2">
+
+      {/* DatePicker for selecting month */}
+      <div className="mb-4 text-center">
         <DatePicker
           picker="month"
-          className="grow max-w-96"
-          value={selectedDate} // Set the value of the DatePicker
-          onChange={handleDateChange} // Handle date change
+          value={selectedMonth}
+          onChange={(date) => setSelectedMonth(date || dayjs())} // Set default to current month if no selection
+          allowClear
         />
       </div>
+
       <div className="mb-4">
         <Table
           dataSource={combined}
@@ -197,6 +225,7 @@ const MonthlyCustomerDBGraphPage = () => {
           scroll={{ x: "max-content" }}
         />
       </div>
+
       <div className="flex flex-wrap flex-row items-center gap-5 w-full pt-5">
         <div className="flex-1 min-w-[250px] text-center">
           <h2>月次比較</h2>

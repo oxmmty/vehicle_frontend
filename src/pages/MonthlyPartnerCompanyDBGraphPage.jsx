@@ -6,6 +6,7 @@ import { ThemeContext } from "src/components/Theme";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
+
 const MonthlyPartnerCompanyDBGraphPage = () => {
   const { theme } = useContext(ThemeContext);
   const [order, setOrder] = useState([]);
@@ -58,32 +59,87 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
   const lastMonthStart = startOfMonth.subtract(1, "month");
   const lastMonthEnd = endOfMonth.subtract(1, "month");
 
-  const lastMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd);
-  const lastYearPrice = calculatePrices(lastYearStart, lastYearEnd);
-  const thisYearPrice = calculatePrices(startOfMonth, endOfMonth);
-  const thisMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd); // Assuming this for demonstration
+  // New date calculations
+  const lastYearLastMonthStart = lastYearStart.subtract(1, "month");
+  const lastYearLastMonthEnd = lastYearEnd.subtract(1, "month");
+  const thisYearLastMonthStart = startOfMonth.subtract(1, "month");
+  const thisYearLastMonthEnd = endOfMonth.subtract(1, "month");
 
-  const combined = companyList.map((company, index) => ({
-    company: company,
-    lastMonthPrice: lastMonthPrice[index].Price,
-    lastYearPrice: lastYearPrice[index].Price,
-    thisYearPrice: thisYearPrice[index].Price,
-    thisMonthPrice: thisMonthPrice[index].Price,
-  }));
+  const lastYearLastMonthPrice = calculatePrices(
+    lastYearLastMonthStart,
+    lastYearLastMonthEnd,
+  );
+  const lastYearThisMonthPrice = calculatePrices(lastYearStart, lastYearEnd);
+  const thisYearLastMonthPrice = calculatePrices(
+    thisYearLastMonthStart,
+    thisYearLastMonthEnd,
+  );
+  const thisYearThisMonthPrice = calculatePrices(startOfMonth, endOfMonth);
+
+  const combined = companyList.map((company, index) => {
+    const lastYearLastMonthDate = lastYearLastMonthEnd.format("YYYY-MM");
+    const lastYearThisMonthDate = lastYearEnd.format("YYYY-MM");
+    const thisYearLastMonthDate = thisYearLastMonthEnd.format("YYYY-MM");
+    const thisYearThisMonthDate = endOfMonth.format("YYYY-MM");
+
+    return {
+      company: company,
+      lastYearLastMonthPrice: lastYearLastMonthPrice[index].Price,
+      lastYearThisMonthPrice: lastYearThisMonthPrice[index].Price,
+      thisYearLastMonthPrice: thisYearLastMonthPrice[index].Price,
+      thisYearThisMonthPrice: thisYearThisMonthPrice[index].Price,
+      lastYearLastMonthDate,
+      lastYearThisMonthDate,
+      thisYearLastMonthDate,
+      thisYearThisMonthDate,
+    };
+  });
 
   const columns = [
     { title: "協力会社名", dataIndex: "company", key: "company" },
-    { title: "先月", dataIndex: "lastMonthPrice", key: "lastMonthPrice" },
-    { title: "昨年", dataIndex: "lastYearPrice", key: "lastYearPrice" },
-    { title: "今月", dataIndex: "thisMonthPrice", key: "thisMonthPrice" },
-    { title: "今年", dataIndex: "thisYearPrice", key: "thisYearPrice" },
+    {
+      title: `${lastYearLastMonthEnd.format("YYYY-MM")} `,
+      dataIndex: "lastYearLastMonthPrice",
+      key: "lastYearLastMonthPrice",
+    },
+    {
+      title: `${thisYearLastMonthEnd.format("YYYY-MM")} `,
+      dataIndex: "thisYearLastMonthPrice",
+      key: "thisYearLastMonthPrice",
+    },
+    {
+      title: `${lastYearEnd.format("YYYY-MM")} `,
+      dataIndex: "lastYearThisMonthPrice",
+      key: "lastYearThisMonthPrice",
+    },
+    {
+      title: `${endOfMonth.format("YYYY-MM")} `,
+      dataIndex: "thisYearThisMonthPrice",
+      key: "thisYearThisMonthPrice",
+    },
   ];
 
   const lineData = combined.flatMap((item) => [
-    { x: item.company, y: item.lastMonthPrice, category: "先月" },
-    { x: item.company, y: item.lastYearPrice, category: "昨年" },
-    { x: item.company, y: item.thisYearPrice, category: "今年" },
-    { x: item.company, y: item.thisMonthPrice, category: "今月" },
+    {
+      x: item.company,
+      y: item.lastYearLastMonthPrice,
+      category: item.lastYearLastMonthDate,
+    },
+    {
+      x: item.company,
+      y: item.thisYearLastMonthPrice,
+      category: item.thisYearLastMonthDate,
+    },
+    {
+      x: item.company,
+      y: item.lastYearThisMonthPrice,
+      category: item.lastYearThisMonthDate,
+    },
+    {
+      x: item.company,
+      y: item.thisYearThisMonthPrice,
+      category: item.thisYearThisMonthDate,
+    },
   ]);
 
   const config = {
@@ -108,20 +164,32 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
 
   const barData = [
     {
-      type: "先月",
-      value: combined.reduce((sum, item) => sum + item.lastMonthPrice, 0),
+      type: `${lastYearLastMonthEnd.format("YYYY年MM月")} 基本料金`,
+      value: combined.reduce(
+        (sum, item) => sum + item.lastYearLastMonthPrice,
+        0,
+      ),
     },
     {
-      type: "昨年",
-      value: combined.reduce((sum, item) => sum + item.lastYearPrice, 0),
+      type: `${thisYearLastMonthEnd.format("YYYY年MM月")} 基本料金`,
+      value: combined.reduce(
+        (sum, item) => sum + item.thisYearLastMonthPrice,
+        0,
+      ),
     },
     {
-      type: "今月",
-      value: combined.reduce((sum, item) => sum + item.thisMonthPrice, 0),
+      type: `${lastYearEnd.format("YYYY年MM月")} 基本料金`,
+      value: combined.reduce(
+        (sum, item) => sum + item.lastYearThisMonthPrice,
+        0,
+      ),
     },
     {
-      type: "今年",
-      value: combined.reduce((sum, item) => sum + item.thisYearPrice, 0),
+      type: `${endOfMonth.format("YYYY年MM月")} 基本料金`,
+      value: combined.reduce(
+        (sum, item) => sum + item.thisYearThisMonthPrice,
+        0,
+      ),
     },
   ];
 
@@ -174,7 +242,7 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
       </div>
       <div className="flex flex-wrap flex-row items-center gap-5 w-full pt-5">
         <div className="flex-1 min-w-[250px] text-center">
-          <h2>月次比較</h2>
+          <h2>月次比較グラフ</h2>
           <Line {...config} />
         </div>
         <div className="flex-1 min-w-[250px] text-center">
