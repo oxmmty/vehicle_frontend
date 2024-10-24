@@ -66,7 +66,7 @@ const TotalAmount = (props) => {
       type: "area",
       fontFamily: "Noto Sans JP, Inter, sans-serif",
       dropShadow: {
-        enabled: true,
+        enabled: false,
       },
       toolbar: {
         show: true,
@@ -81,23 +81,23 @@ const TotalAmount = (props) => {
     fill: {
       type: "gradient",
       gradient: {
-        opacityFrom: 0.55,
+        opacityFrom: 0,
         opacityTo: 0,
         shade: "#1C64F2",
-        gradientToColors: ["#1C64F2"],
+        gradientToColors: ["#000000"],
       },
     },
     dataLabels: {
       enabled: true,
     },
     stroke: {
-      width: 6,
+      width: 4,
     },
     legend: {
       show: false,
     },
     grid: {
-      show: false,
+      show: true,
     },
   };
 

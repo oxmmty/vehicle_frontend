@@ -47,10 +47,10 @@ const BarChart = (props) => {
     },
     plotOptions: {
       bar: {
-        horizontal: true,
-        columnWidth: "100%",
+        horizontal: false,
+        columnWidth: "75%",
         borderRadiusApplication: "end",
-        borderRadius: 6,
+        borderRadius: 5,
         dataLabels: {
           position: "top",
         },
@@ -112,11 +112,12 @@ const BarChart = (props) => {
           fontFamily: "Noto Sans JP, Inter, sans-serif",
           cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
         },
+        formatter: (value) => (value >= 1000 ? `${value / 1000}k` : value),
       },
     },
     grid: {
       show: true,
-      strokeDashArray: 4,
+      // strokeDashArray: 1,
       padding: {
         left: 2,
         right: 2,
