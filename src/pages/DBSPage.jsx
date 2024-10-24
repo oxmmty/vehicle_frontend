@@ -87,8 +87,8 @@ const DBSPage = () => {
   ];
 
   const columns = [
-    { title: "#", dataIndex: "name", key: "name" },
-    { title: "協力会社名", dataIndex: "2022/09", key: "2022/09" },
+    { title: "#", dataIndex: "key", key: "key" },
+    { title: "協力会社名", dataIndex: "name", key: "name" },
     { title: "支払い確認", dataIndex: "2023/09", key: "2023/09" },
     { title: "課税", dataIndex: "2022/10", key: "2022/10" },
     { title: "非課税", dataIndex: "2023/10", key: "2023/10" },
@@ -101,79 +101,51 @@ const DBSPage = () => {
     { title: "支払い比率", dataIndex: "2023/10", key: "2023/10" },
   ];
 
-  // const lineData = [];
-  // dataSource.map((item, index) => {
-  //   let temp = {x: item.name, y: item['2022/09'], category: '2022/09'};
-  //   lineData.push(temp);
-  //   temp = {x: item.name, y: item['2022/10'], category: '2022/10'};
-  //   lineData.push(temp);
-  //   temp = {x: item.name, y: item['2023/09'], category: '2023/09'};
-  //   lineData.push(temp);
-  //   temp = {x: item.name, y: item['2023/10'], category: '2023/10'};
-  //   lineData.push(temp);
-  // });
+  const a = filteredDatas.map((item) => ({
+    companyName: item["下払会社名"],
+    basicFee: item["基本料金"],
+    basicFeeTaxable: item["基本料金課税"],
+    otherCosts: item["その他費用"],
+    otherCostsTaxable: item["その他費用課税"],
+    chassisStorageFee: item["シャーシ留置費"],
+    chassisStorageFeeTaxable: item["シャーシ留置費課税"],
+    scaleFee: item["スケール費"],
+    scaleFeeTaxable: item["スケール費課税"],
+  }));
 
-  // const totals = dataSource.reduce((acc, item) => {
-  //   acc['2022/09'] += item['2022/09'];
-  //   acc['2023/09'] += item['2023/09'];
-  //   acc['2022/10'] += item['2022/10'];
-  //   acc['2023/10'] += item['2023/10'];
-  //   return acc;
-  // }, { '2022/09': 0, '2023/09': 0, '2022/10': 0, '2023/10': 0 });
+  console.log(a);
 
-  // dataSource.push({key: '7', name: '合計', '2022/09': totals['2022/09'], "2023/09": totals['2023/09'], "2022/10": totals['2022/10'], "2023/10": totals['2023/10']});
+  const updatedData = a.map((item) => {
+    let taxed = 0;
+    let nonTaxed = 0;
 
-  // const config = {
-  //   theme: theme === 'light' ? 'academy' : 'classicDark',
-  //   data: lineData,
-  //   xField: 'x',
-  //   yField: 'y',
-  //   point: {
-  //     shapeField: 'square',
-  //     sizeField: 4,
-  //   },
-  //   interaction: {
-  //     tooltip: {
-  //       marker: false,
-  //     },
-  //   },
-  //   colorField: 'category',
-  //   style: {
-  //     lineWidth: 2,
-  //   },
-  // };
+    // Helper function to add amounts to taxed or non-taxed
+    const addAmount = (amount, isTaxable) => {
+      if (amount !== null) {
+        const value = parseFloat(amount);
+        if (isTaxable) {
+          taxed += value;
+        } else {
+          nonTaxed += value;
+        }
+      }
+    };
 
-  // const barData = [
-  //   {type: `2022/09\r\n${dataSource[6]['2022/09']}`, value: dataSource[6]['2022/09']},
-  //   {type: `2023/09\r\n${dataSource[6]['2023/09']}`, value: dataSource[6]['2023/09']},
-  //   {type: `2022/10\r\n${dataSource[6]['2022/10']}`, value: dataSource[6]['2022/10']},
-  //   {type: `2023/10\r\n${dataSource[6]['2023/10']}`, value: dataSource[6]['2023/10']}
-  // ]
-  // const barConfig = {
-  //   theme: theme === 'light' ? 'academy' : 'classicDark',
-  //   data: barData,
-  //   xField: 'type',
-  //   yField: 'value',
-  //   style: {
-  //     fill: ({ type }) => {
-  //       if (type === '10-30分' || type === '30+分') {
-  //         return '#22CBCC';
-  //       }
-  //       return '#2989FF';
-  //     },
-  //   },
-  //   label: {
-  //     text: (originData) => {
-  //       const val = parseFloat(originData.value);
-  //       if (val < 0.05) {
-  //         return (val * 100).toFixed(1) + '%';
-  //       }
-  //       return '';
-  //     },
-  //     offset: 10,
-  //   },
-  //   legend: false,
-  // };
+    // Process each fee or cost
+    addAmount(item.basicFee, item.basicFeeTaxable);
+    addAmount(item.otherCosts, item.otherCostsTaxable);
+    addAmount(item.chassisStorageFee, item.chassisStorageFeeTaxable);
+    addAmount(item.scaleFee, item.scaleFeeTaxable);
+
+    return {
+      ...item,
+      課税: taxed,
+      非課税: nonTaxed,
+    };
+  });
+
+  console.log(updatedData);
+
   return (
     <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">協力会社別月次</h1>

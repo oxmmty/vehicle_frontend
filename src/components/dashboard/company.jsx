@@ -69,7 +69,7 @@ const CompanyPage = (props) => {
                 color: textColor,
               },
             },
-            size: "80%",
+            size: "60%",
           },
         },
       },
