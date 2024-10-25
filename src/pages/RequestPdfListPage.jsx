@@ -51,6 +51,19 @@ const RequestPdfListPage = () => {
       fixed: "left",
     },
     {
+      title: "支払い確認",
+      dataIndex: "支払い確認",
+      key: "支払い確認",
+      fixed: "left",
+      render: (text, record) => (
+        <input
+          type="checkbox"
+          checked={record.支払い確認 === true}
+          onChange={() => handlePaymentConfirmationChange(record)}
+        />
+      ),
+    },
+    {
       title: "下払会社名",
       dataIndex: "下払会社名",
       key: "下払会社名",
@@ -296,9 +309,13 @@ const RequestPdfListPage = () => {
   // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("/pdfList");
-      setDatas(res.data);
-      filterData(dayjs().format("YYYY-MM"), res.data);
+      try {
+        const res = await axios.get("/pdfList");
+        setDatas(res.data);
+        filterData(dayjs().format("YYYY-MM"), res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchData();
   }, []);
@@ -320,9 +337,37 @@ const RequestPdfListPage = () => {
 
   const handleCheckboxChange = (リクエスト番号) => {
     console.log("Checkbox changed for:", リクエスト番号); // Log which checkbox was changed
-    setSelectedRowKeys(
-      (prevKeys) => (prevKeys.includes(リクエスト番号) ? [] : [リクエスト番号]), // Only keep the current selected key, uncheck others
+    setSelectedRowKeys((prevKeys) =>
+      prevKeys.includes(リクエスト番号)
+        ? prevKeys.filter((key) => key !== リクエスト番号)
+        : [...prevKeys, リクエスト番号],
     );
+  };
+
+  const handlePaymentConfirmationChange = async (record) => {
+    const newValue = !record.支払い確認;
+
+    // Optimistically update UI
+    setFilteredDatas((prevDatas) =>
+      prevDatas.map((data) =>
+        data._id === record._id ? { ...data, 支払い確認: newValue } : data,
+      ),
+    );
+
+    try {
+      await axios.put(`/pdfList/status/${record._id}`, {
+        支払い確認: newValue,
+      });
+    } catch (error) {
+      console.error("Error updating payment confirmation:", error);
+
+      // Revert UI change if error occurs
+      setFilteredDatas((prevDatas) =>
+        prevDatas.map((data) =>
+          data._id === record._id ? { ...data, 支払い確認: !newValue } : data,
+        ),
+      );
+    }
   };
 
   const handlePdfButtonClick = () => {

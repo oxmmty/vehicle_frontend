@@ -1,12 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
-import { DatePicker, Table, Typography } from "antd";
+import React, { useState, useEffect } from "react";
+import { DatePicker, Typography } from "antd";
+import CTable from "src/components/CTable";
 import dayjs from "dayjs";
 import axios from "axios";
-// import { Line, Column } from "@ant-design/plots";
-import { ThemeContext } from "src/components/Theme";
 
 const DBSPage = () => {
-  // const { theme } = useContext(ThemeContext);
   const [date, setDate] = useState(dayjs().startOf("month"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
@@ -35,74 +33,38 @@ const DBSPage = () => {
     }
   };
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "ユウキトランス",
-      "2022/09": 30000,
-      "2023/09": 50000,
-      "2022/10": 40000,
-      "2023/10": 60000,
-    },
-    {
-      key: "2",
-      name: "南本牧日新",
-      "2022/09": 45000,
-      "2023/09": 50000,
-      "2022/10": 45000,
-      "2023/10": 60000,
-    },
-    {
-      key: "3",
-      name: "有限会社鴨原商事",
-      "2022/09": 0,
-      "2023/09": 30000,
-      "2022/10": 30000,
-      "2023/10": 40000,
-    },
-    {
-      key: "4",
-      name: "東洋境運株式会社",
-      "2022/09": 100000,
-      "2023/09": 110000,
-      "2022/10": 100000,
-      "2023/10": 120000,
-    },
-    {
-      key: "5",
-      name: "鈴与カーゴネット株式会社",
-      "2022/09": 100000,
-      "2023/09": 120000,
-      "2022/10": 100000,
-      "2023/10": 120000,
-    },
-    {
-      key: "6",
-      name: "鈴与株式会社",
-      "2022/09": 10000,
-      "2023/09": 20000,
-      "2022/10": 10000,
-      "2023/10": 20000,
-    },
-  ];
-
   const columns = [
-    { title: "#", dataIndex: "key", key: "key" },
-    { title: "協力会社名", dataIndex: "name", key: "name" },
-    { title: "支払い確認", dataIndex: "2023/09", key: "2023/09" },
-    { title: "課税", dataIndex: "2022/10", key: "2022/10" },
-    { title: "非課税", dataIndex: "2023/10", key: "2023/10" },
-    { title: "税抜合計", dataIndex: "2023/10", key: "2023/10" },
-    { title: "消費税", dataIndex: "2023/10", key: "2023/10" },
-    { title: "支払合計", dataIndex: "2023/10", key: "2023/10" },
-    { title: "支払日", dataIndex: "2023/10", key: "2023/10" },
-    { title: "前月比", dataIndex: "2023/10", key: "2023/10" },
-    { title: "売掛計税抜", dataIndex: "2023/10", key: "2023/10" },
-    { title: "支払い比率", dataIndex: "2023/10", key: "2023/10" },
+    { title: "No", render: (_, __, index) => index + 1, fixed: "left" },
+    {
+      title: "協力会社名",
+      dataIndex: "companyName",
+      key: "companyName",
+      fixed: "left",
+    },
+    {
+      title: "支払い確認",
+      dataIndex: "支払い確認",
+      key: "支払い確認",
+      render: (text, record) => (record.status == true ? "Yes" : "No"),
+    },
+    { title: "課税", dataIndex: "課税", key: "課税" },
+    { title: "非課税", dataIndex: "非課税", key: "非課税" },
+    { title: "税抜合計", dataIndex: "税抜合計", key: "税抜合計" },
+    { title: "消費税", dataIndex: "消費税", key: "消費税" },
+    { title: "支払合計", dataIndex: "total支払合計", key: "total支払合計" },
+    { title: "支払日", dataIndex: "max支払日", key: "max支払日" },
+    {
+      title: "前月比",
+      dataIndex: "lastMonthTotal支払合計",
+      key: "lastMonthTotal支払合計",
+    },
+    { title: "売掛計税抜", dataIndex: "売掛計税抜", key: "売掛計税抜" },
+    { title: "支払い比率", dataIndex: "支払い比率", key: "支払い比率" },
   ];
 
   const a = filteredDatas.map((item) => ({
     companyName: item["下払会社名"],
+    status: item["支払い確認"],
     basicFee: item["基本料金"],
     basicFeeTaxable: item["基本料金課税"],
     otherCosts: item["その他費用"],
@@ -111,20 +73,21 @@ const DBSPage = () => {
     chassisStorageFeeTaxable: item["シャーシ留置費課税"],
     scaleFee: item["スケール費"],
     scaleFeeTaxable: item["スケール費課税"],
+    支払日: item.updatedAt,
+    month: item.createdAt,
   }));
 
-  console.log(a);
+  // console.log(filteredDatas);
 
   const updatedData = a.map((item) => {
     let taxed = 0;
     let nonTaxed = 0;
 
-    // Helper function to add amounts to taxed or non-taxed
     const addAmount = (amount, isTaxable) => {
       if (amount !== null) {
         const value = parseFloat(amount);
         if (isTaxable) {
-          taxed += value;
+          taxed += value * 1.1;
         } else {
           nonTaxed += value;
         }
@@ -139,12 +102,85 @@ const DBSPage = () => {
 
     return {
       ...item,
-      課税: taxed,
-      非課税: nonTaxed,
+      課税: Math.round(taxed),
+      非課税: Math.round(nonTaxed),
+      税抜合計: Math.round(taxed / 1.1 + nonTaxed),
+      消費税: Math.round(taxed / 11),
+      支払合計: Math.round(taxed + nonTaxed),
     };
   });
 
-  console.log(updatedData);
+  const currentMonth = dayjs().format("YYYY-MM");
+  const lastMonth = dayjs().subtract(1, "month").format("YYYY-MM");
+  // Filter data by current month
+  const filteredData = updatedData.filter(
+    (item) => dayjs(item.month).format("YYYY-MM") === currentMonth,
+  );
+
+  // Group data by companyName
+  const groupedByCompany = filteredData.reduce((acc, item) => {
+    if (!acc[item.companyName]) {
+      acc[item.companyName] = {
+        companyName: item.companyName,
+        total支払合計: 0,
+        max支払日: item.支払日,
+        売掛計税抜: 0,
+        課税: 0,
+        非課税: 0,
+        税抜合計: 0,
+        消費税: 0,
+        lastMonthTotal支払合計: 0,
+        allStatusTrue: true,
+      };
+    }
+
+    // Aggregate values for current month
+    acc[item.companyName].total支払合計 += item.支払合計;
+    acc[item.companyName].課税 += item.課税;
+    acc[item.companyName].非課税 += item.非課税;
+    acc[item.companyName].税抜合計 += item.税抜合計;
+    acc[item.companyName].消費税 += item.消費税;
+
+    acc[item.companyName].max支払日 = dayjs(
+      acc[item.companyName].max支払日,
+    ).isBefore(dayjs(item.支払日))
+      ? item.支払日
+      : acc[item.companyName].max支払日;
+
+    if (item.status) {
+      acc[item.companyName].売掛計税抜 += item.支払合計;
+    }
+
+    // Check if all statuses are true
+    if (!item.status) {
+      acc[item.companyName].allStatusTrue = false;
+    }
+
+    return acc;
+  }, {});
+
+  // Calculate last month's total 支払合計
+  updatedData.forEach((item) => {
+    if (dayjs(item.month).format("YYYY-MM") === lastMonth) {
+      if (!groupedByCompany[item.companyName]) {
+        groupedByCompany[item.companyName] = { lastMonthTotal支払合計: 0 };
+      }
+      groupedByCompany[item.companyName].lastMonthTotal支払合計 +=
+        item.支払合計;
+    }
+  });
+
+  // Calculate 支払い比率 for each company and determine overall status
+  const result = Object.values(groupedByCompany).map((company) => ({
+    ...company,
+    支払い比率:
+      company.売掛計税抜 > 0
+        ? Math.round((company.売掛計税抜 / company.total支払合計) * 100) + " %"
+        : 0 + " %",
+    status: company.allStatusTrue,
+  }));
+
+  console.log(result);
 
   return (
     <div className="mx-auto p-4">
@@ -160,10 +196,11 @@ const DBSPage = () => {
         </Typography>
       </div>
       <div className="mb-4">
-        <Table
-          dataSource={dataSource}
+        <CTable
+          dataSource={result}
           columns={columns}
-          pagination={false}
+          pagination={true}
+          ps={10}
           bordered
           scroll={{ x: "max-content" }}
         />
