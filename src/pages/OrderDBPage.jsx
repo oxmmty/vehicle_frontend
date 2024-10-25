@@ -1,4 +1,4 @@
-import { Button, DatePicker, Table, Typography } from "antd";
+import { Button, DatePicker, Table, Typography, Checkbox } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -41,9 +41,16 @@ const OrderDBPage = () => {
       fixed: "left",
     },
     {
-      title: "送り状受領書作成",
-      dataIndex: "送り状受領書作成",
-      key: "送り状受領書作成",
+      title: "支払い確認",
+      dataIndex: "支払い確認",
+      key: "支払い確認",
+      fixed: "left",
+      render: (text, record) => (
+        <Checkbox
+          checked={record.支払い確認}
+          onChange={(e) => handleCheckboxChange(e, record)}
+        />
+      ),
     },
     {
       title: "荷主名",
@@ -624,7 +631,24 @@ const OrderDBPage = () => {
     setDate(dateString);
     filterData(dateString, datas);
   };
+  const handleCheckboxChange = async (e, record) => {
+    const newValue = e.target.checked;
 
+    try {
+      await axios.put(`/orderlist/${record._id}`, {
+        支払い確認: newValue,
+      });
+
+      // Update local state after successful DB update
+      setDatas((prevDatas) =>
+        prevDatas.map((data) =>
+          data._id === record._id ? { ...data, 支払い確認: newValue } : data,
+        ),
+      );
+    } catch (error) {
+      console.error("Error updating payment confirmation:", error);
+    }
+  };
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="sm:flex-row justify-evenly w-full">

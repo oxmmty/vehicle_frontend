@@ -15,6 +15,8 @@ const BillingListPage = () => {
     {
       title: "選択",
       key: "select",
+      fixed: "left",
+
       render: (_, record) => (
         <Checkbox
           checked={selectedRows.includes(record.識別コード)}
@@ -26,17 +28,21 @@ const BillingListPage = () => {
       title: "受注コード",
       dataIndex: "識別コード",
       key: "識別コード",
+      fixed: "left",
     },
     {
       title: "日付",
       dataIndex: "配達日1",
       key: "配達日1",
+      fixed: "left",
+
       render: (text) => dayjs(text).format("YYYY-MM-DD"),
     },
     {
       title: "顧客名",
       dataIndex: "顧客名",
       key: "顧客名",
+      fixed: "left",
     },
     {
       title: "積地",
