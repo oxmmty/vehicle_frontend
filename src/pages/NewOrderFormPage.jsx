@@ -31,40 +31,32 @@ const SeaComponent = ({ setData }) => {
   const [subPayData5, setSubPayData5] = useState([]);
   const [subPayData6, setSubPayData6] = useState([]);
   const [storageData, setStorageData] = useState([]);
-
   const [date, setDate] = useState();
   const [customerData, setCustomerData] = useState([]);
   const [filteredCustomerData, setFilteredCustomerData] = useState([]);
   const [selectedValueCustomer, setSelectedValueCustomer] = useState("");
   const [inputValueCustomer, setInputValueCustomer] = useState("");
-
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueCompany, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
-
   const [locationData, setLocationData] = useState([]);
   const [filteredLocationData, setFilteredLocationData] = useState([]);
   const [selectedValueLocation, setSelectedValueLocation] = useState("");
   const [inputValueLocation, setInputValueLocation] = useState("");
-
   const [loadData, setLoadData] = useState([]);
   const [filteredLoadData, setFilteredLoadData] = useState([]);
   const [selectedValueLoad, setSelectedValueLoad] = useState("");
   const [inputValueLoad, setInputValueLoad] = useState("");
-
   const [shipData, setShipData] = useState([]);
   const [filteredShipData, setFilteredShipData] = useState([]);
   const [selectedValueShip, setSelectedValueShip] = useState("");
   const [inputValueShip, setInputValueShip] = useState("");
-
   const [shipperData, setShipperData] = useState([]);
   const [filteredShipperData, setFilteredShipperData] = useState([]);
   const [selectedValueShipper, setSelectedValueShipper] = useState("");
   const [inputValueShipper, setInputValueShipper] = useState("");
-
   const [selectedValueDivide, setSelectedValueDivide] = useState("");
-
   const [pick, setPick] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [vehicle, setVehicle] = useState(false);
@@ -72,7 +64,6 @@ const SeaComponent = ({ setData }) => {
   const [invoice, setInvoice] = useState(false);
   const [angle, setAngle] = useState(null);
   const [risk, setRisk] = useState(null);
-
   const [no, setNo] = useState(null);
   const [size, setSize] = useState(null);
   const [type, setType] = useState(null);
@@ -81,12 +72,9 @@ const SeaComponent = ({ setData }) => {
   const [bl, setBl] = useState(null);
   const [shipName, setShipName] = useState(null);
   const [code, setCode] = useState(null);
-
   const [requestRemark, setRequestRemark] = useState(null);
   const [invoiceRemark, setInvoiceRemark] = useState(null);
-
   const lastDay = dayjs(date).endOf("month").format("YYYY-MM-DD");
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -98,33 +86,27 @@ const SeaComponent = ({ setData }) => {
             axios.get(process.env.REACT_API_BASE_URL + `/shipper`),
             axios.get(process.env.REACT_API_BASE_URL + `/workstation`),
           ]);
-
         const customer = customers.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.顧客名称);
         setCustomerData(customer);
-
         const partnercompnay = companies.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.協力会社);
         setCompanyData(customer);
-
         const ship = ships.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.船社名称);
         setShipData(ship);
-
         const shipper = shippers.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.荷主名称);
         setShipperData(shipper);
-
         const locationFilter = workstations.data
           .filter((item) => item.取場所 !== null)
           .sort((a, b) => b.取場所 - a.取場所);
         const location = locationFilter.map((item) => item.作業地名称);
         setLocationData(location);
-
         const loadFilter = workstations.data
           .filter((item) => item.搬入返却場所 !== null)
           .sort((a, b) => b.搬入返却場所 - a.搬入返却場所);
@@ -149,8 +131,6 @@ const SeaComponent = ({ setData }) => {
   const typeData = [86, 96];
   const sizeData = [20, 40];
   const kindsData = ["Dry", "TNK", "REEFER", "FRAT"];
-
-  // Customer Datas
   const handleSelectCustomer = (value) => {
     setSelectedValueCustomer(value);
   };
@@ -174,7 +154,6 @@ const SeaComponent = ({ setData }) => {
       setFilteredCustomerData([...customerData, inputValueCustomer]); // Add to filtered list
     }
   };
-  //Partner comapany datas
   const handleSelectCompany = (value) => {
     setSelectedValueCompany(value);
   };
@@ -197,7 +176,6 @@ const SeaComponent = ({ setData }) => {
       setFilteredCompanyData([...companyData, inputValueCompany]);
     }
   };
-  // Location datas
   const handleSelectLocation = (value) => {
     setSelectedValueLocation(value);
   };
@@ -220,7 +198,6 @@ const SeaComponent = ({ setData }) => {
       setFilteredLocationData([...locationData, inputValueLocation]);
     }
   };
-  //Load Datas
   const handleSelectLoad = (value) => {
     setSelectedValueLoad(value);
   };
@@ -243,7 +220,6 @@ const SeaComponent = ({ setData }) => {
       setFilteredLoadData([...loadData, inputValueLoad]);
     }
   };
-  //Ship Data
   const handleSelectShip = (value) => {
     setSelectedValueShip(value);
   };
@@ -260,13 +236,11 @@ const SeaComponent = ({ setData }) => {
       inputValueShip &&
       !shipData.includes(inputValueShip)
     ) {
-      // const savedValue = await saveToDatabase(inputValueShip);
       setSelectedValueShip(inputValueShip);
       setInputValueShip("");
       setFilteredShipData([...shipData, inputValueShip]);
     }
   };
-  //Shipper Data
   const handleSelectShipper = (value) => {
     setSelectedValueShipper(value);
   };
@@ -289,16 +263,13 @@ const SeaComponent = ({ setData }) => {
       setFilteredShipperData([...shipperData, inputValueShipper]);
     }
   };
-  //Divide Data
   const handleSelectDivide = (value) => {
     setSelectedValueDivide(value);
   };
-
   const handleCheckboxChange = (e) => {
     setIsChecked(e.target.checked);
     setSelectedValueDivide(null);
   };
-
   const checkPick = () => {
     if (pick !== true) {
       setPick(true);
@@ -771,43 +742,36 @@ const SeaComponent = ({ setData }) => {
     requestRemark,
     invoiceRemark,
   ]);
-
   useEffect(() => {
     if (!inputValueShipper) {
       setSelectedValueShipper("");
     }
   }, [inputValueShipper]);
-
   useEffect(() => {
     if (!inputValueShip) {
       setSelectedValueShip("");
     }
   }, [inputValueShip]);
-
   useEffect(() => {
     if (!inputValueCustomer) {
       setSelectedValueCustomer("");
     }
   }, [inputValueCustomer]);
-
   useEffect(() => {
     if (!inputValueCompany) {
       setSelectedValueCompany("");
     }
   }, [inputValueCompany]);
-
   useEffect(() => {
     if (!inputValueLoad) {
       setSelectedValueLoad("");
     }
   }, [inputValueLoad]);
-
   useEffect(() => {
     if (!inputValueLocation) {
       setSelectedValueLocation("");
     }
   }, [inputValueLocation]);
-
   return (
     <div className="flex flex-col md:flex-row md:gap-4">
       <Form layout="vertical" id="請求日" className="anchor-section md:w-[50%]">

@@ -53,38 +53,15 @@ const PartnerCompanyListPage = () => {
   };
 
   // Merge row span for the specified field
-  const mergedRowSpan = (datas, field) => {
-    const rowSpanMap = {};
-    let previousValue = null;
-    let spanCount = 0;
-
-    datas.forEach((item, index) => {
-      if (item[field] === previousValue) {
-        rowSpanMap[index] = 0; // merge with previous cell
-        spanCount += 1;
-      } else {
-        previousValue = item[field];
-        rowSpanMap[index - spanCount] = spanCount + 1; // update the previous block's span
-        spanCount = 0;
-      }
-    });
-
-    // Handle the last group
-    if (spanCount > 0) {
-      rowSpanMap[datas.length - spanCount - 1] = spanCount + 1;
-    }
-
-    return rowSpanMap;
-  };
 
   const columns = [
     {
       title: "協力会社名",
       dataIndex: "協力会社名",
       onCell: (_, index) => {
-        const rowSpanMap = mergedRowSpan(datas, "協力会社名");
+        const rowSpan = getRowSpan(index, "協力会社名");
         return {
-          rowSpan: rowSpanMap[index] || 1, // Default rowSpan is 1 if not found
+          rowSpan,
         };
       },
     },
@@ -146,7 +123,22 @@ const PartnerCompanyListPage = () => {
       }),
     };
   });
+  const getRowSpan = (index, key) => {
+    const currentData = datas[index];
+    const previousData = index > 0 ? datas[index - 1] : null;
 
+    if (index === 0 || currentData[key] !== previousData?.[key]) {
+      let rowSpan = 1;
+      let i = index + 1;
+      while (i < datas.length && datas[i][key] === currentData[key]) {
+        rowSpan += 1;
+        i += 1;
+      }
+      return rowSpan;
+    }
+
+    return 0;
+  };
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/companyPriceList");
