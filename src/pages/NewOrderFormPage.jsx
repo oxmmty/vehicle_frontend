@@ -32,30 +32,38 @@ const SeaComponent = ({ setData }) => {
   const [subPayData6, setSubPayData6] = useState([]);
   const [storageData, setStorageData] = useState([]);
   const [date, setDate] = useState();
+  const [loading, setLoading] = useState(false);
+
   const [customerData, setCustomerData] = useState([]);
   const [filteredCustomerData, setFilteredCustomerData] = useState([]);
-  const [selectedValueCustomer, setSelectedValueCustomer] = useState("");
   const [inputValueCustomer, setInputValueCustomer] = useState("");
+  const [selectedValueCustomer, setSelectedValueCustomer] = useState("");
+
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
-  const [selectedValueCompany, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [selectedValueCompany, setSelectedValueCompany] = useState("");
+
   const [locationData, setLocationData] = useState([]);
   const [filteredLocationData, setFilteredLocationData] = useState([]);
-  const [selectedValueLocation, setSelectedValueLocation] = useState("");
   const [inputValueLocation, setInputValueLocation] = useState("");
+  const [selectedValueLocation, setSelectedValueLocation] = useState("");
+
   const [loadData, setLoadData] = useState([]);
   const [filteredLoadData, setFilteredLoadData] = useState([]);
-  const [selectedValueLoad, setSelectedValueLoad] = useState("");
   const [inputValueLoad, setInputValueLoad] = useState("");
+  const [selectedValueLoad, setSelectedValueLoad] = useState("");
+
   const [shipData, setShipData] = useState([]);
   const [filteredShipData, setFilteredShipData] = useState([]);
-  const [selectedValueShip, setSelectedValueShip] = useState("");
   const [inputValueShip, setInputValueShip] = useState("");
+  const [selectedValueShip, setSelectedValueShip] = useState("");
+
   const [shipperData, setShipperData] = useState([]);
   const [filteredShipperData, setFilteredShipperData] = useState([]);
-  const [selectedValueShipper, setSelectedValueShipper] = useState("");
   const [inputValueShipper, setInputValueShipper] = useState("");
+  const [selectedValueShipper, setSelectedValueShipper] = useState("");
+
   const [selectedValueDivide, setSelectedValueDivide] = useState("");
   const [pick, setPick] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
@@ -75,45 +83,68 @@ const SeaComponent = ({ setData }) => {
   const [requestRemark, setRequestRemark] = useState(null);
   const [invoiceRemark, setInvoiceRemark] = useState(null);
   const lastDay = dayjs(date).endOf("month").format("YYYY-MM-DD");
+
+  useEffect(() => {
+    customerFilterOptions();
+  }, [inputValueCustomer, customerData]);
+  useEffect(() => {
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
+  useEffect(() => {
+    locationFilterOptions();
+  }, [inputValueLocation, locationData]);
+  useEffect(() => {
+    shipperFilterOptions();
+  }, [inputValueShipper, shipperData]);
+  useEffect(() => {
+    shipFilterOptions();
+  }, [inputValueShip, shipData]);
+  useEffect(() => {
+    loadFilterOptions();
+  }, [inputValueLoad, loadData]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [customers, companies, ships, shippers, workstations] =
-          await Promise.all([
-            axios.get(process.env.REACT_API_BASE_URL + `/customer`),
-            axios.get(process.env.REACT_API_BASE_URL + `/partnercompany`),
-            axios.get(process.env.REACT_API_BASE_URL + `/ship`),
-            axios.get(process.env.REACT_API_BASE_URL + `/shipper`),
-            axios.get(process.env.REACT_API_BASE_URL + `/workstation`),
-          ]);
+        const [customers, ships, shippers, workstations] = await Promise.all([
+          axios.get(process.env.REACT_API_BASE_URL + `/customer`),
+          axios.get(process.env.REACT_API_BASE_URL + `/ship`),
+          axios.get(process.env.REACT_API_BASE_URL + `/shipper`),
+          axios.get(process.env.REACT_API_BASE_URL + `/workstation`),
+        ]);
         const customer = customers.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.顧客名称);
         setCustomerData(customer);
-        const partnercompnay = companies.data
-          .sort((a, b) => b.カウント - a.カウント)
-          .map((item) => item.協力会社);
+        setFilteredCustomerData(customer);
         setCompanyData(customer);
+        setFilteredCompanyData(customer);
+
         const ship = ships.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.船社名称);
         setShipData(ship);
+        setFilteredShipData(ship);
         const shipper = shippers.data
           .sort((a, b) => b.カウント - a.カウント)
           .map((item) => item.荷主名称);
         setShipperData(shipper);
+        setFilteredShipperData(shipper);
         const locationFilter = workstations.data
           .filter((item) => item.取場所 !== null)
           .sort((a, b) => b.取場所 - a.取場所);
         const location = locationFilter.map((item) => item.作業地名称);
         setLocationData(location);
+        setFilteredLocationData(location);
         const loadFilter = workstations.data
           .filter((item) => item.搬入返却場所 !== null)
           .sort((a, b) => b.搬入返却場所 - a.搬入返却場所);
         const load = loadFilter.map((item) => item.作業地名称);
         setLoadData(load);
+        setFilteredLoadData(load);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -131,138 +162,415 @@ const SeaComponent = ({ setData }) => {
   const typeData = [86, 96];
   const sizeData = [20, 40];
   const kindsData = ["Dry", "TNK", "REEFER", "FRAT"];
-  const handleSelectCustomer = (value) => {
-    setSelectedValueCustomer(value);
+
+  const customerFilterOptions = () => {
+    if (!inputValueCustomer.trim()) {
+      setFilteredCustomerData(customerData);
+    } else {
+      const filtered = customerData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option
+            .toLowerCase()
+            .includes(inputValueCustomer.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCustomer.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCustomer.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCustomerData(filtered);
+    }
   };
-  const handleChangeCustomer = (value) => {
-    setInputValueCustomer(value);
-    // Filter customer data based on input value
-    const filteredData = customerData.filter((customer) =>
-      customer.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCustomerData(filteredData); // Update filtered customer data
-  };
-  const handleKeyPressCustomer = async (event) => {
+  const customerHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
       inputValueCustomer &&
-      !customerData.includes(inputValueCustomer)
+      !customerData.some(
+        (option) => option.toLowerCase() === inputValueCustomer.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueCustomer);
-      setSelectedValueCustomer(inputValueCustomer);
-      setInputValueCustomer("");
-      setFilteredCustomerData([...customerData, inputValueCustomer]); // Add to filtered list
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/customer",
+          {
+            顧客名称: inputValueCustomer,
+          },
+        );
+        const newOption = { value: inputValueCustomer };
+        setCustomerData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCustomer(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
+  const customerHandleChange = (newValue) => {
+    setSelectedValueCustomer(newValue);
   };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
+  const customerHandleSearch = (newInputValue) => {
+    setInputValueCustomer(newInputValue);
   };
-  const handleKeyPressCompany = async (event) => {
+
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
+    }
+  };
+  const companyHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
       inputValueCompany &&
-      !companyData.includes(inputValueCompany)
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/customer",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
-  const handleSelectLocation = (value) => {
-    setSelectedValueLocation(value);
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
   };
-  const handleChangeLocation = (value) => {
-    setInputValueLocation(value);
-    const filteredData = locationData.filter((location) =>
-      location.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredLocationData(filteredData);
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
   };
-  const handleKeyPressLocation = async (event) => {
+
+  const locationFilterOptions = () => {
+    if (!inputValueLocation.trim()) {
+      setFilteredLocationData(locationData);
+    } else {
+      const filtered = locationData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option
+            .toLowerCase()
+            .includes(inputValueLocation.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueLocation.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueLocation.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredLocationData(filtered);
+    }
+  };
+  const locationHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
       inputValueLocation &&
-      !locationData.includes(inputValueLocation)
+      !locationData.some(
+        (option) => option.toLowerCase() === inputValueLocation.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueLocation);
-      setSelectedValueLocation(inputValueLocation);
-      setInputValueLocation("");
-      setFilteredLocationData([...locationData, inputValueLocation]);
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/workstation",
+          {
+            作業地名称: inputValueLocation,
+            取場所: 0,
+          },
+        );
+        const newOption = { value: inputValueLocation };
+        setLocationData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueLocation(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
-  const handleSelectLoad = (value) => {
-    setSelectedValueLoad(value);
+  const locationHandleChange = (newValue) => {
+    setSelectedValueLocation(newValue);
   };
-  const handleChangeLoad = (value) => {
-    setInputValueLoad(value);
-    const filteredData = loadData.filter((load) =>
-      load.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredLoadData(filteredData);
+  const locationHandleSearch = (newInputValue) => {
+    setInputValueLocation(newInputValue);
   };
-  const handleKeyPressLoad = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueLoad &&
-      !loadData.includes(inputValueLoad)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueLoad);
-      setSelectedValueLoad(inputValueLoad);
-      setInputValueLoad("");
-      setFilteredLoadData([...loadData, inputValueLoad]);
+
+  const shipperFilterOptions = () => {
+    if (!inputValueShipper.trim()) {
+      setFilteredShipperData(shipperData);
+    } else {
+      const filtered = shipperData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueShipper.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueShipper.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueShipper.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredShipperData(filtered);
     }
   };
-  const handleSelectShip = (value) => {
-    setSelectedValueShip(value);
-  };
-  const handleChangeShip = (value) => {
-    setInputValueShip(value);
-    const filteredData = shipData.filter((ship) =>
-      ship.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredShipData(filteredData);
-  };
-  const handleKeyPressShip = async (event) => {
+  const shipperHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
-      inputValueShip &&
-      !shipData.includes(inputValueShip)
-    ) {
-      setSelectedValueShip(inputValueShip);
-      setInputValueShip("");
-      setFilteredShipData([...shipData, inputValueShip]);
-    }
-  };
-  const handleSelectShipper = (value) => {
-    setSelectedValueShipper(value);
-  };
-  const handleChangeShipper = (value) => {
-    setInputValueShipper(value);
-    const filteredData = shipperData.filter((shipper) =>
-      shipper.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredShipperData(filteredData);
-  };
-  const handleKeyPressShipper = async (event) => {
-    if (
-      event.key === "Enter" &&
       inputValueShipper &&
-      !shipperData.includes(inputValueShipper)
+      !shipperData.some(
+        (option) => option.toLowerCase() === inputValueShipper.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueShipper);
-      setSelectedValueShipper(inputValueShipper);
-      setInputValueShipper("");
-      setFilteredShipperData([...shipperData, inputValueShipper]);
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/shipper",
+          {
+            荷主名称: inputValueShipper,
+          },
+        );
+        const newOption = { value: inputValueShipper };
+        setShipperData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueShipper(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
+  const shipperHandleChange = (newValue) => {
+    setSelectedValueShipper(newValue);
+  };
+  const shipperHandleSearch = (newInputValue) => {
+    setInputValueShipper(newInputValue);
+  };
+
+  const shipFilterOptions = () => {
+    if (!inputValueShip.trim()) {
+      setFilteredShipData(shipData);
+    } else {
+      const filtered = shipData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueShip.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueShip.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueShip.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredShipData(filtered);
+    }
+  };
+  const shipHandleAddNewOption = async () => {
+    if (
+      inputValueShip &&
+      !shipData.some(
+        (option) => option.toLowerCase() === inputValueShip.toLowerCase(),
+      )
+    ) {
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/ship",
+          {
+            船社名称: inputValueShip,
+          },
+        );
+        const newOption = { value: inputValueShip };
+        setShipData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueShip(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
+    }
+  };
+  const shipHandleChange = (newValue) => {
+    setSelectedValueShip(newValue);
+  };
+  const shipHandleSearch = (newInputValue) => {
+    setInputValueShip(newInputValue);
+  };
+
+  const loadFilterOptions = () => {
+    if (!inputValueLoad.trim()) {
+      setFilteredLoadData(loadData);
+    } else {
+      const filtered = loadData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueLoad.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueLoad.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueLoad.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredLoadData(filtered);
+    }
+  };
+  const loadHandleAddNewOption = async () => {
+    if (
+      inputValueLoad &&
+      !loadData.some(
+        (option) => option.toLowerCase() === inputValueLoad.toLowerCase(),
+      )
+    ) {
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/workstation",
+          {
+            作業地名称: inputValueLoad,
+            搬入返却場所: 0,
+          },
+        );
+        const newOption = { value: inputValueLoad };
+        setLoadData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueLoad(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
+    }
+  };
+  const loadHandleChange = (newValue) => {
+    setSelectedValueLoad(newValue);
+  };
+  const loadHandleSearch = (newInputValue) => {
+    setInputValueLoad(newInputValue);
+  };
+
   const handleSelectDivide = (value) => {
     setSelectedValueDivide(value);
   };
@@ -528,6 +836,7 @@ const SeaComponent = ({ setData }) => {
       下払保管課税: storageData[10],
       請求書備考: requestRemark,
       送り状受領書備考: invoiceRemark,
+      支払い確認: false,
     });
   }, [
     lastDay,
@@ -742,36 +1051,7 @@ const SeaComponent = ({ setData }) => {
     requestRemark,
     invoiceRemark,
   ]);
-  useEffect(() => {
-    if (!inputValueShipper) {
-      setSelectedValueShipper("");
-    }
-  }, [inputValueShipper]);
-  useEffect(() => {
-    if (!inputValueShip) {
-      setSelectedValueShip("");
-    }
-  }, [inputValueShip]);
-  useEffect(() => {
-    if (!inputValueCustomer) {
-      setSelectedValueCustomer("");
-    }
-  }, [inputValueCustomer]);
-  useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
-  useEffect(() => {
-    if (!inputValueLoad) {
-      setSelectedValueLoad("");
-    }
-  }, [inputValueLoad]);
-  useEffect(() => {
-    if (!inputValueLocation) {
-      setSelectedValueLocation("");
-    }
-  }, [inputValueLocation]);
+
   return (
     <div className="flex flex-col md:flex-row md:gap-4">
       <Form layout="vertical" id="請求日" className="anchor-section md:w-[50%]">
@@ -829,28 +1109,23 @@ const SeaComponent = ({ setData }) => {
             <Select
               showSearch
               value={selectedValueShipper}
-              onSearch={handleChangeShipper}
-              onSelect={handleSelectShipper}
-              onInputKeyDown={handleKeyPressShipper}
-              style={{ width: 200 }}
+              defaultActiveFirstOption={false}
+              showArrow={false}
               filterOption={false}
-              notFoundContent={null}
-              className="grow">
-              {inputValueShipper && filteredShipperData.length > 0 ? (
-                filteredShipperData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : inputValueShipper ? (
-                <Option disabled>No matching data</Option>
-              ) : (
-                shipperData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              )}
+              onSearch={shipperHandleSearch}
+              onChange={shipperHandleChange}
+              notFoundContent={loading ? "Loading..." : "No match found"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  shipperHandleAddNewOption();
+                }
+              }}
+              allowClear>
+              {filteredShipperData.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
             </Select>
           </div>
         </Form.Item>
@@ -859,28 +1134,23 @@ const SeaComponent = ({ setData }) => {
             <Select
               showSearch
               value={selectedValueCustomer}
-              onSearch={handleChangeCustomer}
-              onSelect={handleSelectCustomer}
-              onInputKeyDown={handleKeyPressCustomer}
-              style={{ width: 200 }}
+              defaultActiveFirstOption={false}
+              showArrow={false}
               filterOption={false}
-              notFoundContent={null}
-              className="grow">
-              {filteredCustomerData.length > 0 ? (
-                filteredCustomerData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : inputValueCustomer ? (
-                <Option disabled>No matching data</Option>
-              ) : (
-                customerData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              )}
+              onSearch={customerHandleSearch}
+              onChange={customerHandleChange}
+              notFoundContent={loading ? "Loading..." : "No match found"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  customerHandleAddNewOption();
+                }
+              }}
+              allowClear>
+              {filteredCustomerData.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
             </Select>
           </div>
         </Form.Item>
@@ -889,28 +1159,23 @@ const SeaComponent = ({ setData }) => {
             <Select
               showSearch
               value={selectedValueCompany}
-              onSearch={handleChangeCompany}
-              onSelect={handleSelectCompany}
-              onInputKeyDown={handleKeyPressCompany}
-              style={{ width: 200 }}
+              defaultActiveFirstOption={false}
+              showArrow={false}
               filterOption={false}
-              notFoundContent={null}
-              className="grow">
-              {filteredCompanyData.length > 0 ? (
-                filteredCompanyData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : inputValueCompany ? (
-                <Option disabled>No matching data</Option>
-              ) : (
-                companyData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              )}
+              onSearch={companyHandleSearch}
+              onChange={companyHandleChange}
+              notFoundContent={loading ? "Loading..." : "No match found"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  companyHandleAddNewOption();
+                }
+              }}
+              allowClear>
+              {filteredCompanyData.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
             </Select>
           </div>
         </Form.Item>
@@ -919,28 +1184,23 @@ const SeaComponent = ({ setData }) => {
             <Select
               showSearch
               value={selectedValueLocation}
-              onSearch={handleChangeLocation}
-              onSelect={handleSelectLocation}
-              onInputKeyDown={handleKeyPressLocation}
-              style={{ width: 200 }}
+              defaultActiveFirstOption={false}
+              showArrow={false}
               filterOption={false}
-              notFoundContent={null}
-              className="grow">
-              {filteredLocationData.length > 0 ? (
-                filteredLocationData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : inputValueLocation ? (
-                <Option disabled>No matching data</Option>
-              ) : (
-                locationData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              )}
+              onSearch={locationHandleSearch}
+              onChange={locationHandleChange}
+              notFoundContent={loading ? "Loading..." : "No match found"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  locationHandleAddNewOption();
+                }
+              }}
+              allowClear>
+              {filteredLocationData.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
             </Select>
           </div>
         </Form.Item>
@@ -949,28 +1209,23 @@ const SeaComponent = ({ setData }) => {
             <Select
               showSearch
               value={selectedValueLoad}
-              onSearch={handleChangeLoad}
-              onSelect={handleSelectLoad}
-              onInputKeyDown={handleKeyPressLoad}
-              style={{ width: 200 }}
+              defaultActiveFirstOption={false}
+              showArrow={false}
               filterOption={false}
-              notFoundContent={null}
-              className="grow">
-              {filteredLoadData.length > 0 ? (
-                filteredLoadData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : inputValueLoad ? (
-                <Option disabled>No matching data</Option>
-              ) : (
-                loadData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              )}
+              onSearch={loadHandleSearch}
+              onChange={loadHandleChange}
+              notFoundContent={loading ? "Loading..." : "No match found"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  loadHandleAddNewOption();
+                }
+              }}
+              allowClear>
+              {filteredLoadData.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
             </Select>
           </div>
         </Form.Item>
@@ -979,28 +1234,23 @@ const SeaComponent = ({ setData }) => {
             <Select
               showSearch
               value={selectedValueShip}
-              onSearch={handleChangeShip}
-              onSelect={handleSelectShip}
-              onInputKeyDown={handleKeyPressShip}
-              style={{ width: 200 }}
+              defaultActiveFirstOption={false}
+              showArrow={false}
               filterOption={false}
-              notFoundContent={null}
-              className="grow">
-              {filteredShipData.length > 0 ? (
-                filteredShipData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              ) : inputValueShip ? (
-                <Option disabled>No matching data</Option>
-              ) : (
-                shipData.map((data) => (
-                  <Option key={data} value={data}>
-                    {data}
-                  </Option>
-                ))
-              )}
+              onSearch={shipHandleSearch}
+              onChange={shipHandleChange}
+              notFoundContent={loading ? "Loading..." : "No match found"}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  shipHandleAddNewOption();
+                }
+              }}
+              allowClear>
+              {filteredShipData.map((option) => (
+                <Option key={option} value={option}>
+                  {option}
+                </Option>
+              ))}
             </Select>
           </div>
         </Form.Item>

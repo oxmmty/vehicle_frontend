@@ -69,6 +69,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
           .sort((a, b) => b.配達場所 - a.配達場所);
         const delivery = deliveryFilter;
         setDeliveryData(delivery);
+        setFilteredDeliveryData1(delivery);
         if (dates1 === null) {
           setDate(today);
         }
@@ -78,6 +79,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
     };
     fetchData();
   }, []);
+
   useEffect(() => {
     setDeliveryData1([
       date1,
@@ -129,19 +131,21 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
   // Delivery Datas
   const handleSelectDelivery1 = (value, key) => {
     setSelectedValueDelivery1(value);
-    if (selectedValueDelivery1 == "") {
+    if (selectedValueDelivery1 == "" && null) {
       setAddress1("");
       setTEL1("");
       setCharge1("");
+      setRequestText1("");
     } else {
       let delivery = deliveryData.filter((item) => {
         if (item._id === key.key) {
           return item._id;
         }
       });
-      setAddress1(delivery[0].住所);
+      setAddress1(delivery[0]["住所"]);
       setTEL1(delivery[0].TEL);
-      setCharge1(delivery[0].担当者);
+      setCharge1(delivery[0]["担当者"]);
+      setRequestText1(delivery[0]["依頼書備考コメント"]);
     }
   };
   const handleChangeDelivery1 = (value) => {
@@ -209,15 +213,19 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
       </Form.Item>
       <Form.Item label={"住所"}>
         <div className="flex flex-wrap flex-row items-center gap-4">
-          <Input className="w-fit grow" value={address1} />
+          <Input
+            className="w-fit grow"
+            value={address1}
+            onChange={(e) => setAddress1(e.target.value)}
+          />
         </div>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"TEL"} className="w-fit grow">
-          <Input value={tel1} />
+          <Input value={tel1} onChange={(e) => setTEL1(e.target.value)} />
         </Form.Item>
         <Form.Item label={"担当者"} className="w-fit grow">
-          <Input value={charge1} />
+          <Input value={charge1} onChange={(e) => setCharge1(e.target.value)} />
         </Form.Item>
       </div>
       <Form.Item required label={"積日"}>
@@ -386,6 +394,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
         <div className="flex flex-wrap flex-row items-center gap-x-4">
           <TextArea
             rows={4}
+            value={requestText1}
             className="grow"
             onChange={(e) => setRequestText1(e.target.value)}
           />
