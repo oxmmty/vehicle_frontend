@@ -10,11 +10,6 @@ const CustomSelect = () => {
   const [allOptions, setAllOptions] = useState([]);
   const [filteredOptions, setFilteredOptions] = useState([]);
 
-  const [customerData, setCustomerData] = useState([]);
-  const [filteredCustomerData, setFilteredCustomerData] = useState([]);
-  const [inputValueCustomer, setInputValueCustomer] = useState("");
-  const [selectedValueCustomer, setSelectedValueCustomer] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

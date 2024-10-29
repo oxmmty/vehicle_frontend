@@ -9,26 +9,13 @@ import {
   DatePicker,
   TimePicker,
   Radio,
-  Space,
+  message,
 } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 const format = "HH:mm";
 const { TextArea } = Input;
-const distinguish = [
-  {
-    value: 0,
-    label: "実入り取り",
-  },
-  {
-    value: 1,
-    label: "空バン取り",
-  },
-  {
-    value: 2,
-    label: "実入り取りCRU",
-  },
-];
+
 const dateFormat = "YYYY-MM-DD";
 
 const Delivery1 = ({ setDate, setDeliveryData1 }) => {
@@ -57,6 +44,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
   const [otherFee1, setOtherFee1] = useState(null);
   const [otherFeeTax1, setOtherFeeTax1] = useState(true);
   const [requestText1, setRequestText1] = useState(null);
+  const [keys1, setKeys1] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,41 +119,79 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
   // Delivery Datas
   const handleSelectDelivery1 = (value, key) => {
     setSelectedValueDelivery1(value);
-    if (selectedValueDelivery1 == "" && null) {
+    if (!value) {
       setAddress1("");
       setTEL1("");
       setCharge1("");
       setRequestText1("");
     } else {
-      let delivery = deliveryData.filter((item) => {
-        if (item._id === key.key) {
-          return item._id;
-        }
-      });
-      setAddress1(delivery[0]["住所"]);
-      setTEL1(delivery[0].TEL);
-      setCharge1(delivery[0]["担当者"]);
-      setRequestText1(delivery[0]["依頼書備考コメント"]);
+      setKeys1(key.key);
+      const delivery = deliveryData.find((item) => item._id === key.key);
+      if (delivery) {
+        setAddress1(delivery["住所"] || "");
+        setTEL1(delivery.TEL || "");
+        setCharge1(delivery["担当者"] || "");
+        setRequestText1(delivery["依頼書備考コメント"] || "");
+      }
     }
   };
+
   const handleChangeDelivery1 = (value) => {
     setInputValueDelivery1(value);
-    // Filter delivery data based on input value
-    const filteredData = deliveryData.filter((delivery) =>
-      delivery.作業地名称.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredDeliveryData1(filteredData); // Update filtered Delivery data
+    if (!value.trim()) {
+      setFilteredDeliveryData1(deliveryData);
+    } else {
+      const filteredData = deliveryData.filter((delivery) => {
+        if (typeof delivery === "string") {
+          return delivery.toLowerCase().includes(value.toLowerCase());
+        } else if (
+          typeof delivery === "object" &&
+          delivery !== null &&
+          typeof delivery.作業地名称 === "string"
+        ) {
+          return delivery.作業地名称
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        }
+        console.log("Unexpected delivery structure:", delivery);
+        return false;
+      });
+      setFilteredDeliveryData1(filteredData);
+    }
   };
+
   const handleKeyPressDelivery1 = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueDelivery1 &&
-      !deliveryData.includes(inputValueDelivery1)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueDelivery);
-      setSelectedValueDelivery1(inputValueDelivery1);
-      setInputValueDelivery1("");
-      setFilteredDeliveryData1([...deliveryData, inputValueDelivery1]); // Add to filtered list
+    if (event.key === "Enter" && inputValueDelivery1) {
+      const exists = deliveryData.some(
+        (delivery) =>
+          (typeof delivery === "string" &&
+            delivery.toLowerCase() === inputValueDelivery1.toLowerCase()) ||
+          (typeof delivery === "object" &&
+            delivery !== null &&
+            delivery.作業地名称.toLowerCase() ===
+              inputValueDelivery1.toLowerCase()),
+      );
+
+      if (!exists) {
+        try {
+          // Assuming you have an API endpoint for adding new delivery options
+          const response = await axios.post(
+            `${process.env.REACT_API_BASE_URL}/workstation`,
+            {
+              作業地名称: inputValueDelivery1,
+              配達場所: 0,
+            },
+          );
+          const newOption = { 作業地名称: inputValueDelivery1 };
+          setDeliveryData((prevOptions) => [...prevOptions, newOption]);
+          setSelectedValueDelivery1(newOption);
+          setInputValueDelivery1("");
+          message.success("New delivery option added successfully");
+        } catch (error) {
+          console.error("Error adding new delivery option:", error);
+          message.error("Failed to add new delivery option");
+        }
+      }
     }
   };
 
@@ -184,7 +210,6 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
         <div className="flex flex-wrap flex-row items-center gap-4">
           <Select
             showSearch
-            defaultValue={today}
             value={selectedValueDelivery1}
             onSearch={handleChangeDelivery1}
             onSelect={handleSelectDelivery1}
@@ -213,19 +238,131 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
       </Form.Item>
       <Form.Item label={"住所"}>
         <div className="flex flex-wrap flex-row items-center gap-4">
-          <Input
-            className="w-fit grow"
-            value={address1}
-            onChange={(e) => setAddress1(e.target.value)}
-          />
+          {selectedValueDelivery1 ? (
+            <Input
+              className="w-fit grow"
+              value={address1}
+              onChange={(e) => setAddress1(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys1,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["住所"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys1}`,
+                            {
+                              住所: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              className="w-fit grow"
+              value={address1}
+              onChange={(e) => setAddress1(e.target.value)}
+              disabled
+            />
+          )}
         </div>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"TEL"} className="w-fit grow">
-          <Input value={tel1} onChange={(e) => setTEL1(e.target.value)} />
+          {selectedValueDelivery1 ? (
+            <Input
+              value={tel1}
+              onChange={(e) => setTEL1(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys1,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["TEL"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys1}`,
+                            {
+                              TEL: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              value={tel1}
+              onChange={(e) => setTEL1(e.target.value)}
+              disabled
+            />
+          )}
         </Form.Item>
         <Form.Item label={"担当者"} className="w-fit grow">
-          <Input value={charge1} onChange={(e) => setCharge1(e.target.value)} />
+          {selectedValueDelivery1 ? (
+            <Input
+              value={charge1}
+              onChange={(e) => setCharge1(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys1,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["担当者"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys1}`,
+                            {
+                              担当者: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              value={charge1}
+              onChange={(e) => setCharge1(e.target.value)}
+              disabled
+            />
+          )}
         </Form.Item>
       </div>
       <Form.Item required label={"積日"}>
@@ -392,12 +529,22 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
       </div>
       <Form.Item label={"依頼書備考欄"} rules={[{ required: true }]}>
         <div className="flex flex-wrap flex-row items-center gap-x-4">
-          <TextArea
-            rows={4}
-            value={requestText1}
-            className="grow"
-            onChange={(e) => setRequestText1(e.target.value)}
-          />
+          {selectedValueDelivery1 ? (
+            <TextArea
+              rows={4}
+              value={requestText1}
+              className="grow"
+              onChange={(e) => setRequestText1(e.target.value)}
+            />
+          ) : (
+            <TextArea
+              rows={4}
+              value={requestText1}
+              className="grow"
+              onChange={(e) => setRequestText1(e.target.value)}
+              disabled
+            />
+          )}
         </div>
       </Form.Item>
     </div>
@@ -430,6 +577,7 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
   const [otherFee2, setOtherFee2] = useState(null);
   const [otherFeeTax2, setOtherFeeTax2] = useState(true);
   const [requestText2, setRequestText2] = useState(null);
+  const [keys2, setKeys2] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -501,39 +649,79 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
   // Delivery Datas
   const handleSelectDelivery2 = (value, key) => {
     setSelectedValueDelivery2(value);
-    if (selectedValueDelivery2 == "") {
+    if (!value) {
       setAddress2("");
       setTEL2("");
       setCharge2("");
+      setRequestText2("");
     } else {
-      let delivery = deliveryData.filter((item) => {
-        if (item._id === key.key) {
-          return item._id;
-        }
-      });
-      setAddress2(delivery[0].住所);
-      setTEL2(delivery[0].TEL);
-      setCharge2(delivery[0].担当者);
+      const delivery = deliveryData.find((item) => item._id === key.key);
+      setKeys2(key.key);
+      if (delivery) {
+        setAddress2(delivery["住所"] || "");
+        setTEL2(delivery.TEL || "");
+        setCharge2(delivery["担当者"] || "");
+        setRequestText2(delivery["依頼書備考コメント"] || "");
+      }
     }
   };
+
   const handleChangeDelivery2 = (value) => {
     setInputValueDelivery2(value);
-    // Filter delivery data based on input value
-    const filteredData = deliveryData.filter((delivery) =>
-      delivery.作業地名称.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredDeliveryData2(filteredData); // Update filtered Delivery data
+    if (!value.trim()) {
+      setFilteredDeliveryData2(deliveryData);
+    } else {
+      const filteredData = deliveryData.filter((delivery) => {
+        if (typeof delivery === "string") {
+          return delivery.toLowerCase().includes(value.toLowerCase());
+        } else if (
+          typeof delivery === "object" &&
+          delivery !== null &&
+          typeof delivery.作業地名称 === "string"
+        ) {
+          return delivery.作業地名称
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        }
+        console.log("Unexpected delivery structure:", delivery);
+        return false;
+      });
+      setFilteredDeliveryData2(filteredData);
+    }
   };
+
   const handleKeyPressDelivery2 = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueDelivery2 &&
-      !deliveryData.includes(inputValueDelivery2)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueDelivery);
-      setSelectedValueDelivery2(inputValueDelivery2);
-      setInputValueDelivery2("");
-      setFilteredDeliveryData2([...deliveryData, inputValueDelivery2]); // Add to filtered list
+    if (event.key === "Enter" && inputValueDelivery2) {
+      const exists = deliveryData.some(
+        (delivery) =>
+          (typeof delivery === "string" &&
+            delivery.toLowerCase() === inputValueDelivery2.toLowerCase()) ||
+          (typeof delivery === "object" &&
+            delivery !== null &&
+            delivery.作業地名称.toLowerCase() ===
+              inputValueDelivery2.toLowerCase()),
+      );
+
+      if (!exists) {
+        try {
+          // Assuming you have an API endpoint for adding new delivery options
+          const response = await axios.post(
+            `${process.env.REACT_API_BASE_URL}/workstation`,
+            {
+              作業地名称: inputValueDelivery2,
+              配達場所: 0,
+            },
+          );
+          const newOption = { 作業地名称: inputValueDelivery2 };
+          setDeliveryData((prevOptions) => [...prevOptions, newOption]);
+          setSelectedValueDelivery2(newOption);
+          setInputValueDelivery2("");
+          message.success("New delivery option added successfully");
+        } catch (error) {
+          console.error("Error adding new delivery option:", error);
+          message.error("Failed to add new delivery option");
+        }
+      }
     }
   };
 
@@ -580,15 +768,131 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
       </Form.Item>
       <Form.Item label={"住所"}>
         <div className="flex flex-wrap flex-row items-center gap-4">
-          <Input className="w-fit grow" value={address2} />
+          {selectedValueDelivery2 ? (
+            <Input
+              className="w-fit grow"
+              value={address2}
+              onChange={(e) => setAddress2(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys2,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["住所"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys2}`,
+                            {
+                              住所: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              className="w-fit grow"
+              value={address2}
+              onChange={(e) => setAddress2(e.target.value)}
+              disabled
+            />
+          )}
         </div>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"TEL"} className="w-fit grow">
-          <Input value={tel2} />
+          {selectedValueDelivery2 ? (
+            <Input
+              value={tel2}
+              onChange={(e) => setTEL2(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys2,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["TEL"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys2}`,
+                            {
+                              TEL: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              value={tel2}
+              onChange={(e) => setTEL2(e.target.value)}
+              disabled
+            />
+          )}
         </Form.Item>
         <Form.Item label={"担当者"} className="w-fit grow">
-          <Input value={charge2} />
+          {selectedValueDelivery2 ? (
+            <Input
+              value={charge2}
+              onChange={(e) => setCharge2(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys2,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["担当者"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys2}`,
+                            {
+                              担当者: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              value={charge2}
+              onChange={(e) => setCharge2(e.target.value)}
+              disabled
+            />
+          )}
         </Form.Item>
       </div>
       <Form.Item required label={"積日"}>
@@ -754,11 +1058,22 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
       </div>
       <Form.Item label={"依頼書備考欄"} rules={[{ required: true }]}>
         <div className="flex flex-wrap flex-row items-center gap-x-4">
-          <TextArea
-            rows={4}
-            className="grow"
-            onChange={(e) => setRequestText2(e.target.value)}
-          />
+          {selectedValueDelivery2 ? (
+            <TextArea
+              rows={4}
+              value={requestText2}
+              className="grow"
+              onChange={(e) => setRequestText2(e.target.value)}
+            />
+          ) : (
+            <TextArea
+              rows={4}
+              value={requestText2}
+              className="grow"
+              onChange={(e) => setRequestText2(e.target.value)}
+              disabled
+            />
+          )}
         </div>
       </Form.Item>
     </div>
@@ -791,7 +1106,7 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
   const [otherFee3, setOtherFee3] = useState(null);
   const [otherFeeTax3, setOtherFeeTax3] = useState(true);
   const [requestText3, setRequestText3] = useState(null);
-
+  const [keys3, setKeys3] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -863,39 +1178,78 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
   // Delivery Datas
   const handleSelectDelivery3 = (value, key) => {
     setSelectedValueDelivery3(value);
-    if (selectedValueDelivery3 == "") {
+    if (!value) {
       setAddress3("");
       setTEL3("");
       setCharge3("");
+      setRequestText3("");
     } else {
-      let delivery = deliveryData.filter((item) => {
-        if (item._id === key.key) {
-          return item._id;
-        }
-      });
-      setAddress3(delivery[0].住所);
-      setTEL3(delivery[0].TEL);
-      setCharge3(delivery[0].担当者);
+      const delivery = deliveryData.find((item) => item._id === key.key);
+      if (delivery) {
+        setAddress3(delivery["住所"] || "");
+        setTEL3(delivery.TEL || "");
+        setCharge3(delivery["担当者"] || "");
+        setRequestText3(delivery["依頼書備考コメント"] || "");
+      }
     }
   };
+
   const handleChangeDelivery3 = (value) => {
     setInputValueDelivery3(value);
-    // Filter delivery data based on input value
-    const filteredData = deliveryData.filter((delivery) =>
-      delivery.作業地名称.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredDeliveryData3(filteredData); // Update filtered Delivery data
+    if (!value.trim()) {
+      setFilteredDeliveryData3(deliveryData);
+    } else {
+      const filteredData = deliveryData.filter((delivery) => {
+        if (typeof delivery === "string") {
+          return delivery.toLowerCase().includes(value.toLowerCase());
+        } else if (
+          typeof delivery === "object" &&
+          delivery !== null &&
+          typeof delivery.作業地名称 === "string"
+        ) {
+          return delivery.作業地名称
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        }
+        console.log("Unexpected delivery structure:", delivery);
+        return false;
+      });
+      setFilteredDeliveryData3(filteredData);
+    }
   };
+
   const handleKeyPressDelivery3 = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueDelivery3 &&
-      !deliveryData.includes(inputValueDelivery3)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueDelivery);
-      setSelectedValueDelivery3(inputValueDelivery3);
-      setInputValueDelivery3("");
-      setFilteredDeliveryData3([...deliveryData, inputValueDelivery3]); // Add to filtered list
+    if (event.key === "Enter" && inputValueDelivery3) {
+      const exists = deliveryData.some(
+        (delivery) =>
+          (typeof delivery === "string" &&
+            delivery.toLowerCase() === inputValueDelivery3.toLowerCase()) ||
+          (typeof delivery === "object" &&
+            delivery !== null &&
+            delivery.作業地名称.toLowerCase() ===
+              inputValueDelivery3.toLowerCase()),
+      );
+
+      if (!exists) {
+        try {
+          // Assuming you have an API endpoint for adding new delivery options
+          const response = await axios.post(
+            `${process.env.REACT_API_BASE_URL}/workstation`,
+            {
+              作業地名称: inputValueDelivery3,
+              配達場所: 0,
+            },
+          );
+          const newOption = { 作業地名称: inputValueDelivery3 };
+          setDeliveryData((prevOptions) => [...prevOptions, newOption]);
+          setSelectedValueDelivery3(newOption);
+          setInputValueDelivery3("");
+          message.success("New delivery option added successfully");
+        } catch (error) {
+          console.error("Error adding new delivery option:", error);
+          message.error("Failed to add new delivery option");
+        }
+      }
     }
   };
 
@@ -942,15 +1296,131 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
       </Form.Item>
       <Form.Item label={"住所"}>
         <div className="flex flex-wrap flex-row items-center gap-4">
-          <Input className="w-fit grow" value={address3} />
+          {selectedValueDelivery3 ? (
+            <Input
+              className="w-fit grow"
+              value={address3}
+              onChange={(e) => setAddress3(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys3,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["住所"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys3}`,
+                            {
+                              住所: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              className="w-fit grow"
+              value={address3}
+              onChange={(e) => setAddress3(e.target.value)}
+              disabled
+            />
+          )}
         </div>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"TEL"} className="w-fit grow">
-          <Input value={tel3} />
+          {selectedValueDelivery3 ? (
+            <Input
+              value={tel3}
+              onChange={(e) => setTEL3(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys3,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["TEL"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys3}`,
+                            {
+                              TEL: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              value={tel3}
+              onChange={(e) => setTEL3(e.target.value)}
+              disabled
+            />
+          )}
         </Form.Item>
         <Form.Item label={"担当者"} className="w-fit grow">
-          <Input value={charge3} />
+          {selectedValueDelivery3 ? (
+            <Input
+              value={charge3}
+              onChange={(e) => setCharge3(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  const delivery = deliveryData.find(
+                    (item) => item._id === keys3,
+                  );
+                  if (delivery) {
+                    if (e.target.value !== delivery["担当者"])
+                      try {
+                        const response = async () => {
+                          await axios.put(
+                            process.env.REACT_API_BASE_URL +
+                              `/workstation/${keys3}`,
+                            {
+                              担当者: e.target.value,
+                            },
+                          );
+                        };
+                        response();
+                        message.success("New option added successfully");
+                      } catch (error) {
+                        console.error("Error adding new option:", error);
+                        message.error("Failed to add new option");
+                      }
+                  }
+                }
+              }}
+              allowClear
+            />
+          ) : (
+            <Input
+              value={charge3}
+              onChange={(e) => setCharge3(e.target.value)}
+              disabled
+            />
+          )}
         </Form.Item>
       </div>
       <Form.Item required label={"積日"}>
@@ -1116,11 +1586,22 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
       </div>
       <Form.Item label={"依頼書備考欄"} rules={[{ required: true }]}>
         <div className="flex flex-wrap flex-row items-center gap-x-4">
-          <TextArea
-            rows={4}
-            className="grow"
-            onChange={(e) => setRequestText3(e.target.value)}
-          />
+          {selectedValueDelivery3 ? (
+            <TextArea
+              rows={4}
+              value={requestText3}
+              className="grow"
+              onChange={(e) => setRequestText3(e.target.value)}
+            />
+          ) : (
+            <TextArea
+              rows={4}
+              value={requestText3}
+              className="grow"
+              onChange={(e) => setRequestText3(e.target.value)}
+              disabled
+            />
+          )}
         </div>
       </Form.Item>
     </div>
