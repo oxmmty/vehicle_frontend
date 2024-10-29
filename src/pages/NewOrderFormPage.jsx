@@ -1337,6 +1337,7 @@ const SeaComponent = ({ setData }) => {
       </Form>
       <Form layout="vertical" className="md:w-[50%]">
         <PackageInfo setPackageInfoData={setPackageInfoData} />
+
         <SubcontractPayment
           setSubPayData1={setSubPayData1}
           setSubPayData2={setSubPayData2}
@@ -1438,9 +1439,6 @@ const NewOrderFormPage = () => {
         <Button onClick={sendData}>保存</Button>
         {/* <Button>閉じる</Button> */}
       </div>
-      {/* <div className="flex justify-around max-w-96 w-full"> */}
-      {/* <Button type="default">請求済削除</Button> */}
-      {/* </div> */}
     </div>
   );
 };
