@@ -22,7 +22,7 @@ const RequestPdfListPage = () => {
           type="checkbox"
           checked={selectedRowKeys.includes(record.リクエスト番号)}
           onChange={() => handleCheckboxChange(record.リクエスト番号)}
-          disabled={record.選択} // Disable if record.選択 is true
+          // disabled={record.選択} // Disable if record.選択 is true
         />
       ),
       fixed: "left",
@@ -38,12 +38,12 @@ const RequestPdfListPage = () => {
       key: "リクエスト番号",
       fixed: "left",
     },
-    {
-      title: "受注コード",
-      dataIndex: "受注コード",
-      key: "受注コード",
-      fixed: "left",
-    },
+    // {
+    //   title: "受注コード",
+    //   dataIndex: "受注コード",
+    //   key: "受注コード",
+    //   fixed: "left",
+    // },
     {
       title: "部署コード",
       dataIndex: "部署コード",
