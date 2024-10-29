@@ -8,6 +8,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany1, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [subBasicPay1, setSubBasicPay] = useState(null);
   const [subBasicPayTax1, setSubBasicPayTax] = useState(true);
@@ -84,65 +85,99 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
     subOtherFeeTax1,
   ]);
   //Partner comapany datas
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
-  };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
-  };
-  const handleKeyPressCompany = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueCompany &&
-      !companyData.includes(inputValueCompany)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
     }
+  };
+  const companyHandleAddNewOption = async () => {
+    if (
+      inputValueCompany &&
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
+    ) {
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/partnercompany",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
+    }
+  };
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
+  };
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
   };
 
   useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
-
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany1}
-          onSearch={handleChangeCompany}
-          onSelect={(value) => {
-            handleSelectCompany(value);
-            setDriver(false);
-          }}
-          onInputKeyDown={handleKeyPressCompany}
+          defaultActiveFirstOption={false}
+          showArrow={false}
           filterOption={false}
-          notFoundContent={null}
-          className="grow">
-          {filteredCompanyData.length > 0 ? (
-            filteredCompanyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          ) : inputValueCompany ? (
-            <Option disabled>No matching data</Option>
-          ) : (
-            companyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          )}
+          onSearch={companyHandleSearch}
+          onChange={companyHandleChange}
+          notFoundContent={loading ? "Loading..." : "No match found"}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              companyHandleAddNewOption();
+            }
+          }}
+          allowClear>
+          {filteredCompanyData.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
@@ -292,6 +327,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany2, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [subBasicPay2, setSubBasicPay] = useState(null);
   const [subBasicPayTax2, setSubBasicPayTax] = useState(true);
@@ -368,64 +404,99 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
   ]);
 
   //Partner comapany datas
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
-  };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
-  };
-  const handleKeyPressCompany = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueCompany &&
-      !companyData.includes(inputValueCompany)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
     }
+  };
+  const companyHandleAddNewOption = async () => {
+    if (
+      inputValueCompany &&
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
+    ) {
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/partnercompany",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
+    }
+  };
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
+  };
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
   };
 
   useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany2}
-          onSearch={handleChangeCompany}
-          onSelect={(value) => {
-            handleSelectCompany(value);
-            setDriver(false);
-          }}
-          onInputKeyDown={handleKeyPressCompany}
+          defaultActiveFirstOption={false}
+          showArrow={false}
           filterOption={false}
-          notFoundContent={null}
-          className="grow">
-          {filteredCompanyData.length > 0 ? (
-            filteredCompanyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          ) : inputValueCompany ? (
-            <Option disabled>No matching data</Option>
-          ) : (
-            companyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          )}
+          onSearch={companyHandleSearch}
+          onChange={companyHandleChange}
+          notFoundContent={loading ? "Loading..." : "No match found"}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              companyHandleAddNewOption();
+            }
+          }}
+          allowClear>
+          {filteredCompanyData.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
@@ -575,6 +646,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany3, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [subBasicPay3, setSubBasicPay] = useState(null);
   const [subBasicPayTax3, setSubBasicPayTax] = useState(true);
@@ -650,64 +722,99 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
     subOtherFeeTax3,
   ]);
   //Partner comapany datas
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
-  };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
-  };
-  const handleKeyPressCompany = async (event) => {
-    if (
-      event.key === "Enter" &&
-      inputValueCompany &&
-      !companyData.includes(inputValueCompany)
-    ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
     }
+  };
+  const companyHandleAddNewOption = async () => {
+    if (
+      inputValueCompany &&
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
+    ) {
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/partnercompany",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
+    }
+  };
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
+  };
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
   };
 
   useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany3}
-          onSearch={handleChangeCompany}
-          onSelect={(value) => {
-            handleSelectCompany(value);
-            setDriver(false);
-          }}
-          onInputKeyDown={handleKeyPressCompany}
+          defaultActiveFirstOption={false}
+          showArrow={false}
           filterOption={false}
-          notFoundContent={null}
-          className="grow">
-          {filteredCompanyData.length > 0 ? (
-            filteredCompanyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          ) : inputValueCompany ? (
-            <Option disabled>No matching data</Option>
-          ) : (
-            companyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          )}
+          onSearch={companyHandleSearch}
+          onChange={companyHandleChange}
+          notFoundContent={loading ? "Loading..." : "No match found"}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              companyHandleAddNewOption();
+            }
+          }}
+          allowClear>
+          {filteredCompanyData.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
@@ -857,6 +964,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany4, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [subBasicPay4, setSubBasicPay] = useState(null);
   const [subBasicPayTax4, setSubBasicPayTax] = useState(true);
@@ -932,63 +1040,99 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
     subOtherFeeTax4,
   ]);
   //Partner comapany datas
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
+    }
   };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
-  };
-  const handleKeyPressCompany = async (event) => {
+  const companyHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
       inputValueCompany &&
-      !companyData.includes(inputValueCompany)
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/partnercompany",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
+  };
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
+  };
+
   useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany4}
-          onSearch={handleChangeCompany}
-          onSelect={(value) => {
-            handleSelectCompany(value);
-            setDriver(false);
-          }}
-          onInputKeyDown={handleKeyPressCompany}
+          defaultActiveFirstOption={false}
+          showArrow={false}
           filterOption={false}
-          notFoundContent={null}
-          className="grow">
-          {filteredCompanyData.length > 0 ? (
-            filteredCompanyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          ) : inputValueCompany ? (
-            <Option disabled>No matching data</Option>
-          ) : (
-            companyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          )}
+          onSearch={companyHandleSearch}
+          onChange={companyHandleChange}
+          notFoundContent={loading ? "Loading..." : "No match found"}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              companyHandleAddNewOption();
+            }
+          }}
+          allowClear>
+          {filteredCompanyData.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
@@ -1138,6 +1282,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany5, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [subBasicPay5, setSubBasicPay] = useState(null);
   const [subBasicPayTax5, setSubBasicPayTax] = useState(true);
@@ -1213,63 +1358,99 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
     subOtherFeeTax5,
   ]);
   //Partner comapany datas
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
+    }
   };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
-  };
-  const handleKeyPressCompany = async (event) => {
+  const companyHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
       inputValueCompany &&
-      !companyData.includes(inputValueCompany)
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/partnercompany",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
+  };
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
+  };
+
   useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany5}
-          onSearch={handleChangeCompany}
-          onSelect={(value) => {
-            handleSelectCompany(value);
-            setDriver(false);
-          }}
-          onInputKeyDown={handleKeyPressCompany}
+          defaultActiveFirstOption={false}
+          showArrow={false}
           filterOption={false}
-          notFoundContent={null}
-          className="grow">
-          {filteredCompanyData.length > 0 ? (
-            filteredCompanyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          ) : inputValueCompany ? (
-            <Option disabled>No matching data</Option>
-          ) : (
-            companyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          )}
+          onSearch={companyHandleSearch}
+          onChange={companyHandleChange}
+          notFoundContent={loading ? "Loading..." : "No match found"}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              companyHandleAddNewOption();
+            }
+          }}
+          allowClear>
+          {filteredCompanyData.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">
@@ -1419,6 +1600,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany6, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [subBasicPay6, setSubBasicPay] = useState(null);
   const [subBasicPayTax6, setSubBasicPayTax] = useState(true);
@@ -1494,63 +1676,99 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
     subOtherFeeTax6,
   ]);
   //Partner comapany datas
-  const handleSelectCompany = (value) => {
-    setSelectedValueCompany(value);
+  const companyFilterOptions = () => {
+    if (!inputValueCompany.trim()) {
+      setFilteredCompanyData(companyData);
+    } else {
+      const filtered = companyData.filter((option) => {
+        // Check if option is a string
+        if (typeof option === "string") {
+          return option.toLowerCase().includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'value' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.value === "string"
+        ) {
+          return option.value
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // Check if option is an object with a 'label' property
+        else if (
+          typeof option === "object" &&
+          option !== null &&
+          typeof option.label === "string"
+        ) {
+          return option.label
+            .toLowerCase()
+            .includes(inputValueCompany.toLowerCase());
+        }
+        // If none of the above, log the unexpected option and return false
+        console.log("Unexpected option structure:", option);
+        return false;
+      });
+      setFilteredCompanyData(filtered);
+    }
   };
-  const handleChangeCompany = (value) => {
-    setInputValueCompany(value);
-    const filteredData = companyData.filter((company) =>
-      company.toLowerCase().includes(value.toLowerCase()),
-    );
-    setFilteredCompanyData(filteredData);
-  };
-  const handleKeyPressCompany = async (event) => {
+  const companyHandleAddNewOption = async () => {
     if (
-      event.key === "Enter" &&
       inputValueCompany &&
-      !companyData.includes(inputValueCompany)
+      !companyData.some(
+        (option) => option.toLowerCase() === inputValueCompany.toLowerCase(),
+      )
     ) {
-      // const savedValue = await saveToDatabase(inputValueCompany);
-      setSelectedValueCompany(inputValueCompany);
-      setInputValueCompany("");
-      setFilteredCompanyData([...companyData, inputValueCompany]);
+      try {
+        const response = await axios.post(
+          process.env.REACT_API_BASE_URL + "/partnercompany",
+          {
+            顧客名称: inputValueCompany,
+          },
+        );
+        const newOption = { value: inputValueCompany };
+        setCompanyData((prevOptions) => [...prevOptions, newOption]);
+        setSelectedValueCompany(newOption);
+        message.success("New option added successfully");
+      } catch (error) {
+        console.error("Error adding new option:", error);
+        message.error("Failed to add new option");
+      }
     }
   };
+  const companyHandleChange = (newValue) => {
+    setSelectedValueCompany(newValue);
+  };
+  const companyHandleSearch = (newInputValue) => {
+    setInputValueCompany(newInputValue);
+  };
+
   useEffect(() => {
-    if (!inputValueCompany) {
-      setSelectedValueCompany("");
-    }
-  }, [inputValueCompany]);
+    companyFilterOptions();
+  }, [inputValueCompany, companyData]);
   return (
     <div>
       <Form.Item label={"会社名"} required>
         <Select
           showSearch
           value={selectedValueSubCompany6}
-          onSearch={handleChangeCompany}
-          onSelect={(value) => {
-            handleSelectCompany(value);
-            setDriver(false);
-          }}
-          onInputKeyDown={handleKeyPressCompany}
+          defaultActiveFirstOption={false}
+          showArrow={false}
           filterOption={false}
-          notFoundContent={null}
-          className="grow">
-          {filteredCompanyData.length > 0 ? (
-            filteredCompanyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          ) : inputValueCompany ? (
-            <Option disabled>No matching data</Option>
-          ) : (
-            companyData.map((data) => (
-              <Option key={data} value={data}>
-                {data}
-              </Option>
-            ))
-          )}
+          onSearch={companyHandleSearch}
+          onChange={companyHandleChange}
+          notFoundContent={loading ? "Loading..." : "No match found"}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              companyHandleAddNewOption();
+            }
+          }}
+          allowClear>
+          {filteredCompanyData.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <div className="flex flex-wrap flex-row items-center gap-x-4">

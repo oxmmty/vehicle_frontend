@@ -83,6 +83,9 @@ const SeaComponent = ({ setData }) => {
   const [requestRemark, setRequestRemark] = useState(null);
   const [invoiceRemark, setInvoiceRemark] = useState(null);
   const lastDay = dayjs(date).endOf("month").format("YYYY-MM-DD");
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     customerFilterOptions();
@@ -102,53 +105,50 @@ const SeaComponent = ({ setData }) => {
   useEffect(() => {
     loadFilterOptions();
   }, [inputValueLoad, loadData]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [customers, ships, shippers, workstations] = await Promise.all([
-          axios.get(process.env.REACT_API_BASE_URL + `/customer`),
-          axios.get(process.env.REACT_API_BASE_URL + `/ship`),
-          axios.get(process.env.REACT_API_BASE_URL + `/shipper`),
-          axios.get(process.env.REACT_API_BASE_URL + `/workstation`),
-        ]);
-        const customer = customers.data
-          .sort((a, b) => b.カウント - a.カウント)
-          .map((item) => item.顧客名称);
-        setCustomerData(customer);
-        setFilteredCustomerData(customer);
-        setCompanyData(customer);
-        setFilteredCompanyData(customer);
+  const fetchData = async () => {
+    try {
+      const [customers, ships, shippers, workstations] = await Promise.all([
+        axios.get(process.env.REACT_API_BASE_URL + `/customer`),
+        axios.get(process.env.REACT_API_BASE_URL + `/ship`),
+        axios.get(process.env.REACT_API_BASE_URL + `/shipper`),
+        axios.get(process.env.REACT_API_BASE_URL + `/workstation`),
+      ]);
+      const customer = customers.data
+        .sort((a, b) => b.カウント - a.カウント)
+        .map((item) => item.顧客名称);
+      setCustomerData(customer);
+      setFilteredCustomerData(customer);
+      setCompanyData(customer);
+      setFilteredCompanyData(customer);
 
-        const ship = ships.data
-          .sort((a, b) => b.カウント - a.カウント)
-          .map((item) => item.船社名称);
-        setShipData(ship);
-        setFilteredShipData(ship);
-        const shipper = shippers.data
-          .sort((a, b) => b.カウント - a.カウント)
-          .map((item) => item.荷主名称);
-        setShipperData(shipper);
-        setFilteredShipperData(shipper);
-        const locationFilter = workstations.data
-          .filter((item) => item.取場所 !== null)
-          .sort((a, b) => b.取場所 - a.取場所);
-        const location = locationFilter.map((item) => item.作業地名称);
-        setLocationData(location);
-        setFilteredLocationData(location);
-        const loadFilter = workstations.data
-          .filter((item) => item.搬入返却場所 !== null)
-          .sort((a, b) => b.搬入返却場所 - a.搬入返却場所);
-        const load = loadFilter.map((item) => item.作業地名称);
-        setLoadData(load);
-        setFilteredLoadData(load);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+      const ship = ships.data
+        .sort((a, b) => b.カウント - a.カウント)
+        .map((item) => item.船社名称);
+      setShipData(ship);
+      setFilteredShipData(ship);
+      const shipper = shippers.data
+        .sort((a, b) => b.カウント - a.カウント)
+        .map((item) => item.荷主名称);
+      setShipperData(shipper);
+      setFilteredShipperData(shipper);
+      const locationFilter = workstations.data
+        .filter((item) => item.取場所 !== null)
+        .sort((a, b) => b.取場所 - a.取場所);
+      const location = locationFilter.map((item) => item.作業地名称);
+      setLocationData(location);
+      setFilteredLocationData(location);
+      const loadFilter = workstations.data
+        .filter((item) => item.搬入返却場所 !== null)
+        .sort((a, b) => b.搬入返却場所 - a.搬入返却場所);
+      const load = loadFilter.map((item) => item.作業地名称);
+      setLoadData(load);
+      setFilteredLoadData(load);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   const distinguish = [
     "実入り取り",
     "空バン取り",
@@ -1122,8 +1122,8 @@ const SeaComponent = ({ setData }) => {
               }}
               allowClear>
               {filteredShipperData.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
+                <Option key={option} value={option.value}>
+                  {option.value}
                 </Option>
               ))}
             </Select>
@@ -1147,8 +1147,8 @@ const SeaComponent = ({ setData }) => {
               }}
               allowClear>
               {filteredCustomerData.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
+                <Option key={option} value={option.value}>
+                  {option.value}
                 </Option>
               ))}
             </Select>
@@ -1172,8 +1172,8 @@ const SeaComponent = ({ setData }) => {
               }}
               allowClear>
               {filteredCompanyData.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
+                <Option key={option} value={option.value}>
+                  {option.value}
                 </Option>
               ))}
             </Select>
@@ -1197,8 +1197,8 @@ const SeaComponent = ({ setData }) => {
               }}
               allowClear>
               {filteredLocationData.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
+                <Option key={option} value={option.value}>
+                  {option.value}
                 </Option>
               ))}
             </Select>
@@ -1222,8 +1222,8 @@ const SeaComponent = ({ setData }) => {
               }}
               allowClear>
               {filteredLoadData.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
+                <Option key={option} value={option.value}>
+                  {option.value}
                 </Option>
               ))}
             </Select>
@@ -1247,8 +1247,8 @@ const SeaComponent = ({ setData }) => {
               }}
               allowClear>
               {filteredShipData.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
+                <Option key={option} value={option.value}>
+                  {option.value}
                 </Option>
               ))}
             </Select>
