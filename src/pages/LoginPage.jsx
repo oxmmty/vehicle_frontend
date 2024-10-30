@@ -23,11 +23,11 @@ const LoginPage = () => {
       <Form
         className="w-full flex justify-between h-3/6 border border-[#707070] max-w-[1000px] rounded-2xl bg-[#00000070] "
         layout="vertical"
-        initialValues={{
-          email: "Admin@gmail.com",
-          password: "123456",
-          remember: true,
-        }}
+        // initialValues={{
+        //   email: "Admin@gmail.com",
+        //   password: "123456",
+        //   remember: true,
+        // }}
         onFinish={onFinish}>
         <div className=" bg-[#00000040] h-full w-1/2 rounded-2xl border border-[#707070]">
           <div className="flex items-center justify-center h-full">

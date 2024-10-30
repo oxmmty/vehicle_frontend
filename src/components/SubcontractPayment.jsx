@@ -132,7 +132,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
         const response = await axios.post(
           process.env.REACT_API_BASE_URL + "/partnercompany",
           {
-            顧客名称: inputValueCompany,
+            協力会社: inputValueCompany,
           },
         );
         const newOption = { value: inputValueCompany };
@@ -451,7 +451,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
         const response = await axios.post(
           process.env.REACT_API_BASE_URL + "/partnercompany",
           {
-            顧客名称: inputValueCompany,
+            協力会社: inputValueCompany,
           },
         );
         const newOption = { value: inputValueCompany };
@@ -769,7 +769,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
         const response = await axios.post(
           process.env.REACT_API_BASE_URL + "/partnercompany",
           {
-            顧客名称: inputValueCompany,
+            協力会社: inputValueCompany,
           },
         );
         const newOption = { value: inputValueCompany };
@@ -1087,7 +1087,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
         const response = await axios.post(
           process.env.REACT_API_BASE_URL + "/partnercompany",
           {
-            顧客名称: inputValueCompany,
+            協力会社: inputValueCompany,
           },
         );
         const newOption = { value: inputValueCompany };
@@ -1405,7 +1405,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
         const response = await axios.post(
           process.env.REACT_API_BASE_URL + "/partnercompany",
           {
-            顧客名称: inputValueCompany,
+            協力会社: inputValueCompany,
           },
         );
         const newOption = { value: inputValueCompany };
@@ -1723,7 +1723,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
         const response = await axios.post(
           process.env.REACT_API_BASE_URL + "/partnercompany",
           {
-            顧客名称: inputValueCompany,
+            協力会社: inputValueCompany,
           },
         );
         const newOption = { value: inputValueCompany };

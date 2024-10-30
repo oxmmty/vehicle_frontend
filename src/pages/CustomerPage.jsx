@@ -67,21 +67,23 @@ export default function CustomerPage() {
   };
 
   const phoneNumberValidator = (_, value) => {
-    if (
-      value &&
-      !/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/.test(value)
-    ) {
-      return Promise.reject(new Error("有効な電話番号を入力してください！"));
+    if (value && !/^[0-9]{10,11}$/.test(value)) {
+      return Promise.reject(
+        new Error(
+          "有効な電話番号を入力してください！(10桁または11桁の半角数字)",
+        ),
+      );
     }
     return Promise.resolve();
   };
 
   const faxNumberValidator = (_, value) => {
-    if (
-      value &&
-      !/^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/.test(value)
-    ) {
-      return Promise.reject(new Error("有効なFAX番号を入力してください！"));
+    if (value && !/^[0-9]{10,11}$/.test(value)) {
+      return Promise.reject(
+        new Error(
+          "有効なFAX番号を入力してください！(10桁または11桁の半角数字)",
+        ),
+      );
     }
     return Promise.resolve();
   };
@@ -308,15 +310,16 @@ export default function CustomerPage() {
               { message: "電話番号を入力してください！" },
               { validator: phoneNumberValidator },
             ]}>
-            <Input placeholder="TEL" />
+            <Input placeholder="電話番号（半角数字10桁または11桁）" />
           </Form.Item>
+
           <Form.Item
             name="FAX"
             rules={[
               { message: "FAXを入力してください！" },
               { validator: faxNumberValidator },
             ]}>
-            <Input placeholder="FAX" />
+            <Input placeholder="FAX番号（半角数字10桁または11桁）" />
           </Form.Item>
           <Form.Item
             name="住所"

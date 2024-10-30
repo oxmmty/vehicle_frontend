@@ -26,18 +26,22 @@ const validateCC = (_, value) => {
   return Promise.resolve(); // Allow empty value
 };
 
-const validatePhoneNumber = (_, value) => {
-  if (value && !/^[0-9\-+()]+$/.test(value)) {
-    return Promise.reject(new Error("有効な電話番号を入力してください！"));
+const phoneNumberValidator = (_, value) => {
+  if (value && !/^[0-9]{10,11}$/.test(value)) {
+    return Promise.reject(
+      new Error("有効な電話番号を入力してください！(10桁または11桁の半角数字)"),
+    );
   }
-  return Promise.resolve(); // Allow empty value
+  return Promise.resolve();
 };
 
-const validateFaxNumber = (_, value) => {
-  if (value && !/^[0-9\-+()]+$/.test(value)) {
-    return Promise.reject(new Error("有効なFAX番号を入力してください！"));
+const faxNumberValidator = (_, value) => {
+  if (value && !/^[0-9]{10,11}$/.test(value)) {
+    return Promise.reject(
+      new Error("有効なFAX番号を入力してください！(10桁または11桁の半角数字)"),
+    );
   }
-  return Promise.resolve(); // Allow empty value
+  return Promise.resolve();
 };
 
 const validateAddress = (_, value) => {
@@ -221,13 +225,13 @@ export default function PartnerCompanyPage() {
       title: "TEL",
       dataIndex: "TEL",
       editable: true,
-      validationRules: [{ validator: validatePhoneNumber }],
+      validationRules: [{ validator: phoneNumberValidator }],
     },
     {
       title: "FAX",
       dataIndex: "FAX",
       editable: true,
-      validationRules: [{ validator: validateFaxNumber }],
+      validationRules: [{ validator: faxNumberValidator }],
     },
     {
       title: "住所",
@@ -353,10 +357,10 @@ export default function PartnerCompanyPage() {
           <Form.Item name="CC" rules={[{ validator: validateCC }]}>
             <Input placeholder="CC" />
           </Form.Item>
-          <Form.Item name="TEL" rules={[{ validator: validatePhoneNumber }]}>
+          <Form.Item name="TEL" rules={[{ validator: phoneNumberValidator }]}>
             <Input placeholder="TEL" />
           </Form.Item>
-          <Form.Item name="FAX" rules={[{ validator: validateFaxNumber }]}>
+          <Form.Item name="FAX" rules={[{ validator: faxNumberValidator }]}>
             <Input placeholder="FAX" />
           </Form.Item>
           <Form.Item name="住所" rules={[{ validator: validateAddress }]}>
