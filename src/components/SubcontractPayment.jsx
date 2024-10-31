@@ -1935,11 +1935,10 @@ const SubcontractPayment = (
     <SubcontractPayment6 setSubPayData6={setSubPayData6} />,
   ];
   return (
-    <div className={`${className}`}>
+    <div className={`${className} w-full overflow-x-auto`}>
       <Group label={"下払"}>
         <Tabs
           type="card"
-          className="w-full anchor-section"
           id="下払"
           items={tabNames.map((item, index) => {
             return {

@@ -76,7 +76,7 @@ const AppRouter = () => {
 
             <Route
               path="/orders_invoices"
-              loader={() => redirect("/orders_invoices/newOrderForm")}
+              loader={() => redirect("/orders_invoices/calendar")}
             />
             <Route
               path="/orders_invoices/newOrderForm"

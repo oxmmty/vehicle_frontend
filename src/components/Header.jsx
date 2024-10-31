@@ -72,9 +72,9 @@ const Header = ({ items, ...props }) => {
           />
         </div> */}
         <div className="flex justify-center items-center gap-2">
-          <Badge count={5} color="hsl(102, 70%, 61%)">
+          {/* <Badge count={5} color="hsl(102, 70%, 61%)">
             <Button shape="circle" icon={<BellOutlined />} />
-          </Badge>
+          </Badge> */}
           <Button
             shape="circle"
             icon={<Image src="/language.png" preview={false} />}
