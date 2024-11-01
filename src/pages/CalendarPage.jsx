@@ -4,13 +4,15 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { Button, Modal } from "antd";
+import listPlugin from "@fullcalendar/list";
+import { Button, Modal, Select } from "antd";
 import { nanoid } from "nanoid";
 import NewOrderFormPage from "./NewOrderFormPage";
+import { useNavigate } from "react-router-dom";
 import { Row, Col, FormGroup, Label, Container } from "reactstrap";
 import CustomModal from "../components/CustomModal";
 import "./custom.css";
-
+import jaLocale from "@fullcalendar/core/locales/ja";
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [modal, setModal] = useState(false);
@@ -22,6 +24,7 @@ const CalendarPage = () => {
   const [eventPickupLocation, setEventPickupLocation] = useState("");
   const [eventDeliveryLocation, setEventDeliveryLocation] = useState("");
   const [orderModal, setOrderModal] = useState(false);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -82,7 +85,6 @@ const CalendarPage = () => {
       console.error("Error fetching data:", error);
     }
   };
-
   const addEvent = (
     eventsList,
     date,
@@ -147,7 +149,24 @@ const CalendarPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
+  const dashboard = () => {
+    navigate("/dashboard");
+  };
+  const newCustomer = () => {
+    navigate("/masterDatas/customer");
+  };
+  const newCompany = () => {
+    navigate("/masterDatas/partnerCompany");
+  };
+  const newShipper = () => {
+    navigate("/masterDatas/shipperList");
+  };
+  const newShip = () => {
+    navigate("/masterDatas/shipCompany");
+  };
+  const newWorkstation = () => {
+    navigate("/masterDatas/businessLocation");
+  };
   const handleCloseModal = () => {
     handleClose();
     setModal(false);
@@ -176,27 +195,40 @@ const CalendarPage = () => {
       <Container className="w-full">
         <Row>
           <Col md={12} className="flex justify-between">
-            <div className="w-[75%]">
+            <div className="md:w-[10%] hidden md:block w-0">
+              <div className="pl-auto pr-auto pt-10 w-fit flex flex-col gap-10">
+                <Button onClick={orderOpen}>受注入力</Button>
+                <Button onClick={dashboard}>ダッシュボード</Button>
+                <Button onClick={newCustomer}>顧客</Button>
+                <Button onClick={newCompany}>協力会社</Button>
+                <Button onClick={newShipper}>荷主</Button>
+                <Button onClick={newShip}>船社</Button>
+                <Button onClick={newWorkstation}>作業地</Button>
+              </div>
+            </div>
+            <div className="md:w-[90%] w-full">
               <FullCalendar
                 height={800}
                 expandRows={false}
                 ref={calendarRef}
-                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                headerToolbar={{
-                  left: "prev,today,next",
-                  center: "title",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay",
-                }}
+                plugins={[
+                  dayGridPlugin,
+                  timeGridPlugin,
+                  interactionPlugin,
+                  listPlugin,
+                ]}
                 initialView="dayGridMonth"
+                headerToolbar={{
+                  left: "prevYear,prev,today,next,nextYear",
+                  center: "title",
+                  right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                }}
+                locale={jaLocale}
                 weekends={true}
                 events={events}
+                selectable={true}
                 eventClick={handleEventClick}
               />
-            </div>
-            <div className="w-[25%]">
-              <div className="pt-10 pl-10">
-                <Button onClick={orderOpen}>aaa</Button>
-              </div>
             </div>
           </Col>
         </Row>

@@ -28,10 +28,20 @@
 .modal-content {
   border: 1px solid var(--txt-100);
   background-color: var(--bg-light-dark);
-  margin: auto;
+  margin: 10px;
   padding: 20px;
   width: 20%;
 }
+@media screen and (max-width: 720px) {
+  .modal-content {
+    border: 1px solid var(--txt-100);
+    background-color: var(--bg-light-dark);
+    margin: 10px;
+    padding: 20px;
+    width: calc(100% - 20px);
+  }
+}
+
 .exit-icon {
   cursor: pointer;
   font-size: 20px;
@@ -58,5 +68,5 @@
 .fc-daygrid-day-frame,
 .fc-daygrid-day {
   overflow: scroll !important;
-  height: 70px !important;
+  height: 50px !important;
 }

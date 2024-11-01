@@ -62,7 +62,8 @@
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 1px;
+  height: 1px;
   background-color: transparent;
 }
 
@@ -76,7 +77,7 @@
 
 ::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 5px;
+  border-radius: 1px;
 }
 
 @layer utilities {
@@ -156,4 +157,11 @@ textarea {
 }
 .scrollable-input {
   height: 40px; /* Set a specific height */
+}
+.fc-header-toolbar,
+.fc-toolbar,
+.fc-toolbar-ltr {
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 10px;
 }
