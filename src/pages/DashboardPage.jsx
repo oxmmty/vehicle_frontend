@@ -1,6 +1,8 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FloatButton } from "antd";
+import { CalendarOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import ReactApexChart from "react-apexcharts";
 import dayjs from "dayjs";
 import CTable from "src/components/CTable";
 import Customer from "../components/dashboard/customer";
@@ -14,7 +16,7 @@ const Dashboardpage = () => {
   const [company, setCompany] = useState([]);
   const [pdfList, setPdfList] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs().startOf("month")); // Default to this year and this month
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -185,7 +187,9 @@ const Dashboardpage = () => {
       };
     });
   };
-
+  const calendar = () => {
+    navigate("/orders_invoices/calendar");
+  };
   const totalPricesForLast7Dayss = calculateTotalPricesForEachDays();
 
   const weeklyCustomer = totalPricesForLast7Dayss
@@ -230,6 +234,13 @@ const Dashboardpage = () => {
           )}
         </div>
       </div>
+      <FloatButton
+        shape="square"
+        type="primary"
+        className="mb-2 mr-2 animate-bounce"
+        onClick={calendar}
+        icon={<CalendarOutlined />}
+      />
     </div>
   );
 };

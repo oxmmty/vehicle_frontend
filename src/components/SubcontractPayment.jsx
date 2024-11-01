@@ -1935,7 +1935,8 @@ const SubcontractPayment = (
     <SubcontractPayment6 setSubPayData6={setSubPayData6} />,
   ];
   return (
-    <div className={`${className} w-full overflow-x-auto`}>
+    <div
+      className={`${className} w-full overflow-x-auto  [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']`}>
       <Group label={"下払"}>
         <Tabs
           type="card"

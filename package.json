@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/charts": "^2.1.2",
     "@ant-design/graphs": "^1.4.2",
+    "@ant-design/icons": "^5.5.1",
     "@ant-design/plots": "^2.3.2",
     "@fontsource/noto-sans-jp": "^5.1.0",
     "@fullcalendar/core": "^6.1.15",

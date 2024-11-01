@@ -56,6 +56,7 @@ const CustomerListPage = () => {
     {
       title: "顧客名",
       dataIndex: "顧客名",
+      fixed: left,
       onCell: (_, index) => {
         const rowSpan = getRowSpan(index, "顧客名");
         return {
