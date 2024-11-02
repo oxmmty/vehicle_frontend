@@ -35,6 +35,7 @@
   --border-100: #ccd7e9;
   --base-primary: #00b96b;
   --hover-primary: #dffbec;
+  --text-special: rgb(224, 211, 211);
 }
 
 .dark {
@@ -52,6 +53,7 @@
   --border-100: #313d50;
   --base-primary: #dde000;
   --hover-primary: #242813;
+  --text-special: rgb(224, 211, 211);
 }
 
 * {
@@ -164,4 +166,7 @@ textarea {
   flex-wrap: wrap !important;
   justify-content: center !important;
   gap: 10px;
+}
+.special .ant-form-item-required {
+  color: var(--text-special) !important;
 }
