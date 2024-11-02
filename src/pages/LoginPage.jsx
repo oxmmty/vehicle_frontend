@@ -21,7 +21,7 @@ const LoginPage = () => {
   return (
     <div className="w-full  flex justify-center items-center p-2 bg-[url('./background.webp')] bg-cover bg-center  h-screen">
       <Form
-        className="lg:w-full w-full flex-col h-full flex lg:flex-row lg:h-3/6 border border-[#707070] lg:max-w-[1000px]  rounded-2xl bg-[#00000070] "
+        className="lg:w-full w-full flex-col h-full flex lg:flex-row lg:h-3/6 lg:border lg:border-[#707070] lg:max-w-[1000px]  lg:rounded-2xl lg:bg-[#00000070] "
         layout="vertical"
         // initialValues={{
         //   email: "Admin@gmail.com",
@@ -29,7 +29,7 @@ const LoginPage = () => {
         //   remember: true,
         // }}
         onFinish={onFinish}>
-        <div className=" bg-[#00000040] h-[50vw] w-full lg:h-full lg:w-1/2 rounded-2xl border border-[#707070]">
+        <div className=" lg:bg-[#00000040] h-[30vh] w-full lg:h-full lg:w-1/2  lg:rounded-2xl lg:border lg:border-[#707070]">
           <div className="flex items-center justify-center h-full">
             <Image
               src="/logo.png"
@@ -40,7 +40,7 @@ const LoginPage = () => {
           </div>
         </div>
         <div className="lg:w-[50%] w-full  h-1/2 lg:h-full ">
-          <div className="font-bold text-[16px] justify-center py-auto px-10 lg:px-[15%] lg:py-[20%]">
+          <div className="font-bold special text-[16px] bg-[#00000070] border border-[#707070] rounded-2xl lg:rounded-none lg:border-none lg:bg-transparent justify-center pt-6 px-10 lg:px-[15%] lg:py-[20%]">
             <div className="">
               <Form.Item
                 label={"Email:"}
