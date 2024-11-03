@@ -32,6 +32,22 @@
   padding: 20px;
   width: 20%;
 }
+.fc-header-toolbar,
+.fc-toolbar,
+.fc-toolbar-ltr {
+  flex-wrap: wrap !important;
+  justify-content: space-between !important;
+  gap: 10px;
+}
+@media screen and (max-width: 780px) {
+  .fc-header-toolbar,
+  .fc-toolbar,
+  .fc-toolbar-ltr {
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 10px;
+  }
+}
 @media screen and (max-width: 720px) {
   .modal-content {
     border: 1px solid var(--txt-100);

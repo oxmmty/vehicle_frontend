@@ -61,14 +61,12 @@ const Dashboardpage = () => {
     };
   });
 
-  const customerPriceList = customerPrice.map((item) => item.Price);
-
   const calculatePrices = (startDate, endDate) => {
     return companyList.map((companyItem) => {
       const matchedPdfItem = pdfList.find(
         (pdfItem) =>
           pdfItem.下払会社名 === companyItem &&
-          dayjs(pdfItem.updatedAt).isBetween(startDate, endDate, null, "[]"),
+          dayjs(pdfItem.作成日).isBetween(startDate, endDate, null, "[]"),
       );
 
       return {
@@ -85,25 +83,64 @@ const Dashboardpage = () => {
   const lastMonthStart = startOfMonth.subtract(1, "month");
   const lastMonthEnd = endOfMonth.subtract(1, "month");
 
-  const lastMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd);
-  const lastYearPrice = calculatePrices(lastYearStart, lastYearEnd);
-  const thisYearPrice = calculatePrices(startOfMonth, endOfMonth);
-  const thisMonthPrice = calculatePrices(lastMonthStart, lastMonthEnd); // Assuming this for demonstration
+  // New date calculations
+  const lastYearLastMonthStart = lastYearStart.subtract(1, "month");
+  const lastYearLastMonthEnd = lastYearEnd.subtract(1, "month");
+  const thisYearLastMonthStart = startOfMonth.subtract(1, "month");
+  const thisYearLastMonthEnd = endOfMonth.subtract(1, "month");
 
-  const combineds = companyList.map((company, index) => ({
-    company: company,
-    lastMonthPrice: lastMonthPrice[index].Price,
-    lastYearPrice: lastYearPrice[index].Price,
-    thisYearPrice: thisYearPrice[index].Price,
-    thisMonthPrice: thisMonthPrice[index].Price,
-  }));
+  const lastYearLastMonthPrice = calculatePrices(
+    lastYearLastMonthStart,
+    lastYearLastMonthEnd,
+  );
+  const lastYearThisMonthPrice = calculatePrices(lastYearStart, lastYearEnd);
+  const thisYearLastMonthPrice = calculatePrices(
+    thisYearLastMonthStart,
+    thisYearLastMonthEnd,
+  );
+  const thisYearThisMonthPrice = calculatePrices(startOfMonth, endOfMonth);
+
+  const combined = companyList.map((company, index) => {
+    const lastYearLastMonthDate = lastYearLastMonthEnd.format("YYYY-MM");
+    const lastYearThisMonthDate = lastYearEnd.format("YYYY-MM");
+    const thisYearLastMonthDate = thisYearLastMonthEnd.format("YYYY-MM");
+    const thisYearThisMonthDate = endOfMonth.format("YYYY-MM");
+
+    return {
+      company: company,
+      lastYearLastMonthPrice: lastYearLastMonthPrice[index].Price,
+      lastYearThisMonthPrice: lastYearThisMonthPrice[index].Price,
+      thisYearLastMonthPrice: thisYearLastMonthPrice[index].Price,
+      thisYearThisMonthPrice: thisYearThisMonthPrice[index].Price,
+      lastYearLastMonthDate,
+      lastYearThisMonthDate,
+      thisYearLastMonthDate,
+      thisYearThisMonthDate,
+    };
+  });
 
   const columns = [
     { title: "協力会社名", dataIndex: "company", key: "company" },
-    { title: "先月", dataIndex: "lastMonthPrice", key: "lastMonthPrice" },
-    { title: "昨年", dataIndex: "lastYearPrice", key: "lastYearPrice" },
-    { title: "今月", dataIndex: "thisMonthPrice", key: "thisMonthPrice" },
-    { title: "今年", dataIndex: "thisYearPrice", key: "thisYearPrice" },
+    {
+      title: `${lastYearLastMonthEnd.format("YYYY-MM")} `,
+      dataIndex: "lastYearLastMonthPrice",
+      key: "lastYearLastMonthPrice",
+    },
+    {
+      title: `${thisYearLastMonthEnd.format("YYYY-MM")} `,
+      dataIndex: "thisYearLastMonthPrice",
+      key: "thisYearLastMonthPrice",
+    },
+    {
+      title: `${lastYearEnd.format("YYYY-MM")} `,
+      dataIndex: "lastYearThisMonthPrice",
+      key: "lastYearThisMonthPrice",
+    },
+    {
+      title: `${endOfMonth.format("YYYY-MM")} `,
+      dataIndex: "thisYearThisMonthPrice",
+      key: "thisYearThisMonthPrice",
+    },
   ];
 
   const handleDateChange = (date) => {
@@ -208,7 +245,7 @@ const Dashboardpage = () => {
             <AllChart company={weeklyCompany} customer={weeklyCustomer} />
           </div>
         </div>
-        <div className="xl:w-2/3 h-[390px] bg-bg-light rounded-lg">
+        <div className="xl:w-2/3 h-[390px] hidden md:block bg-bg-light rounded-lg">
           <CompanyCharts category={companyList} data={companyPriceList} />
         </div>
       </div>
@@ -218,9 +255,9 @@ const Dashboardpage = () => {
             <Customer label={customerList} series={customerPrice} />
           )}
         </div>
-        <div className="xl:w-1/3 h-[400px] bg-bg-light rounded-lg">
+        <div className="xl:w-1/3 hidden md:block h-[400px] bg-bg-light rounded-lg">
           <CTable
-            dataSource={combineds}
+            dataSource={combined}
             columns={columns}
             pagination={true}
             ps={5}
