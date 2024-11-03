@@ -94,7 +94,12 @@ const Header = ({ items, ...props }) => {
             <Button onClick={showDrawerNav} icon={<MenuOutlined />} />
           </div>
         </div>
-        <Drawer title="Navbar Menu" onClose={onClose} open={openNav}>
+        <Drawer
+          title="Navbar Menu"
+          className="w-[200px] float-end !important "
+          onClose={onClose}
+          open={openNav}
+          placement={"right"}>
           <div className="flex flex-col gap-2 w-full">
             {list.map((item, index) => (
               <div
@@ -124,7 +129,8 @@ const Header = ({ items, ...props }) => {
           title="Sidebar Menu"
           onClose={onClose}
           open={openSide}
-          placement={"left"}>
+          placement={"left"}
+          className="w-[200px] !important">
           <div className="flex flex-col gap-2 w-full">
             {items[location.pathname.split("/")[1]].map((item, index) => (
               <div

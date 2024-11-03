@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import Group from "../components/Group";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import { Button, Modal, Select } from "antd";
+import { Button, Modal, FloatButton } from "antd";
+import { AreaChartOutlined } from "@ant-design/icons";
 import { nanoid } from "nanoid";
 import NewOrderFormPage from "./NewOrderFormPage";
 import { useNavigate } from "react-router-dom";
@@ -197,13 +199,28 @@ const CalendarPage = () => {
           <Col md={12} className="flex justify-between">
             <div className="md:w-[10%] hidden md:block w-0">
               <div className="pl-auto pr-auto pt-10 w-fit flex flex-col gap-10">
-                <Button onClick={orderOpen}>受注入力</Button>
-                <Button onClick={dashboard}>ダッシュボード</Button>
-                <Button onClick={newCustomer}>顧客</Button>
-                <Button onClick={newCompany}>協力会社</Button>
-                <Button onClick={newShipper}>荷主</Button>
-                <Button onClick={newShip}>船社</Button>
-                <Button onClick={newWorkstation}>作業地</Button>
+                <Button onClick={orderOpen} className="w-2/3">
+                  受注入力
+                </Button>
+                <div className="w-2/3">
+                  <Group label={"NEW"}>
+                    <Button onClick={newCustomer} className="w-full my-2">
+                      顧客
+                    </Button>
+                    <Button onClick={newCompany} className="w-full my-2">
+                      協力会社
+                    </Button>
+                    <Button onClick={newShipper} className="w-full my-2">
+                      荷主
+                    </Button>
+                    <Button onClick={newShip} className="w-full my-2">
+                      船社
+                    </Button>
+                    <Button onClick={newWorkstation} className="w-full my-2">
+                      作業地
+                    </Button>
+                  </Group>
+                </div>
               </div>
             </div>
             <div className="md:w-[90%] w-full">
@@ -265,6 +282,13 @@ const CalendarPage = () => {
         footer={false}>
         <NewOrderFormPage />
       </Modal>
+      <FloatButton
+        shape="square"
+        type="primary"
+        className="mb-2 mr-2 animate-bounce"
+        onClick={dashboard}
+        icon={<AreaChartOutlined />}
+      />
     </div>
   );
 };

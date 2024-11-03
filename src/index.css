@@ -160,13 +160,7 @@ textarea {
 .scrollable-input {
   height: 40px; /* Set a specific height */
 }
-.fc-header-toolbar,
-.fc-toolbar,
-.fc-toolbar-ltr {
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  gap: 10px;
-}
+
 .special .ant-form-item-required {
   color: var(--text-special) !important;
 }
