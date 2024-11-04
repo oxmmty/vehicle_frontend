@@ -11,7 +11,7 @@ import { AreaChartOutlined } from "@ant-design/icons";
 import { nanoid } from "nanoid";
 import NewOrderFormPage from "./NewOrderFormPage";
 import { useNavigate } from "react-router-dom";
-import { Row, Col, FormGroup, Label, Container } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import CustomModal from "../components/CustomModal";
 import "./custom.css";
 import jaLocale from "@fullcalendar/core/locales/ja";
@@ -223,9 +223,9 @@ const CalendarPage = () => {
                 </div>
               </div>
             </div>
-            <div className="md:w-[90%] w-full">
+            <div className="md:w-[90%] w-full h-[calc(100vh-100px)]">
               <FullCalendar
-                height={800}
+                height="100%"
                 expandRows={false}
                 ref={calendarRef}
                 plugins={[
@@ -256,7 +256,7 @@ const CalendarPage = () => {
         isOpen={modal}
         toggle={handleCloseModal}
         onCancel={handleCloseModal}>
-        <FormGroup>
+        {/* <FormGroup>
           <div className="block">
             <strong>識別コード:</strong>
             <Label> {title}</Label>
@@ -273,7 +273,8 @@ const CalendarPage = () => {
             <strong>配達先:</strong>
             <Label> {eventDeliveryLocation}</Label>
           </div>
-        </FormGroup>
+        </FormGroup> */}
+        <NewOrderFormPage />
       </CustomModal>
       <Modal
         open={orderModal}

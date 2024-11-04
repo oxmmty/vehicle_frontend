@@ -16,6 +16,7 @@ import PackageInfo from "src/components/PackageInfo";
 import SubcontractPayment from "src/components/SubcontractPayment";
 import Storage from "src/components/Storage";
 import dayjs from "dayjs";
+import { divide } from "lodash";
 
 const { TextArea } = Input;
 const dateFormat = "YYYY-MM-DD";
@@ -1327,8 +1328,8 @@ const SeaComponent = ({ setData }) => {
             </Form.Item>
           </div>
         </Form.Item>
+        {}
         <Delivery
-          className="h-0 invisible"
           setDate={setDate}
           setDeliveryData1={setDeliveryData1}
           setDeliveryData2={setDeliveryData2}
