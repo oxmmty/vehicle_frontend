@@ -164,28 +164,28 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
 
   const barData = [
     {
-      type: `${lastYearLastMonthEnd.format("YYYY年MM月")} 基本料金`,
+      type: `${lastYearLastMonthEnd.format("YYYY年MM月")}`,
       value: combined.reduce(
         (sum, item) => sum + item.lastYearLastMonthPrice,
         0,
       ),
     },
     {
-      type: `${thisYearLastMonthEnd.format("YYYY年MM月")} 基本料金`,
+      type: `${thisYearLastMonthEnd.format("YYYY年MM月")}`,
       value: combined.reduce(
         (sum, item) => sum + item.thisYearLastMonthPrice,
         0,
       ),
     },
     {
-      type: `${lastYearEnd.format("YYYY年MM月")} 基本料金`,
+      type: `${lastYearEnd.format("YYYY年MM月")}`,
       value: combined.reduce(
         (sum, item) => sum + item.lastYearThisMonthPrice,
         0,
       ),
     },
     {
-      type: `${endOfMonth.format("YYYY年MM月")} 基本料金`,
+      type: `${endOfMonth.format("YYYY年MM月")}`,
       value: combined.reduce(
         (sum, item) => sum + item.thisYearThisMonthPrice,
         0,

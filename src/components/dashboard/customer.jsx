@@ -143,7 +143,8 @@ const CustomerPage = (props) => {
     <div>
       <div
         id="customer-chart"
-        style={{ height: 320, width: "100%", color: textColor }}>
+        className="h-80"
+        style={{ width: "100%", color: textColor }}>
         {/* The chart will render here */}
       </div>
     </div>

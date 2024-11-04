@@ -143,7 +143,7 @@ const CompanyPage = (props) => {
 
   return (
     <>
-      <div id="company-chart" style={{ height: 400, width: "100%" }}></div>
+      <div id="company-chart" className="h-80" style={{ width: "100%" }}></div>
     </>
   );
 };

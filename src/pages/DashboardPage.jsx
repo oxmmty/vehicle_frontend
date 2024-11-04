@@ -120,26 +120,67 @@ const Dashboardpage = () => {
   });
 
   const columns = [
-    { title: "協力会社名", dataIndex: "company", key: "company" },
+    {
+      title: "協力会社名",
+      dataIndex: "company",
+      key: "company",
+      onCell: (record, rowIndex) => {
+        return {
+          style: {
+            padding: "10px",
+            width: "150px",
+            height: "20px ",
+          },
+        };
+      },
+    },
     {
       title: `${lastYearLastMonthEnd.format("YYYY-MM")} `,
       dataIndex: "lastYearLastMonthPrice",
       key: "lastYearLastMonthPrice",
+      onCell: (record, rowIndex) => {
+        return {
+          style: {
+            padding: "10px",
+          },
+        };
+      },
     },
     {
       title: `${thisYearLastMonthEnd.format("YYYY-MM")} `,
       dataIndex: "thisYearLastMonthPrice",
       key: "thisYearLastMonthPrice",
+      onCell: (record, rowIndex) => {
+        return {
+          style: {
+            padding: "10px",
+          },
+        };
+      },
     },
     {
       title: `${lastYearEnd.format("YYYY-MM")} `,
       dataIndex: "lastYearThisMonthPrice",
       key: "lastYearThisMonthPrice",
+      onCell: (record, rowIndex) => {
+        return {
+          style: {
+            padding: "10px",
+          },
+        };
+      },
     },
     {
       title: `${endOfMonth.format("YYYY-MM")} `,
       dataIndex: "thisYearThisMonthPrice",
       key: "thisYearThisMonthPrice",
+      onCell: (record, rowIndex) => {
+        return {
+          style: {
+            padding: "10px",
+          },
+        };
+      },
     },
   ];
 
@@ -235,21 +276,21 @@ const Dashboardpage = () => {
 
   /////////////////
   return (
-    <div className="flex flex-col xl:flex-col h-[100%] w-full gap-2">
-      <div className="flex-col xl:flex-row flex gap-2">
-        <div className="xl:w-1/3 mb-2">
-          <div className="h-[180px] bg-bg-light rounded-lg mb-2">
+    <div className="flex flex-col xl:flex-col w-full gap-2">
+      <div className="flex-col xl:h-96 xl:flex-row flex gap-2">
+        <div className="xl:w-1/3 h-full mb-2">
+          <div className="h-[47.36842%] bg-bg-light rounded-lg mb-2">
             <TotalAmount company={weeklyCompany} customer={weeklyCustomer} />
           </div>
-          <div className="h-[200px] bg-bg-light rounded-lg">
+          <div className="h-[calc(52.6317%-8px)] mb- bg-bg-light rounded-lg">
             <AllChart company={weeklyCompany} customer={weeklyCustomer} />
           </div>
         </div>
-        <div className="xl:w-2/3 h-[390px] hidden md:block bg-bg-light rounded-lg">
+        <div className="xl:w-2/3 h-fyll hidden md:block bg-bg-light rounded-lg">
           <CompanyCharts category={companyList} data={companyPriceList} />
         </div>
       </div>
-      <div className="flex flex-col xl:flex-row justify-between gap-2 w-full">
+      <div className="flex flex-col xl:flex-row xl:h-96 justify-between gap-2 w-full">
         <div className="xl:w-1/3 h-[400px] bg-bg-light rounded-lg">
           {customerList.length > 0 && (
             <Customer label={customerList} series={customerPrice} />

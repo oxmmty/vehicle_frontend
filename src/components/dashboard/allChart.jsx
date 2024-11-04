@@ -135,7 +135,7 @@ const BarChart = (props) => {
     };
   }, [options]);
 
-  return <div id="bar-chart" />;
+  return <div id="bar-chart" className="h-44" />;
 };
 
 export default BarChart;

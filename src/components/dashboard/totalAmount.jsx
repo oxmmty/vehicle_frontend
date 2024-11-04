@@ -102,12 +102,12 @@ const TotalAmount = (props) => {
   };
 
   return (
-    <div id="totalAmount-Chart">
+    <div id="totalAmount-Chart" className="h-44">
       <ReactApexChart
         options={options}
         series={options.series}
         type={options.chart.type}
-        height={180}
+        height="100%"
       />
     </div>
   );
