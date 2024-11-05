@@ -3,8 +3,9 @@ import axios from "axios";
 import Group from "./Group";
 import { Form, Tabs, Select, Input, DatePicker, Radio, Space } from "antd";
 import moment from "moment";
+import dayjs from "dayjs";
 
-const Storage = ({ setStorageData }, { className = "" }) => {
+const Storage = ({ setStorageData, editData }, { className = "" }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [totalDays, setTotalDays] = useState(0); // New state for total days
@@ -46,9 +47,22 @@ const Storage = ({ setStorageData }, { className = "" }) => {
     };
     fetchData();
   }, []);
-
   useEffect(() => {
-    // Set storage data
+    if (editData) {
+      setSelectedValueStorageLocation(editData.保管場所);
+      setStartDate(editData.入庫日);
+      setEndDate(editData.出庫日);
+      setShipperLiftOff(editData.荷主保管料金リフトオフ);
+      setShipperLiftOn(editData.荷主保管料金リフトオン);
+      setShipperPrice(editData.荷主保管料金1日);
+      setShipperStorageTax(editData.荷主保管課税);
+      setSubLiftOff(editData.下払リフトオフ);
+      setSubLiftOn(editData.下払リフトオン);
+      setSubPrice(editData.下払保管料金1日);
+      setSubTax(editData.下払保管課税);
+    }
+  }, [editData]);
+  useEffect(() => {
     setStorageData([
       selectedValueStorageLocation,
       startDate,
@@ -182,6 +196,7 @@ const Storage = ({ setStorageData }, { className = "" }) => {
             <DatePicker
               className="w-full"
               required
+              value={startDate ? dayjs(startDate) : null}
               onChange={(date, dateString) => {
                 setStartDate(dateString);
                 if (!endDate || moment(date).isAfter(endDate)) {
@@ -194,6 +209,7 @@ const Storage = ({ setStorageData }, { className = "" }) => {
             <DatePicker
               className="w-full"
               required
+              value={endDate ? dayjs(endDate) : null}
               onChange={(date, dateString) => {
                 setEndDate(dateString);
               }}
@@ -210,12 +226,14 @@ const Storage = ({ setStorageData }, { className = "" }) => {
               <Input
                 required
                 className="w-full"
+                value={shipperLiftOff}
                 onChange={(e) => setShipperLiftOff(e.target.value)}
               />
             </Form.Item>
             <Form.Item label={"荷主リフトオン"} className="grow w-32">
               <Input
                 required
+                value={shipperLiftOn}
                 className="w-full"
                 onChange={(e) => setShipperLiftOn(e.target.value)}
               />
@@ -224,6 +242,7 @@ const Storage = ({ setStorageData }, { className = "" }) => {
               <Input
                 required
                 className="w-full"
+                value={shipperPrice}
                 onChange={(e) => setShipperPrice(e.target.value)}
               />
             </Form.Item>
@@ -241,6 +260,7 @@ const Storage = ({ setStorageData }, { className = "" }) => {
             <Form.Item label={"下払リフトオフ"} className="grow w-32">
               <Input
                 required
+                value={subLiftOff}
                 className="w-full"
                 onChange={(e) => setSubLiftOff(e.target.value)}
               />
@@ -248,6 +268,7 @@ const Storage = ({ setStorageData }, { className = "" }) => {
             <Form.Item label={"下払リフトオン"} className="grow w-32">
               <Input
                 required
+                value={subLiftOn}
                 className="w-full"
                 onChange={(e) => setSubLiftOn(e.target.value)}
               />
@@ -255,6 +276,7 @@ const Storage = ({ setStorageData }, { className = "" }) => {
             <Form.Item label={"下払保管/日"} className="grow w-32">
               <Input
                 required
+                value={subPrice}
                 className="w-full"
                 onChange={(e) => setSubPrice(e.target.value)}
               />

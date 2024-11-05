@@ -256,25 +256,7 @@ const CalendarPage = () => {
         isOpen={modal}
         toggle={handleCloseModal}
         onCancel={handleCloseModal}>
-        {/* <FormGroup>
-          <div className="block">
-            <strong>識別コード:</strong>
-            <Label> {title}</Label>
-          </div>
-          <div className="block">
-            <strong>作業日と時間:</strong>
-            <Label> {start.toLocaleString()}</Label>
-          </div>
-          <div className="block">
-            <strong>取場所:</strong>
-            <Label> {eventPickupLocation}</Label>
-          </div>
-          <div className="block">
-            <strong>配達先:</strong>
-            <Label> {eventDeliveryLocation}</Label>
-          </div>
-        </FormGroup> */}
-        <NewOrderFormPage />
+        <NewOrderFormPage title={title} />
       </CustomModal>
       <Modal
         open={orderModal}

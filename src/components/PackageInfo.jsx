@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Group from "./Group";
-import {
-  Form,
-  Tabs,
-  Select,
-  Input,
-  DatePicker,
-  TimePicker,
-  Radio,
-  Space,
-} from "antd";
+import { Form, Input, DatePicker } from "antd";
 import dayjs from "dayjs";
 
-const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
+const PackageInfo = ({ setPackageInfoData, editData }, { className = "" }) => {
   const [cutDate, setCutDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [sealNumber, setSealNumber] = useState(null);
   const [tw, setTW] = useState(null);
@@ -23,7 +14,20 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
   const [quantity, setQuantity] = useState(null);
   const [weight, setWeight] = useState(null);
   const [shape, setShape] = useState(null);
-
+  useEffect(() => {
+    if (editData) {
+      setSealNumber(editData.シール番号);
+      setTW(editData.TW);
+      setVOY(editData.VOYNo);
+      setHoyang(editData.荷揚港);
+      setFinal(editData.最終仕向);
+      setName(editData.品名);
+      setQuantity(editData.個数);
+      setWeight(editData.重量);
+      setShape(editData.荷姿);
+      setCutDate(editData.カット日);
+    }
+  }, [editData]);
   useEffect(() => {
     setPackageInfoData([
       cutDate,
@@ -56,6 +60,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
         <div className="grid grid-cols-3 gap-x-1 sm:gap-x-4 w-full">
           <Form.Item label={"シール番号"} className="w-fit grow">
             <Input
+              value={sealNumber}
               onChange={(e) => {
                 setSealNumber(e.target.value);
               }}
@@ -63,6 +68,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
           </Form.Item>
           <Form.Item label={"T/W"} className="w-fit grow">
             <Input
+              value={tw}
               onChange={(e) => {
                 setTW(e.target.value);
               }}
@@ -70,13 +76,15 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
           </Form.Item>
           <Form.Item label={"VOY.No."} className="w-fit grow">
             <Input
+              value={voy}
               onChange={(e) => {
                 setVOY(e.target.value);
               }}
             />
           </Form.Item>
-          <Form.Item label={"荷物港"} className="w-fit grow">
+          <Form.Item label={"荷揚港"} className="w-fit grow">
             <Input
+              value={hoyang}
               onChange={(e) => {
                 setHoyang(e.target.value);
               }}
@@ -84,6 +92,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
           </Form.Item>
           <Form.Item label={"最終仕向"} className="w-fit grow">
             <Input
+              value={final}
               onChange={(e) => {
                 setFinal(e.target.value);
               }}
@@ -91,6 +100,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
           </Form.Item>
           <Form.Item label={"品名"} className="w-fit grow">
             <Input
+              value={name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -98,6 +108,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
           </Form.Item>
           <Form.Item label={"個数"} className="w-fit grow">
             <Input
+              value={quantity}
               onChange={(e) => {
                 setQuantity(e.target.value);
               }}
@@ -107,6 +118,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
             <Input
               placeholder="Kg"
               type="number"
+              value={weight}
               onChange={(e) => {
                 setWeight(e.target.value);
               }}
@@ -114,6 +126,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
           </Form.Item>
           <Form.Item label={"荷姿"} className="w-fit grow">
             <Input
+              value={shape}
               onChange={(e) => {
                 setShape(e.target.value);
               }}
@@ -125,6 +138,7 @@ const PackageInfo = ({ setPackageInfoData }, { className = "" }) => {
             <DatePicker
               className="w-full"
               required
+              value={dayjs(cutDate)}
               onChange={(date, dateString) => {
                 setCutDate(dateString);
               }}

@@ -18,7 +18,7 @@ const { TextArea } = Input;
 
 const dateFormat = "YYYY-MM-DD";
 
-const Delivery1 = ({ setDate, setDeliveryData1 }) => {
+const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
   const today = dayjs().format("YYYY-MM-DD");
   const [date1, setDate1] = useState(dayjs().format("YYYY-MM-DD"));
   const [dates1, setDates1] = useState(dayjs().format("YYYY-MM-DD"));
@@ -67,6 +67,32 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueDelivery1(editData.配達先1);
+      setAddress1(editData.配達先住所1 || "");
+      setTEL1(editData.配達先TEL1 || "");
+      setCharge1(editData.配達先担当者1 || "");
+      setRequestText1(editData.依頼書備考1 || "");
+      setDates1(editData.積日1);
+      setDate1(editData.配達日1);
+      setDate(editData.配達日1);
+      setTime1(editData.配達時間1);
+      setBasicFee1(editData.基本料金1);
+      setBasicFeeTax1(editData.基本課税1);
+      setFee3Angle1(editData["3軸料金1"]);
+      setFee3AngleTax1(editData["3軸課税1"]);
+      setCRUFee1(editData.CRU変更料金1);
+      setCRUFeeTax1(editData.CRU変更課税1);
+      setHighSpeedFee1(editData.高速費);
+      setScaleFee1(editData.スケール費);
+      setScaleFeeTax1(editData.スケール費課税1);
+      setChassisFee1(editData.シャーシ留置費);
+      setChassisFeeTax1(editData.シャーシ留置費課税1);
+      setOtherFee1(editData.その他費用);
+      setOtherFeeTax1(editData.その他課税);
+    }
+  }, [editData]);
 
   useEffect(() => {
     setDeliveryData1([
@@ -369,6 +395,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
         <div className="flex flex-wrap flex-row items-center gap-4">
           <DatePicker
             className="w-full"
+            value={dayjs(dates1)}
             onChange={(date, dateString) => {
               setDates1(dateString);
             }}
@@ -379,6 +406,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
         <Form.Item required label={"配達日"} className="grow">
           <DatePicker
             className="w-full"
+            value={dayjs(date1)}
             defaultValue={dayjs(today, dateFormat)}
             onChange={(date, dateString) => {
               setDate1(dateString);
@@ -389,6 +417,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
         <Form.Item required label={"配達時間"} className="grow">
           <TimePicker
             className="w-full"
+            value={dayjs(time1, "HH:MM")}
             onChange={(time, timeString) => {
               setTime1(timeString);
             }}
@@ -401,6 +430,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
           <Input
             required
             className="w-full"
+            value={basicFee1}
             onChange={(e) => {
               setBasicFee1(e.target.value);
             }}
@@ -551,7 +581,7 @@ const Delivery1 = ({ setDate, setDeliveryData1 }) => {
   );
 };
 
-const Delivery2 = ({ setDate, setDeliveryData2 }) => {
+const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
   const today = dayjs().format("YYYY-MM-DD");
   const [date2, setDate2] = useState(dayjs().format("YYYY-MM-DD"));
   const [dates2, setDates2] = useState(dayjs().format("YYYY-MM-DD"));
@@ -599,6 +629,32 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueDelivery2(editData.配達先2);
+      setAddress2(editData.配達先住所2 || "");
+      setTEL2(editData.配達先TEL2 || "");
+      setCharge2(editData.配達先担当者2 || "");
+      setRequestText2(editData.依頼書備考2 || "");
+      setDates2(editData.積日2);
+      setDate2(editData.配達日2);
+      setDate(editData.配達日2);
+      setTime2(editData.配達時間2);
+      setBasicFee2(editData.基本料金2);
+      setBasicFeeTax2(editData.基本課税2);
+      setFee3Angle2(editData["3軸料金2"]);
+      setFee3AngleTax2(editData["3軸課税2"]);
+      setCRUFee2(editData.CRU変更料金2);
+      setCRUFeeTax2(editData.CRU変更課税2);
+      setHighSpeedFee2(editData.高速費2);
+      setScaleFee2(editData.スケール費2);
+      setScaleFeeTax2(editData.スケール費課税2);
+      setChassisFee2(editData.シャーシ留置費2);
+      setChassisFeeTax2(editData.シャーシ留置費課税2);
+      setOtherFee2(editData.その他費用2);
+      setOtherFeeTax2(editData.その他課税2);
+    }
+  }, [editData]);
   useEffect(() => {
     setDeliveryData2([
       date2,
@@ -1080,7 +1136,7 @@ const Delivery2 = ({ setDate, setDeliveryData2 }) => {
   );
 };
 
-const Delivery3 = ({ setDate, setDeliveryData3 }) => {
+const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
   const today = dayjs().format("YYYY-MM-DD");
   const [date3, setDate3] = useState(dayjs().format("YYYY-MM-DD"));
   const [dates3, setDates3] = useState(dayjs().format("YYYY-MM-DD"));
@@ -1128,6 +1184,32 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueDelivery3(editData.配達先3);
+      setAddress3(editData.配達先住所3 || "");
+      setTEL3(editData.配達先TEL3 || "");
+      setCharge3(editData.配達先担当者3 || "");
+      setRequestText3(editData.依頼書備考3 || "");
+      setDates3(editData.積日3);
+      setDate3(editData.配達日3);
+      setDate(editData.配達日3);
+      setTime3(editData.配達時間3);
+      setBasicFee3(editData.基本料金3);
+      setBasicFeeTax3(editData.基本課税3);
+      setFee3Angle3(editData["3軸料金3"]);
+      setFee3AngleTax3(editData["3軸課税3"]);
+      setCRUFee3(editData.CRU変更料金3);
+      setCRUFeeTax3(editData.CRU変更課税3);
+      setHighSpeedFee3(editData.高速費3);
+      setScaleFee3(editData.スケール費3);
+      setScaleFeeTax3(editData.スケール費課税3);
+      setChassisFee3(editData.シャーシ留置費3);
+      setChassisFeeTax3(editData.シャーシ留置費課税3);
+      setOtherFee3(editData.その他費用3);
+      setOtherFeeTax3(editData.その他課税3);
+    }
+  }, [editData]);
   useEffect(() => {
     setDeliveryData3([
       date3,
@@ -1609,14 +1691,26 @@ const Delivery3 = ({ setDate, setDeliveryData3 }) => {
 };
 
 const Delivery = (
-  { setDate, setDeliveryData1, setDeliveryData2, setDeliveryData3 },
+  { setDate, setDeliveryData1, setDeliveryData2, setDeliveryData3, editData },
   { className = "" },
 ) => {
   const deliveryTab = ["配達1", "配達2", "配達3"];
   const dialogComponent = [
-    <Delivery1 setDate={setDate} setDeliveryData1={setDeliveryData1} />,
-    <Delivery2 setDate={setDate} setDeliveryData2={setDeliveryData2} />,
-    <Delivery3 setDate={setDate} setDeliveryData3={setDeliveryData3} />,
+    <Delivery1
+      setDate={setDate}
+      setDeliveryData1={setDeliveryData1}
+      editData={editData}
+    />,
+    <Delivery2
+      setDate={setDate}
+      setDeliveryData2={setDeliveryData2}
+      editData={editData}
+    />,
+    <Delivery3
+      setDate={setDate}
+      setDeliveryData3={setDeliveryData3}
+      editData={editData}
+    />,
   ];
   return (
     <div className={`${className}`}>

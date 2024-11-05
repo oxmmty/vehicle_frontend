@@ -16,7 +16,7 @@
 .modal {
   font-family: "Noto Sans JP";
   position: fixed;
-  padding-top: 100px; /* Location of the box */
+  padding: 10%; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -28,11 +28,9 @@
 .modal-content {
   border: 1px solid var(--txt-100);
   background-color: var(--bg-light-dark);
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-top: 10px;
+
   padding: 20px;
-  width: 80%;
+  width: 100%;
   border-radius: 15px;
 }
 .fc-header-toolbar,

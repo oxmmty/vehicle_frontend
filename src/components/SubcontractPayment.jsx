@@ -3,13 +3,12 @@ import axios from "axios";
 import Group from "./Group";
 import { Form, Tabs, Select, Input, Radio } from "antd";
 
-const SubcontractPayment1 = ({ setSubPayData1 }) => {
+const SubcontractPayment1 = ({ setSubPayData1, editData }) => {
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany1, setSelectedValueCompany] = useState("");
   const [inputValueCompany, setInputValueCompany] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [subBasicPay1, setSubBasicPay] = useState(null);
   const [subBasicPayTax1, setSubBasicPayTax] = useState(true);
   const [driver1, setDriver] = useState(true);
@@ -44,7 +43,25 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
     };
     fetchData();
   }, []);
-
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueCompany(editData.下払会社名1);
+      setSubBasicPay(editData.下払料金1);
+      setSubBasicPayTax(editData.下払課税1);
+      setSelfDriverName(editData.自社乗務員1);
+      setSelfTruckNumber1(editData.自社車番F1);
+      setSelfTruckNumber2(editData.自社車番S1);
+      setTruckNumber1(editData.下払自車F1);
+      setTruckNumber2(editData.下払自車S1);
+      setSubExpressBasicFee(editData.下払高速費1);
+      setSubScaleFee(editData.下払スケール費1);
+      setSubScaleFeeTax(editData.下払スケール費課税1);
+      setSubChassisFee(editData.下払シャーシ留置費1);
+      setSubChassisFeeTax(editData.下払シャーシ留置費課税1);
+      setSubOtherFee(editData.下払その他費用1);
+      setSubOtherFeeTax(editData.下払その他課税1);
+    }
+  }, [editData]);
   useEffect(() => {
     setSubPayData1([
       selectedValueSubCompany1,
@@ -187,6 +204,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
           className="grow"
           required>
           <Input
+            value={subBasicPay1}
             onChange={(e) => {
               setSubBasicPay(e.target.value);
             }}
@@ -253,6 +271,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
       </div>
       <Form.Item label={"高速道路料金"} className=" grow">
         <Input
+          value={subExpressBasicFee1}
           onChange={(e) => {
             setSubExpressBasicFee(e.target.value);
           }}
@@ -262,6 +281,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            value={subScaleFee1}
             className="w-full"
             onChange={(e) => {
               setSubScaleFee(e.target.value);
@@ -281,6 +301,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            value={subChassisFee1}
             className="w-full"
             onChange={(e) => {
               setSubChassisFee(e.target.value);
@@ -302,6 +323,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            value={subOtherFee1}
             className="w-full"
             onChange={(e) => {
               setSubOtherFee(e.target.value);
@@ -322,7 +344,7 @@ const SubcontractPayment1 = ({ setSubPayData1 }) => {
     </div>
   );
 };
-const SubcontractPayment2 = ({ setSubPayData2 }) => {
+const SubcontractPayment2 = ({ setSubPayData2, editData }) => {
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany2, setSelectedValueCompany] = useState("");
@@ -363,6 +385,27 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueCompany(editData.下払会社名2);
+      setSubBasicPay(editData.下払料金2);
+      setSubBasicPayTax(editData.下払課税2);
+      setSelfDriverName(editData.自社乗務員2);
+      setSelfTruckNumber1(editData.自社車番F2);
+      setSelfTruckNumber2(editData.自社車番S2);
+      setTruckNumber1(editData.下払自車F2);
+      setTruckNumber2(editData.下払自車S2);
+      setSubExpressBasicFee(editData.下払高速費2);
+      setSubScaleFee(editData.下払スケール費2);
+      setSubScaleFeeTax(editData.下払スケール費課税2);
+      setSubChassisFee(editData.下払シャーシ留置費2);
+      setSubChassisFeeTax(editData.下払シャーシ留置費課税2);
+      setSubOtherFee(editData.下払その他費用2);
+      setSubOtherFeeTax(editData.下払その他課税2);
+    }
+  }, [editData]);
+
   useEffect(() => {
     setSubPayData2([
       selectedValueSubCompany2,
@@ -506,6 +549,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
           className="grow"
           required>
           <Input
+            value={subBasicPay2}
             onChange={(e) => {
               setSubBasicPay(e.target.value);
             }}
@@ -572,6 +616,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
       </div>
       <Form.Item label={"高速道路料金"} className=" grow">
         <Input
+          value={subExpressBasicFee2}
           onChange={(e) => {
             setSubExpressBasicFee(e.target.value);
           }}
@@ -581,6 +626,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            value={subScaleFee2}
             className="w-full"
             onChange={(e) => {
               setSubScaleFee(e.target.value);
@@ -600,6 +646,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            value={subChassisFee2}
             className="w-full"
             onChange={(e) => {
               setSubChassisFee(e.target.value);
@@ -621,6 +668,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            value={subOtherFee2}
             className="w-full"
             onChange={(e) => {
               setSubOtherFee(e.target.value);
@@ -641,7 +689,7 @@ const SubcontractPayment2 = ({ setSubPayData2 }) => {
     </div>
   );
 };
-const SubcontractPayment3 = ({ setSubPayData3 }) => {
+const SubcontractPayment3 = ({ setSubPayData3, editData }) => {
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany3, setSelectedValueCompany] = useState("");
@@ -682,6 +730,25 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueCompany(editData.下払会社名3);
+      setSubBasicPay(editData.下払料金3);
+      setSubBasicPayTax(editData.下払課税3);
+      setSelfDriverName(editData.自社乗務員3);
+      setSelfTruckNumber1(editData.自社車番F3);
+      setSelfTruckNumber2(editData.自社車番S3);
+      setTruckNumber1(editData.下払自車F3);
+      setTruckNumber2(editData.下払自車S3);
+      setSubExpressBasicFee(editData.下払高速費3);
+      setSubScaleFee(editData.下払スケール費3);
+      setSubScaleFeeTax(editData.下払スケール費課税3);
+      setSubChassisFee(editData.下払シャーシ留置費3);
+      setSubChassisFeeTax(editData.下払シャーシ留置費課税3);
+      setSubOtherFee(editData.下払その他費用3);
+      setSubOtherFeeTax(editData.下払その他課税3);
+    }
+  }, [editData]);
   useEffect(() => {
     setSubPayData3([
       selectedValueSubCompany3,
@@ -824,6 +891,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
           className="grow"
           required>
           <Input
+            value={subBasicPay3}
             onChange={(e) => {
               setSubBasicPay(e.target.value);
             }}
@@ -890,6 +958,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
       </div>
       <Form.Item label={"高速道路料金"} className=" grow">
         <Input
+          value={subExpressBasicFee3}
           onChange={(e) => {
             setSubExpressBasicFee(e.target.value);
           }}
@@ -899,6 +968,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            value={subScaleFee3}
             className="w-full"
             onChange={(e) => {
               setSubScaleFee(e.target.value);
@@ -918,6 +988,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            value={subChassisFee3}
             className="w-full"
             onChange={(e) => {
               setSubChassisFee(e.target.value);
@@ -939,6 +1010,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            value={subOtherFee3}
             className="w-full"
             onChange={(e) => {
               setSubOtherFee(e.target.value);
@@ -959,7 +1031,7 @@ const SubcontractPayment3 = ({ setSubPayData3 }) => {
     </div>
   );
 };
-const SubcontractPayment4 = ({ setSubPayData4 }) => {
+const SubcontractPayment4 = ({ setSubPayData4, editData }) => {
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany4, setSelectedValueCompany] = useState("");
@@ -1000,6 +1072,25 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueCompany(editData.下払会社名4);
+      setSubBasicPay(editData.下払料金4);
+      setSubBasicPayTax(editData.下払課税4);
+      setSelfDriverName(editData.自社乗務員4);
+      setSelfTruckNumber1(editData.自社車番F4);
+      setSelfTruckNumber2(editData.自社車番S4);
+      setTruckNumber1(editData.下払自車F4);
+      setTruckNumber2(editData.下払自車S4);
+      setSubExpressBasicFee(editData.下払高速費4);
+      setSubScaleFee(editData.下払スケール費4);
+      setSubScaleFeeTax(editData.下払スケール費課税4);
+      setSubChassisFee(editData.下払シャーシ留置費4);
+      setSubChassisFeeTax(editData.下払シャーシ留置費課税4);
+      setSubOtherFee(editData.下払その他費用4);
+      setSubOtherFeeTax(editData.下払その他課税4);
+    }
+  }, [editData]);
   useEffect(() => {
     setSubPayData4([
       selectedValueSubCompany4,
@@ -1142,6 +1233,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
           className="grow"
           required>
           <Input
+            value={subBasicPay4}
             onChange={(e) => {
               setSubBasicPay(e.target.value);
             }}
@@ -1208,6 +1300,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
       </div>
       <Form.Item label={"高速道路料金"} className=" grow">
         <Input
+          value={subExpressBasicFee4}
           onChange={(e) => {
             setSubExpressBasicFee(e.target.value);
           }}
@@ -1217,6 +1310,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            value={subScaleFee4}
             className="w-full"
             onChange={(e) => {
               setSubScaleFee(e.target.value);
@@ -1236,6 +1330,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            value={subChassisFee4}
             className="w-full"
             onChange={(e) => {
               setSubChassisFee(e.target.value);
@@ -1257,6 +1352,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            value={subOtherFee4}
             className="w-full"
             onChange={(e) => {
               setSubOtherFee(e.target.value);
@@ -1277,7 +1373,7 @@ const SubcontractPayment4 = ({ setSubPayData4 }) => {
     </div>
   );
 };
-const SubcontractPayment5 = ({ setSubPayData5 }) => {
+const SubcontractPayment5 = ({ setSubPayData5, editData }) => {
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany5, setSelectedValueCompany] = useState("");
@@ -1318,6 +1414,25 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueCompany(editData.下払会社名5);
+      setSubBasicPay(editData.下払料金5);
+      setSubBasicPayTax(editData.下払課税5);
+      setSelfDriverName(editData.自社乗務員5);
+      setSelfTruckNumber1(editData.自社車番F5);
+      setSelfTruckNumber2(editData.自社車番S5);
+      setTruckNumber1(editData.下払自車F5);
+      setTruckNumber2(editData.下払自車S5);
+      setSubExpressBasicFee(editData.下払高速費5);
+      setSubScaleFee(editData.下払スケール費5);
+      setSubScaleFeeTax(editData.下払スケール費課税5);
+      setSubChassisFee(editData.下払シャーシ留置費5);
+      setSubChassisFeeTax(editData.下払シャーシ留置費課税5);
+      setSubOtherFee(editData.下払その他費用5);
+      setSubOtherFeeTax(editData.下払その他課税5);
+    }
+  }, [editData]);
   useEffect(() => {
     setSubPayData5([
       selectedValueSubCompany5,
@@ -1460,6 +1575,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
           className="grow"
           required>
           <Input
+            value={subBasicPay5}
             onChange={(e) => {
               setSubBasicPay(e.target.value);
             }}
@@ -1526,6 +1642,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
       </div>
       <Form.Item label={"高速道路料金"} className=" grow">
         <Input
+          value={subExpressBasicFee5}
           onChange={(e) => {
             setSubExpressBasicFee(e.target.value);
           }}
@@ -1535,6 +1652,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            value={subScaleFee5}
             className="w-full"
             onChange={(e) => {
               setSubScaleFee(e.target.value);
@@ -1554,6 +1672,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            value={subChassisFee5}
             className="w-full"
             onChange={(e) => {
               setSubChassisFee(e.target.value);
@@ -1575,6 +1694,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            value={subOtherFee5}
             className="w-full"
             onChange={(e) => {
               setSubOtherFee(e.target.value);
@@ -1595,7 +1715,7 @@ const SubcontractPayment5 = ({ setSubPayData5 }) => {
     </div>
   );
 };
-const SubcontractPayment6 = ({ setSubPayData6 }) => {
+const SubcontractPayment6 = ({ setSubPayData6, editData }) => {
   const [companyData, setCompanyData] = useState([]);
   const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [selectedValueSubCompany6, setSelectedValueCompany] = useState("");
@@ -1636,6 +1756,25 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (editData) {
+      setSelectedValueCompany(editData.下払会社名6);
+      setSubBasicPay(editData.下払料金6);
+      setSubBasicPayTax(editData.下払課税6);
+      setSelfDriverName(editData.自社乗務員6);
+      setSelfTruckNumber1(editData.自社車番F6);
+      setSelfTruckNumber2(editData.自社車番S6);
+      setTruckNumber1(editData.下払自車F6);
+      setTruckNumber2(editData.下払自車S6);
+      setSubExpressBasicFee(editData.下払高速費6);
+      setSubScaleFee(editData.下払スケール費6);
+      setSubScaleFeeTax(editData.下払スケール費課税6);
+      setSubChassisFee(editData.下払シャーシ留置費6);
+      setSubChassisFeeTax(editData.下払シャーシ留置費課税6);
+      setSubOtherFee(editData.下払その他費用6);
+      setSubOtherFeeTax(editData.下払その他課税6);
+    }
+  }, [editData]);
   useEffect(() => {
     setSubPayData6([
       selectedValueSubCompany6,
@@ -1778,6 +1917,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
           className="grow"
           required>
           <Input
+            value={subBasicPay6}
             onChange={(e) => {
               setSubBasicPay(e.target.value);
             }}
@@ -1844,6 +1984,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
       </div>
       <Form.Item label={"高速道路料金"} className=" grow">
         <Input
+          value={subExpressBasicFee6}
           onChange={(e) => {
             setSubExpressBasicFee(e.target.value);
           }}
@@ -1853,6 +1994,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            value={subScaleFee6}
             className="w-full"
             onChange={(e) => {
               setSubScaleFee(e.target.value);
@@ -1872,6 +2014,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            value={subChassisFee6}
             className="w-full"
             onChange={(e) => {
               setSubChassisFee(e.target.value);
@@ -1893,6 +2036,7 @@ const SubcontractPayment6 = ({ setSubPayData6 }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            value={subOtherFee6}
             className="w-full"
             onChange={(e) => {
               setSubOtherFee(e.target.value);
@@ -1922,17 +2066,18 @@ const SubcontractPayment = (
     setSubPayData4,
     setSubPayData5,
     setSubPayData6,
+    editData,
   },
   { className = "" },
 ) => {
   const tabNames = ["配車1", "配車2", "配車3", "配車4", "配車5", "配車6"];
   const dialogComponent = [
-    <SubcontractPayment1 setSubPayData1={setSubPayData1} />,
-    <SubcontractPayment2 setSubPayData2={setSubPayData2} />,
-    <SubcontractPayment3 setSubPayData3={setSubPayData3} />,
-    <SubcontractPayment4 setSubPayData4={setSubPayData4} />,
-    <SubcontractPayment5 setSubPayData5={setSubPayData5} />,
-    <SubcontractPayment6 setSubPayData6={setSubPayData6} />,
+    <SubcontractPayment1 setSubPayData1={setSubPayData1} editData={editData} />,
+    <SubcontractPayment2 setSubPayData2={setSubPayData2} editData={editData} />,
+    <SubcontractPayment3 setSubPayData3={setSubPayData3} editData={editData} />,
+    <SubcontractPayment4 setSubPayData4={setSubPayData4} editData={editData} />,
+    <SubcontractPayment5 setSubPayData5={setSubPayData5} editData={editData} />,
+    <SubcontractPayment6 setSubPayData6={setSubPayData6} editData={editData} />,
   ];
   return (
     <div
