@@ -16,6 +16,7 @@ import PackageInfo from "src/components/PackageInfo";
 import SubcontractPayment from "src/components/SubcontractPayment";
 import Storage from "src/components/Storage";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 const dateFormat = "YYYY-MM-DD";
@@ -1448,6 +1449,8 @@ const OtherComponent = () => {
 };
 
 const NewOrderFormPage = ({ title }) => {
+  const navigate = useNavigate();
+
   const tabNames = ["海上コンテナ", "トラック", "その他"];
   const [data, setData] = useState();
   const dialogComponent = [
@@ -1486,7 +1489,18 @@ const NewOrderFormPage = ({ title }) => {
       console.log(error, res.message);
     }
   };
-
+  const requestPdfList = () => {
+    navigate("/orders_invoices/requestPdfList");
+  };
+  const requestList = () => {
+    navigate("/orders_invoices/requestList");
+  };
+  const mail = () => {
+    navigate("/orders_invoices/mail");
+  };
+  const billingList = () => {
+    navigate("/orders_invoices/billingList");
+  };
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <Tabs
@@ -1510,6 +1524,17 @@ const NewOrderFormPage = ({ title }) => {
         <Button onClick={sendData} type="primary">
           保存
         </Button>
+        {title ? <Button onClick={requestPdfList}>依頼書作成</Button> : <></>}
+        {title ? <Button onClick={requestList}>依頼リスト</Button> : <></>}
+        {title ? <Button onClick={mail}>Mail</Button> : <></>}
+        {title ? <Button onClick={billingList}>請求一覧</Button> : <></>}
+        {/* {title ? (
+          <Button onClick={navigate("/orders_invoices/invoice_receipt")}>
+            送り状・受領書
+          </Button>
+        ) : (
+          <></>
+        )} */}
 
         {/* <Button>閉じる</Button> */}
       </div>

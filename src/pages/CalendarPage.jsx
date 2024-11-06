@@ -203,7 +203,7 @@ const CalendarPage = () => {
                   受注入力
                 </Button>
                 <div className="w-2/3">
-                  <Group label={"NEW"}>
+                  <Group label={"新規登録"}>
                     <Button onClick={newCustomer} className="w-full my-2">
                       顧客
                     </Button>
