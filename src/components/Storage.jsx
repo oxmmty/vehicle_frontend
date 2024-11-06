@@ -56,8 +56,8 @@ const Storage = ({ setStorageData, editData }, { className = "" }) => {
       setShipperLiftOn(editData.荷主保管料金リフトオン);
       setShipperPrice(editData.荷主保管料金1日);
       setShipperStorageTax(editData.荷主保管課税);
-      setSubLiftOff(editData.下払リフトオフ);
-      setSubLiftOn(editData.下払リフトオン);
+      setSubLiftOff(editData.下払保管料金リフトオフ);
+      setSubLiftOn(editData.下払保管料金リフトオン);
       setSubPrice(editData.下払保管料金1日);
       setSubTax(editData.下払保管課税);
     }
