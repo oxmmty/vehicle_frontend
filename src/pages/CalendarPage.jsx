@@ -31,7 +31,10 @@ const CalendarPage = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get("/orderlist");
-      const rawData = response.data;
+      const rawData = response.data.filter(
+        (item) =>
+          !item.hasOwnProperty("支払い確認") || item.支払い確認 !== true,
+      );
       const formattedEvents = rawData.flatMap((item) => {
         const eventsList = [];
         const hasDeliveryDates = [
@@ -191,7 +194,6 @@ const CalendarPage = () => {
   function handleClose() {
     setModal(false);
   }
-
   return (
     <div>
       <Container className="w-full">
@@ -253,10 +255,11 @@ const CalendarPage = () => {
 
       <CustomModal
         title={title}
+        start={start}
         isOpen={modal}
         toggle={handleCloseModal}
         onCancel={handleCloseModal}>
-        <NewOrderFormPage title={title} />
+        <NewOrderFormPage title={title} start={start} />
       </CustomModal>
       <Modal
         open={orderModal}

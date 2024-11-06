@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Typography, Select, DatePicker } from "antd";
+import { Button, Typography, Select, DatePicker, message } from "antd";
 import axios from "axios";
 import moment from "moment";
 import dayjs from "dayjs";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { useLocation } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 const RequestListPage = () => {
+  const location = useLocation();
+  const datas = location.state?.data;
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -18,7 +21,6 @@ const RequestListPage = () => {
   const [pdfDate, setPdfDate] = useState("");
   const today = dayjs().format("YYYY-MM-DD");
   const componentRef = useRef();
-
   useEffect(() => {
     axios.get(`${process.env.REACT_API_BASE_URL}/order`).then((response) => {
       const transformedData = response.data.map((item) => ({
@@ -72,6 +74,10 @@ const RequestListPage = () => {
       );
     }
 
+    if (datas) {
+      handleDateChange(datas);
+    }
+
     if (selectedDate) {
       const formattedDate = moment(selectedDate).format("MM-DD");
       filtered = filtered.filter(
@@ -79,7 +85,6 @@ const RequestListPage = () => {
       );
       setPdfDate(selectedDate);
     }
-
     setFilteredData(filtered);
   };
 
@@ -92,6 +97,8 @@ const RequestListPage = () => {
   };
 
   const handleDownloadPDF = () => {
+    if (pdfDate == null && selectedCompany == null) {
+    }
     html2canvas(componentRef.current, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");

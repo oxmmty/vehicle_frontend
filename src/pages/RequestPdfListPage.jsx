@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -12,7 +13,8 @@ const RequestPdfListPage = () => {
   const [filteredDatas, setFilteredDatas] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const data = location.state?.data;
   const columns = [
     {
       title: "選択",
@@ -321,13 +323,21 @@ const RequestPdfListPage = () => {
   }, []);
 
   const filterData = (selectedDate, dataToFilter) => {
-    const filtered = dataToFilter.filter((item) => {
-      const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
-      return invoiceDate === selectedDate;
-    });
-    setFilteredDatas(filtered);
+    if (data) {
+      const filtered = dataToFilter.filter((item) => {
+        const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
+        return invoiceDate === selectedDate, data === item.受注コード;
+      });
+      setFilteredDatas(filtered);
+    } else {
+      const filtered = dataToFilter.filter((item) => {
+        const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
+        return invoiceDate === selectedDate;
+      });
+      setFilteredDatas(filtered);
+    }
   };
-
+  console.log(filteredDatas);
   const handleDateChange = (date) => {
     if (date) {
       setDate(date);

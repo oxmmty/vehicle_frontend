@@ -764,7 +764,6 @@ const DBPage = () => {
     { key: "下払料金6", title: "下払料金6", dataIndex: "下払料金6" },
     { key: "下払課税6", title: "下払課税6", dataIndex: "下払課税6" },
     { key: "下払自車6", title: "下払自車6", dataIndex: "下払自車6" },
-
     { key: "空冷", title: "空冷", dataIndex: "空冷" },
   ];
 

@@ -1447,11 +1447,11 @@ const OtherComponent = () => {
   return <div className="h-[500px] overflow-y-auto">3</div>;
 };
 
-const NewOrderFormPage = ({ title }) => {
+const NewOrderFormPage = ({ title, start }) => {
   const navigate = useNavigate();
-
   const tabNames = ["海上コンテナ", "トラック", "その他"];
   const [data, setData] = useState();
+
   const dialogComponent = [
     <SeaComponent setData={setData} title1={title} />,
     <TruckComponent />,
@@ -1489,10 +1489,10 @@ const NewOrderFormPage = ({ title }) => {
     }
   };
   const requestPdfList = () => {
-    navigate("/orders_invoices/requestPdfList");
+    navigate("/orders_invoices/requestPdfList", { state: { data: title } });
   };
   const requestList = () => {
-    navigate("/orders_invoices/requestList");
+    navigate("/orders_invoices/requestList", { state: { data: start } });
   };
   const mail = () => {
     navigate("/orders_invoices/mail");
