@@ -618,6 +618,7 @@ const DBPage = () => {
       key: "識別コード",
       title: "識別コード",
       dataIndex: "識別コード",
+
       sorter: function (a, b) {
         return b.識別コード.localeCompare(a.識別コード);
       },
@@ -626,6 +627,7 @@ const DBPage = () => {
       key: "ピックチェック",
       title: "ピックチェック",
       dataIndex: "ピックチェック",
+
       render: (text, record) => (
         <Checkbox
           checked={record.ピックチェック || false}
@@ -682,7 +684,6 @@ const DBPage = () => {
         />
       ),
     },
-    // Add other columns here as needed
     {
       key: "部署コード",
       title: "部署コード",
@@ -781,11 +782,11 @@ const DBPage = () => {
         {loading ? (
           <p>Loading data...</p>
         ) : (
-          <Table
+          <CTable
             dataSource={filteredData} // Use the filtered data
             columns={columns}
-            pagination={{ pageSize: 10, position: ["bottomCenter"] }}
             scroll={{ x: "max-content" }}
+            ps={10}
             className="w-full h-full"
             rowKey="id" // Ensure each row has a unique key
           />

@@ -128,7 +128,6 @@ const SeaComponent = ({ setData, title1 }) => {
   const [requestRemark, setRequestRemark] = useState(null);
   const [invoiceRemark, setInvoiceRemark] = useState(null);
   const lastDay = dayjs(date).endOf("month").format("YYYY-MM-DD");
-
   useEffect(() => {
     fetchData();
   }, []);

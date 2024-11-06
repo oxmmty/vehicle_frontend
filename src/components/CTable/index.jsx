@@ -26,7 +26,7 @@ const CTable = (props) => {
   }, [props]);
 
   return (
-    <div className="flex flex-col h-96 rounded-lg ">
+    <div className="flex flex-col h-full rounded-lg ">
       <Table
         loading={!data.length}
         {...props}
@@ -34,7 +34,9 @@ const CTable = (props) => {
         sticky
         height="100%"
         pagination={false}
-        scroll={{ x: "max-content" }}
+        style={{ width: "100%" }}
+        tableLayout="fixed"
+        // scroll={{ x: "max-content" }}
         className="w-full h-full"
       />
       <div className="flex justify-center w-full bg-bg-light rounded-md ">
