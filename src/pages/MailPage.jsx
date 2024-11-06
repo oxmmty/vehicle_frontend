@@ -184,9 +184,11 @@ const MailPage = () => {
           onChange={(date) => setFilterDate(date)}
           placeholder="Filter by Date"
           style={{ marginRight: 10 }}
+          allowClear
         />
         <Select
           placeholder="Filter by Company"
+          allowClear
           onChange={(value) => setFilterCompany(value)}
           style={{ width: 200, marginRight: 10 }}>
           {data

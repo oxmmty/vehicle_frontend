@@ -26,25 +26,21 @@ const OrderDBPage = () => {
       title: "請求日",
       dataIndex: "請求日",
       key: "請求日",
-      fixed: "left",
     },
     {
       title: "部署コード",
       dataIndex: "部署コード",
       key: "部署コード",
-      fixed: "left",
     },
     {
       title: "区分",
       dataIndex: "区分",
       key: "区分",
-      fixed: "left",
     },
     {
       title: "支払い確認",
       dataIndex: "支払い確認",
       key: "支払い確認",
-      fixed: "left",
       render: (text, record) => (
         <Checkbox
           checked={record.支払い確認}
