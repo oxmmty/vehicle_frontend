@@ -335,7 +335,6 @@ const DBPage = () => {
           受注コード: 識別コード,
           部署コード: 部署コード,
           支払い確認: false,
-
           下払会社名: 下払会社名3,
           区分: 区分,
           依頼日: 依頼日,
@@ -405,7 +404,6 @@ const DBPage = () => {
           受注コード: 識別コード,
           部署コード: 部署コード,
           支払い確認: false,
-
           下払会社名: 下払会社名4,
           区分: 区分,
           依頼日: 依頼日,
@@ -475,7 +473,6 @@ const DBPage = () => {
           受注コード: 識別コード,
           部署コード: 部署コード,
           支払い確認: false,
-
           下払会社名: 下払会社名5,
           区分: 区分,
           依頼日: 依頼日,
@@ -545,7 +542,6 @@ const DBPage = () => {
           受注コード: 識別コード,
           部署コード: 部署コード,
           支払い確認: false,
-
           下払会社名: 下払会社名6,
           区分: 区分,
           依頼日: 依頼日,
@@ -638,7 +634,6 @@ const DBPage = () => {
               onCheckboxChange(record, "ピックチェック", e.target.checked);
             }
           }}
-          disabled={record.ピックチェック} // Disable if checked
         />
       ),
     },
@@ -654,7 +649,6 @@ const DBPage = () => {
               onCheckboxChange(record, "配車組み", e.target.checked);
             }
           }}
-          disabled={record.配車組み} // Disable if checked
         />
       ),
     },
@@ -670,7 +664,6 @@ const DBPage = () => {
               onCheckboxChange(record, "空バン返却チェック", e.target.checked);
             }
           }}
-          disabled={record.空バン返却チェック} // Disable if checked
         />
       ),
     },
@@ -686,7 +679,6 @@ const DBPage = () => {
               onCheckboxChange(record, "送り状受領書作成", e.target.checked);
             }
           }}
-          disabled={record["送り状受領書作成"]} // Disable if checked
         />
       ),
     },
