@@ -17,6 +17,7 @@ import SubcontractPayment from "src/components/SubcontractPayment";
 import Storage from "src/components/Storage";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import { divide } from "lodash";
 
 const { TextArea } = Input;
 const dateFormat = "YYYY-MM-DD";
@@ -109,7 +110,7 @@ const SeaComponent = ({ setData, title1 }) => {
   const [inputValueShipper, setInputValueShipper] = useState("");
   const [selectedValueShipper, setSelectedValueShipper] = useState("");
 
-  const [selectedValueDivide, setSelectedValueDivide] = useState("");
+  const [selectedValueDivide, setSelectedValueDivide] = useState("実入り取り");
   const [pick, setPick] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [vehicle, setVehicle] = useState(false);
@@ -1402,8 +1403,18 @@ const SeaComponent = ({ setData, title1 }) => {
           setSubPayData6={setSubPayData6}
           editData={editData}
         />
+        {selectedValueDivide == "実入り取り" ||
+        selectedValueDivide == "" ||
+        selectedValueDivide == "空バン取り" ||
+        selectedValueDivide == "実入り取りCRU" ||
+        selectedValueDivide == "実入り取りPIC" ? (
+          <></>
+        ) : (
+          <div>
+            <Storage setStorageData={setStorageData} editData={editData} />
+          </div>
+        )}
 
-        <Storage setStorageData={setStorageData} editData={editData} />
         <Group label={"備考"}>
           <Form.Item label={"請求書備考"} rules={[{ required: true }]}>
             <div
