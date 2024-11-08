@@ -165,34 +165,35 @@ const ShipCompany = () => {
       title: "船社名称",
       dataIndex: "船社名称",
       editable: true,
+      align: "center",
     },
-    // {
-    //   title: "カウント",
-    //   dataIndex: "カウント",
-    //   editable: true,
-    // },
     {
       title: "担当",
       dataIndex: "担当",
       editable: true,
+      align: "center",
     },
     {
       title: "TEL",
       dataIndex: "TEL",
       editable: true,
+      align: "center",
     },
     {
       title: "FAX",
       dataIndex: "FAX",
       editable: true,
+      align: "center",
     },
     {
       title: "住所",
       dataIndex: "住所",
       editable: true,
+      align: "center",
     },
     {
       title: "操作",
+      align: "center",
       dataIndex: "operation",
       render: (_, record) => {
         const editable = isEditing(record);

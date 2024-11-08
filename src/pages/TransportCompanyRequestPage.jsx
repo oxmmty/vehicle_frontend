@@ -8,51 +8,61 @@ const TransportCompanyRequestPage = () => {
       title: "配送日",
       dataIndex: "deliveryDate",
       key: "deliveryDate",
+      align: "center",
     },
     {
       title: "ピック日",
       dataIndex: "pickDate",
       key: "pickDate",
+      align: "center",
     },
     {
       title: "時間",
       dataIndex: "time",
       key: "time",
+      align: "center",
     },
     {
       title: "コンテナ種類",
       dataIndex: "containerType",
       key: "containerType",
+      align: "center",
     },
     {
       title: "軸数",
       dataIndex: "axisCount",
       key: "axisCount",
+      align: "center",
     },
     {
       title: "MG有無",
       dataIndex: "mgPresence",
       key: "mgPresence",
+      align: "center",
     },
     {
       title: "BOOKING NO.",
       dataIndex: "bookingNo",
       key: "bookingNo",
+      align: "center",
     },
     {
       title: "コンテナNo.",
       dataIndex: "containerNo",
       key: "containerNo",
+      align: "center",
     },
     {
       title: "備考",
       dataIndex: "remarks",
       key: "remarks",
+      align: "center",
     },
     {
       title: "依頼日",
       dataIndex: "requestDate",
       key: "requestDate",
+      align: "center",
     },
   ];
 
@@ -162,20 +172,21 @@ const TransportCompanyRequestPage = () => {
   const getRowClassName = (record) => {
     const currentDate = moment().format("YYYY-MM-DD");
     const updatedDate = moment("2024-08-31", "YYYY-MM-DD").format("YYYY-MM-DD");
-    
-    const recordDeliveryDate = moment(record.deliveryDate, "M月D日").format("YYYY-MM-DD");
-    
+
+    const recordDeliveryDate = moment(record.deliveryDate, "M月D日").format(
+      "YYYY-MM-DD",
+    );
+
     if (record.isNew) {
       return "bg-yellow-600";
     }
-  
+
     if (moment(recordDeliveryDate).isBefore(updatedDate)) {
       return "bg-gray-500";
     }
-  
+
     return "";
   };
-  
 
   return (
     <Table

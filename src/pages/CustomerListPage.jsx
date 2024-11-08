@@ -56,6 +56,7 @@ const CustomerListPage = () => {
     {
       title: "顧客名",
       dataIndex: "顧客名",
+      align: "center",
       onCell: (_, index) => {
         const rowSpan = getRowSpan(index, "顧客名");
         return {
@@ -66,27 +67,33 @@ const CustomerListPage = () => {
     {
       title: "配達先名称",
       dataIndex: "配達先",
+      align: "center",
     },
     {
       title: "サイズ",
       dataIndex: "サイズ",
+      align: "center",
     },
     {
       title: "料金",
       dataIndex: "料金",
+      align: "center",
     },
     {
       title: "距離",
       dataIndex: "距離",
+      align: "center",
       editable: true, // Mark as editable
     },
     {
       title: "タリフ比率",
       dataIndex: "タリフ比率",
+      align: "center",
       editable: true, // Mark as editable
     },
     {
       title: "操作",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record); // Check if the current row is being edited
         return editable ? (

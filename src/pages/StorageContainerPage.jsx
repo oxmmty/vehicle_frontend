@@ -8,41 +8,49 @@ const StorageContainerPage = () => {
       key: "搬入日",
       title: "搬入日",
       dataIndex: "搬入日",
+      align: "center",
     },
     {
       key: "搬出日",
       title: "搬出日",
       dataIndex: "搬出日",
+      align: "center",
     },
     {
       key: "コンテナ№",
       title: "テナ№",
       dataIndex: "テナ№",
+      align: "center",
     },
     {
       key: "サイズ",
       title: "サイズ",
       dataIndex: "サイズ",
+      align: "center",
     },
     {
       key: "タイプ",
       title: "タイプ",
       dataIndex: "タイプ",
+      align: "center",
     },
     {
       key: "船社",
       title: "船社",
       dataIndex: "船社",
+      align: "center",
     },
     {
       key: "保管先",
       title: "保管先",
       dataIndex: "保管先",
+      align: "center",
     },
     {
       key: "搬入顧客",
       title: "入顧客",
       dataIndex: "入顧客",
+      align: "center",
     },
   ];
 

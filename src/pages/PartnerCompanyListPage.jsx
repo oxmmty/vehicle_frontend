@@ -58,6 +58,7 @@ const PartnerCompanyListPage = () => {
     {
       title: "協力会社名",
       dataIndex: "協力会社名",
+      align: "center",
       onCell: (_, index) => {
         const rowSpan = getRowSpan(index, "協力会社名");
         return {
@@ -68,27 +69,33 @@ const PartnerCompanyListPage = () => {
     {
       title: "配達先名称",
       dataIndex: "配達先",
+      align: "center",
     },
     {
       title: "サイズ",
       dataIndex: "サイズ",
+      align: "center",
     },
     {
       title: "料金",
       dataIndex: "料金",
+      align: "center",
     },
     {
       title: "距離",
       dataIndex: "距離",
+      align: "center",
       editable: true, // Mark as editable
     },
     {
       title: "タリフ比率",
       dataIndex: "タリフ比率",
+      align: "center",
       editable: true, // Mark as editable
     },
     {
       title: "操作",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record); // Check if the current row is being edited
         return editable ? (

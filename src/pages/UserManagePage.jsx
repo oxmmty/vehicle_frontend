@@ -200,20 +200,24 @@ const UserManage = () => {
       title: "名称",
       dataIndex: "name",
       editable: true,
+      align: "center",
     },
     {
       title: "メール",
       dataIndex: "email",
       editable: true,
+      align: "center",
     },
     {
       title: "事業所名",
       dataIndex: "workStation",
       editable: true,
+      align: "center",
     },
     {
       title: "操作",
       dataIndex: "operation",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record);
         return isAdmin ? (

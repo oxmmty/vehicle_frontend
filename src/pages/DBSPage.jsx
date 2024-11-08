@@ -34,22 +34,30 @@ const DBSPage = () => {
   };
 
   const columns = [
-    { title: "No", render: (_, __, index) => index + 1, fixed: "left" },
+    {
+      title: "No",
+      render: (_, __, index) => index + 1,
+      fixed: "left",
+      align: "center",
+    },
     {
       title: "協力会社名",
       dataIndex: "companyName",
       key: "companyName",
+      align: "center",
     },
     {
       title: "支払い確認",
       dataIndex: "支払い確認",
       key: "支払い確認",
+      align: "center",
       render: (text, record) => (record.status == true ? "Yes" : "No"),
     },
-    { title: "課税", dataIndex: "課税", key: "課税" },
-    { title: "非課税", dataIndex: "非課税", key: "非課税" },
+    { title: "課税", dataIndex: "課税", key: "課税", align: "center" },
+    { title: "非課税", dataIndex: "非課税", key: "非課税", align: "center" },
     {
       key: "高速代内税",
+      align: "center",
       title: (
         <div>
           高速代
@@ -62,10 +70,12 @@ const DBSPage = () => {
     {
       key: "高速代",
       title: "高速代",
+      align: "center",
       dataIndex: "高速代",
     },
     {
       key: "高速代消費税",
+      align: "center",
       title: (
         <div>
           高速代
@@ -75,12 +85,23 @@ const DBSPage = () => {
       ),
       dataIndex: "高速代消費税",
     },
-    { title: "税抜合計", dataIndex: "税抜合計", key: "税抜合計" },
-    { title: "消費税", dataIndex: "消費税", key: "消費税" },
-    { title: "支払合計", dataIndex: "total支払合計", key: "total支払合計" },
+    {
+      title: "税抜合計",
+      dataIndex: "税抜合計",
+      key: "税抜合計",
+      align: "center",
+    },
+    { title: "消費税", dataIndex: "消費税", key: "消費税", align: "center" },
+    {
+      title: "支払合計",
+      dataIndex: "total支払合計",
+      key: "total支払合計",
+      align: "center",
+    },
     {
       title: "支払日",
       dataIndex: "max支払日",
+      align: "center",
       key: "max支払日",
       render: (text) =>
         dayjs(text).isValid() ? dayjs(text).format("YYYY-MM-DD") : "",
@@ -89,9 +110,20 @@ const DBSPage = () => {
       title: "前月比",
       dataIndex: "lastMonthTotal支払合計",
       key: "lastMonthTotal支払合計",
+      align: "center",
     },
-    { title: "売掛計税抜", dataIndex: "売掛計税抜", key: "売掛計税抜" },
-    { title: "支払い比率", dataIndex: "支払い比率", key: "支払い比率" },
+    {
+      title: "売掛計税抜",
+      dataIndex: "売掛計税抜",
+      key: "売掛計税抜",
+      align: "center",
+    },
+    {
+      title: "支払い比率",
+      dataIndex: "支払い比率",
+      key: "支払い比率",
+      align: "center",
+    },
   ];
 
   const a = filteredDatas.map((item) => ({

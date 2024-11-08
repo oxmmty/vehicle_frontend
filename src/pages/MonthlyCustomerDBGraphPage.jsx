@@ -114,26 +114,35 @@ const MonthlyCustomerDBGraphPage = () => {
   });
 
   const columns = [
-    { title: "顧客名", dataIndex: "customer", key: "customer" },
+    {
+      title: "顧客名",
+      dataIndex: "customer",
+      key: "customer",
+      align: "center",
+    },
     {
       title: lastYearLastMonth,
       dataIndex: lastYearLastMonth,
       key: "lastYearLastMonth",
+      align: "center",
     },
     {
       title: selectedYearLastMonth,
       dataIndex: selectedYearLastMonth,
       key: "selectedYearLastMonth",
+      align: "center",
     },
     {
       title: lastYearThisMonth,
       dataIndex: lastYearThisMonth,
       key: "lastYearThisMonth",
+      align: "center",
     },
     {
       title: selectedYearThisMonth,
       dataIndex: selectedYearThisMonth,
       key: "selectedYearThisMonth",
+      align: "center",
     },
   ];
 

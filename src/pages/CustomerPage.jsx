@@ -165,35 +165,41 @@ export default function CustomerPage() {
       title: "顧客名称",
       dataIndex: "顧客名称",
       editable: true,
+      align: "center",
       validationRules: [], // No required validation here
     },
     {
       title: "担当",
       dataIndex: "担当",
       editable: true,
+      align: "center",
       validationRules: [], // No required validation here
     },
     {
       title: "TEL",
       dataIndex: "TEL",
       editable: true,
+      align: "center",
       validationRules: [{ validator: phoneNumberValidator }],
     },
     {
       title: "FAX",
       dataIndex: "FAX",
       editable: true,
+      align: "center",
       validationRules: [{ validator: faxNumberValidator }],
     },
     {
       title: "住所",
       dataIndex: "住所",
       editable: true,
+      align: "center",
       validationRules: [{ validator: addressValidator }],
     },
     {
       title: "操作",
       dataIndex: "operation",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (

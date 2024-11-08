@@ -171,25 +171,30 @@ const BusinessOffice = () => {
       title: "事業所コード",
       dataIndex: "事業所コード",
       editable: true,
+      align: "center",
     },
     {
       title: "事業所名",
       dataIndex: "事業所名",
       editable: true,
+      align: "center",
     },
     {
       title: "部署コード",
       dataIndex: "部署コード",
       editable: true,
+      align: "center",
     },
     {
       title: "識別コード連番",
       dataIndex: "識別コード連番",
       editable: true,
+      align: "center",
     },
     {
       title: "操作",
       dataIndex: "operation",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record);
         return isAdmin ? (
