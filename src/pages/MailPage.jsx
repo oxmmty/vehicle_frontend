@@ -125,6 +125,7 @@ const MailPage = () => {
   const columns = [
     {
       title: "選択",
+      align: "center",
       render: (_, record) => (
         <input
           type="radio"
@@ -140,6 +141,7 @@ const MailPage = () => {
       title: "ファイル名",
       dataIndex: "fileName",
       key: "fileName",
+      align: "center",
       render: (text, record) => {
         return `${record.下払会社名} ${dayjs(record.配達日1).format(
           "YYMMDD",
@@ -151,17 +153,20 @@ const MailPage = () => {
     {
       title: "協力会社",
       dataIndex: "下払会社名",
+      align: "center",
       key: "下払会社名",
     },
     {
       title: "配達先",
       dataIndex: "配達先",
       key: "配達先",
+      align: "center",
     },
     {
       title: "配達日",
       dataIndex: "updatedAt",
       key: "updatedAt",
+      align: "center",
       render: (text) => {
         return dayjs(text).format("YYYY-MM-DD");
       },
@@ -170,6 +175,7 @@ const MailPage = () => {
       title: "配信日",
       dataIndex: "配信日",
       key: "配信日",
+      align: "center",
       render: (text) => {
         return dayjs(text).format("YYYY-MM-DD");
       },

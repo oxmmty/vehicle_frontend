@@ -124,6 +124,7 @@ const Dashboardpage = () => {
       title: "協力会社名",
       dataIndex: "company",
       key: "company",
+      align: "center",
       onCell: (record, rowIndex) => {
         return {
           style: {
@@ -138,6 +139,7 @@ const Dashboardpage = () => {
       title: `${lastYearLastMonthEnd.format("YYYY-MM")} `,
       dataIndex: "lastYearLastMonthPrice",
       key: "lastYearLastMonthPrice",
+      align: "center",
       onCell: (record, rowIndex) => {
         return {
           style: {
@@ -150,6 +152,7 @@ const Dashboardpage = () => {
       title: `${thisYearLastMonthEnd.format("YYYY-MM")} `,
       dataIndex: "thisYearLastMonthPrice",
       key: "thisYearLastMonthPrice",
+      align: "center",
       onCell: (record, rowIndex) => {
         return {
           style: {
@@ -162,6 +165,7 @@ const Dashboardpage = () => {
       title: `${lastYearEnd.format("YYYY-MM")} `,
       dataIndex: "lastYearThisMonthPrice",
       key: "lastYearThisMonthPrice",
+      align: "center",
       onCell: (record, rowIndex) => {
         return {
           style: {
@@ -174,6 +178,7 @@ const Dashboardpage = () => {
       title: `${endOfMonth.format("YYYY-MM")} `,
       dataIndex: "thisYearThisMonthPrice",
       key: "thisYearThisMonthPrice",
+      align: "center",
       onCell: (record, rowIndex) => {
         return {
           style: {

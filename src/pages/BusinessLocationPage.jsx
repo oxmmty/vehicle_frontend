@@ -141,31 +141,37 @@ const BussinessLocation = () => {
     {
       title: "作業地名称",
       dataIndex: "作業地名称",
+      align: "center",
       editable: true,
     },
     {
       title: "住所",
       dataIndex: "住所",
+      align: "center",
       editable: true,
     },
     {
       title: "依頼書備考コメント",
       dataIndex: "依頼書備考コメント",
+      align: "center",
       editable: true,
     },
     {
       title: "TEL",
       dataIndex: "TEL",
+      align: "center",
       editable: true,
     },
     {
       title: "担当者",
       dataIndex: "担当者",
+      align: "center",
       editable: true,
     },
     {
       title: "操作",
       dataIndex: "operation",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (

@@ -96,25 +96,34 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
   });
 
   const columns = [
-    { title: "協力会社名", dataIndex: "company", key: "company" },
+    {
+      title: "協力会社名",
+      dataIndex: "company",
+      key: "company",
+      align: "center",
+    },
     {
       title: `${lastYearLastMonthEnd.format("YYYY-MM")} `,
       dataIndex: "lastYearLastMonthPrice",
       key: "lastYearLastMonthPrice",
+      align: "center",
     },
     {
       title: `${thisYearLastMonthEnd.format("YYYY-MM")} `,
       dataIndex: "thisYearLastMonthPrice",
+      align: "center",
       key: "thisYearLastMonthPrice",
     },
     {
       title: `${lastYearEnd.format("YYYY-MM")} `,
       dataIndex: "lastYearThisMonthPrice",
+      align: "center",
       key: "lastYearThisMonthPrice",
     },
     {
       title: `${endOfMonth.format("YYYY-MM")} `,
       dataIndex: "thisYearThisMonthPrice",
+      align: "center",
       key: "thisYearThisMonthPrice",
     },
   ];

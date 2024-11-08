@@ -15,7 +15,7 @@ const BillingListPage = () => {
     {
       title: "選択",
       key: "select",
-
+      align: "center",
       render: (_, record) => (
         <Checkbox
           checked={selectedRows.includes(record.識別コード)}
@@ -27,73 +27,86 @@ const BillingListPage = () => {
       title: "受注コード",
       dataIndex: "識別コード",
       key: "識別コード",
+      align: "center",
     },
     {
       title: "日付",
       dataIndex: "配達日1",
       key: "配達日1",
-
+      align: "center",
       render: (text) => dayjs(text).format("YYYY-MM-DD"),
     },
     {
       title: "顧客名",
       dataIndex: "顧客名",
       key: "顧客名",
+      align: "center",
     },
     {
       title: "積地",
       dataIndex: "取場所",
       key: "取場所",
+      align: "center",
     },
     {
       title: "配達先",
       dataIndex: "配達先1",
       key: "配達先1",
+      align: "center",
     },
     {
       title: "船社",
       dataIndex: "船社B",
       key: "船社B",
+      align: "center",
     },
     {
       title: "下払会社1",
       dataIndex: "下払会社名1",
       key: "下払会社名1",
+      align: "center",
     },
     {
       title: "下払会社2",
       dataIndex: "下払会社名2",
       key: "下払会社名2",
+      align: "center",
     },
     {
       title: "下払会社3",
       dataIndex: "下払会社名3",
       key: "下払会社名3",
+      align: "center",
     },
     {
       title: "下払会社4",
       dataIndex: "下払会社名4",
       key: "下払会社名4",
+      align: "center",
     },
     {
       title: "下払会社5",
       dataIndex: "下払会社名5",
       key: "下払会社名5",
+      align: "center",
     },
     {
       title: "下払会社6",
       dataIndex: "下払会社名6",
       key: "下払会社名6",
+      align: "center",
     },
     {
       title: "保管場所",
       dataIndex: "保管場所",
       key: "保管場所",
+      align: "center",
     },
     {
       title: "請求書作成日",
       dataIndex: "請求書作成日",
       key: "請求書作成日",
+      align: "center",
     },
   ];
 

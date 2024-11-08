@@ -203,45 +203,53 @@ export default function PartnerCompanyPage() {
       title: "協力会社",
       dataIndex: "協力会社",
       editable: true,
+      align: "center",
     },
     {
       title: "担当",
       dataIndex: "担当",
       editable: true,
+      align: "center",
     },
     {
       title: "アドレス",
       dataIndex: "アドレス",
       editable: true,
+      align: "center",
       validationRules: [{ validator: validateEmail }],
     },
     {
       title: "CC",
       dataIndex: "CC",
       editable: true,
+      align: "center",
       validationRules: [{ validator: validateCC }],
     },
     {
       title: "TEL",
       dataIndex: "TEL",
       editable: true,
+      align: "center",
       validationRules: [{ validator: phoneNumberValidator }],
     },
     {
       title: "FAX",
       dataIndex: "FAX",
       editable: true,
+      align: "center",
       validationRules: [{ validator: faxNumberValidator }],
     },
     {
       title: "住所",
       dataIndex: "住所",
       editable: true,
+      align: "center",
       validationRules: [{ validator: validateAddress }],
     },
     {
       title: "操作",
       dataIndex: "operation",
+      align: "center",
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (

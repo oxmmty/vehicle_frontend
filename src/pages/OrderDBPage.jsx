@@ -7,8 +7,8 @@ const OrderDBPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY-MM"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
-  const [toFirstPane, setToFirstPane] = useState(false);
-  const [searchWord, setSearchWord] = useState("");
+  // const [toFirstPane, setToFirstPane] = useState(false);
+  // const [searchWord, setSearchWord] = useState("");
 
   const columns = [
     {
@@ -744,7 +744,6 @@ const OrderDBPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/orderlist");
-      console.log(res.data);
       const data = res.data.sort((a, b) => b.識別コード - a.識別コード);
       setDatas(data);
       filterData(dayjs().format("YYYY-MM"), res.data);
