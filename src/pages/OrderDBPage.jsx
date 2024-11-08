@@ -14,13 +14,11 @@ const OrderDBPage = () => {
     {
       title: "No",
       render: (_, __, index) => index + 1,
-      fixed: "left",
     },
     {
       title: "識別コード",
       dataIndex: "識別コード",
       key: "識別コード",
-      fixed: "left",
     },
     {
       title: "請求日",

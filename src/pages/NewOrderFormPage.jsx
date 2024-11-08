@@ -17,7 +17,6 @@ import SubcontractPayment from "src/components/SubcontractPayment";
 import Storage from "src/components/Storage";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-import { divide } from "lodash";
 
 const { TextArea } = Input;
 const dateFormat = "YYYY-MM-DD";

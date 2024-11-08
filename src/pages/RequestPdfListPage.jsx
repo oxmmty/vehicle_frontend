@@ -27,18 +27,15 @@ const RequestPdfListPage = () => {
           // disabled={record.選択} // Disable if record.選択 is true
         />
       ),
-      fixed: "left",
     },
     {
       title: "No",
       render: (_, __, index) => index + 1,
-      fixed: "left",
     },
     {
       title: "リクエスト番号",
       dataIndex: "リクエスト番号",
       key: "リクエスト番号",
-      fixed: "left",
     },
     // {
     //   title: "受注コード",
@@ -50,13 +47,11 @@ const RequestPdfListPage = () => {
       title: "部署コード",
       dataIndex: "部署コード",
       key: "部署コード",
-      fixed: "left",
     },
     {
       title: "支払い確認",
       dataIndex: "支払い確認",
       key: "支払い確認",
-      fixed: "left",
       render: (text, record) => (
         <input
           type="checkbox"
@@ -69,7 +64,6 @@ const RequestPdfListPage = () => {
       title: "下払会社名",
       dataIndex: "下払会社名",
       key: "下払会社名",
-      fixed: "left",
     },
     {
       title: "区分",

@@ -39,7 +39,6 @@ const DBSPage = () => {
       title: "協力会社名",
       dataIndex: "companyName",
       key: "companyName",
-      fixed: "left",
     },
     {
       title: "支払い確認",

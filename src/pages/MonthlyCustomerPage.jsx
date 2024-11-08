@@ -382,7 +382,6 @@ const MonthlyCustomerPage = () => {
     {
       title: "No",
       render: (_, __, index) => index + 1,
-      fixed: "left",
     },
     {
       key: "customerName",
