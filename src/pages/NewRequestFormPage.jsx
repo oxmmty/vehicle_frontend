@@ -16,6 +16,7 @@ const NewRequestFormPage = () => {
   const componentRef = useRef();
 
   const handleDownloadPDF = () => {
+    console.log(data[0].リクエスト番号);
     axios
       .put("/pdfList", {
         リクエスト番号: data[0].リクエスト番号,
