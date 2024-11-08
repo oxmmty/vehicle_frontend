@@ -7,6 +7,7 @@ import {
   Input,
   Select,
   message,
+  notification,
 } from "antd";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -623,7 +624,6 @@ const SeaComponent = ({ setData, title1 }) => {
   const typeData = [86, 96];
   const sizeData = [20, 40];
   const kindsData = ["Dry", "TNK", "REEFER", "FRAT"];
-
   const customerFilterOptions = () => {
     if (!inputValueCustomer.trim()) {
       setFilteredCustomerData(customerData);
@@ -1379,29 +1379,44 @@ const SeaComponent = ({ setData, title1 }) => {
             </Form.Item>
           </div>
         </Form.Item>
-        <Delivery
-          setDate={setDate}
-          setDeliveryData1={setDeliveryData1}
-          setDeliveryData2={setDeliveryData2}
-          setDeliveryData3={setDeliveryData3}
-          editData={editData}
-        />
+        {selectedValueDivide == "空バン在庫" &&
+        selectedValueDivide == "船社請求" ? (
+          <></>
+        ) : (
+          <div>
+            <Delivery
+              setDate={setDate}
+              setDeliveryData1={setDeliveryData1}
+              setDeliveryData2={setDeliveryData2}
+              setDeliveryData3={setDeliveryData3}
+              editData={editData}
+            />
+          </div>
+        )}
       </Form>
       <Form layout="vertical" className="md:w-[50%]">
-        <PackageInfo
-          setPackageInfoData={setPackageInfoData}
-          editData={editData}
-        />
+        {selectedValueDivide !== "空バン在庫" &&
+        selectedValueDivide !== "船社請求" ? (
+          <div>
+            <PackageInfo
+              setPackageInfoData={setPackageInfoData}
+              editData={editData}
+            />
 
-        <SubcontractPayment
-          setSubPayData1={setSubPayData1}
-          setSubPayData2={setSubPayData2}
-          setSubPayData3={setSubPayData3}
-          setSubPayData4={setSubPayData4}
-          setSubPayData5={setSubPayData5}
-          setSubPayData6={setSubPayData6}
-          editData={editData}
-        />
+            <SubcontractPayment
+              setSubPayData1={setSubPayData1}
+              setSubPayData2={setSubPayData2}
+              setSubPayData3={setSubPayData3}
+              setSubPayData4={setSubPayData4}
+              setSubPayData5={setSubPayData5}
+              setSubPayData6={setSubPayData6}
+              editData={editData}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
+
         {selectedValueDivide == "実入り取り" ||
         selectedValueDivide == "" ||
         selectedValueDivide == "空バン取り" ||
@@ -1477,25 +1492,214 @@ const NewOrderFormPage = ({ title, start }) => {
       2,
     );
     const jsonObject = JSON.parse(jsonString);
-    try {
-      if (title) {
-        const res = await axios.put(
-          process.env.REACT_API_BASE_URL +
-            `/order/edit/${"MA" + title.slice(2)}`,
-          {
-            jsonObject,
-          },
-        );
-      } else {
-        const res = await axios.post(
-          process.env.REACT_API_BASE_URL + "/order",
-          {
-            jsonObject,
-          },
-        );
-      }
-    } catch (error) {
-      console.log(error, res.message);
+    switch (jsonObject.区分) {
+      case "実入り取り":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.搬入返却場所 == "" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.配達先1 == "" ||
+          jsonObject.配達日1 == "" ||
+          jsonObject.配達時間1 == "" ||
+          jsonObject.積日1 == "" ||
+          jsonObject.基本料金1 == "" ||
+          jsonObject.下払会社名1 == "" ||
+          jsonObject.下払料金1 == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      case "空バン取り":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.搬入返却場所 == "" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.配達先1 == "" ||
+          jsonObject.配達日1 == "" ||
+          jsonObject.配達時間1 == "" ||
+          jsonObject.積日1 == "" ||
+          jsonObject.基本料金1 == "" ||
+          jsonObject.下払会社名1 == "" ||
+          jsonObject.下払料金1 == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      case "実入り取りCRU":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.CRU顧客名 == "" ||
+          jsonObject.搬入返却場所 !== "CRU" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.配達先1 == "" ||
+          jsonObject.配達日1 == "" ||
+          jsonObject.配達時間1 == "" ||
+          jsonObject.積日1 == "" ||
+          jsonObject.基本料金1 == "" ||
+          jsonObject.下払会社名1 == "" ||
+          jsonObject.下払料金1 == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+
+      case "実入り取りFDR":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.CRU顧客名 == "" ||
+          jsonObject.搬入返却場所 !== "FDR" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.配達先1 == "" ||
+          jsonObject.配達日1 == "" ||
+          jsonObject.配達時間1 == "" ||
+          jsonObject.積日1 == "" ||
+          jsonObject.基本料金1 == "" ||
+          jsonObject.下払会社名1 == "" ||
+          jsonObject.下払料金1 == "" ||
+          jsonObject.保管場所 == "" ||
+          jsonObject.入庫日 == "" ||
+          jsonObject.出庫日 == "" ||
+          jsonObject.荷主保管料金1日 == "" ||
+          jsonObject.荷主保管料金リフトオフ == "" ||
+          jsonObject.荷主保管料金リフトオン == "" ||
+          jsonObject.下払保管料金1日 == "" ||
+          jsonObject.下払保管料金リフトオフ == "" ||
+          jsonObject.下払保管料金リフトオン == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      case "実入り取りPIC":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.搬入返却場所 == "" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.配達先1 == "" ||
+          jsonObject.配達日1 == "" ||
+          jsonObject.配達時間1 == "" ||
+          jsonObject.積日1 == "" ||
+          jsonObject.基本料金1 == "" ||
+          jsonObject.下払会社名1 == "" ||
+          jsonObject.下払料金1 == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      case "保管":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.搬入返却場所 !== "FDR" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.保管場所 == "" ||
+          jsonObject.入庫日 == "" ||
+          jsonObject.出庫日 == "" ||
+          jsonObject.荷主保管料金1日 == "" ||
+          jsonObject.荷主保管料金リフトオフ == "" ||
+          jsonObject.荷主保管料金リフトオン == "" ||
+          jsonObject.下払保管料金1日 == "" ||
+          jsonObject.下払保管料金リフトオフ == "" ||
+          jsonObject.下払保管料金リフトオン == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      case "空バン在庫":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.搬入返却場所 == "" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.保管場所 == "" ||
+          jsonObject.入庫日 == "" ||
+          jsonObject.出庫日 == "" ||
+          jsonObject.荷主保管料金1日 == "" ||
+          jsonObject.荷主保管料金リフトオフ == "" ||
+          jsonObject.荷主保管料金リフトオン == "" ||
+          jsonObject.下払保管料金1日 == "" ||
+          jsonObject.下払保管料金リフトオフ == "" ||
+          jsonObject.下払保管料金リフトオン == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      case "船社請求":
+        if (
+          jsonObject.顧客名 == "" ||
+          jsonObject.取場所 == "" ||
+          jsonObject.搬入返却場所 == "" ||
+          jsonObject.コンテナNo == "" ||
+          jsonObject.コンテナサイズ == "" ||
+          jsonObject.コンテナタイプ == "" ||
+          jsonObject.コンテナ種類 == "" ||
+          jsonObject.保管場所 == "" ||
+          jsonObject.入庫日 == "" ||
+          jsonObject.出庫日 == "" ||
+          jsonObject.荷主保管料金1日 == "" ||
+          jsonObject.荷主保管料金リフトオフ == "" ||
+          jsonObject.荷主保管料金リフトオン == "" ||
+          jsonObject.下払保管料金1日 == "" ||
+          jsonObject.下払保管料金リフトオフ == "" ||
+          jsonObject.下払保管料金リフトオン == ""
+        )
+          return notification.error({
+            message: "エラー",
+            description: "データを正確に入力してください。",
+          });
+      default:
+        try {
+          if (title) {
+            const res = await axios.put(
+              process.env.REACT_API_BASE_URL +
+                `/order/edit/${"MA" + title.slice(2)}`,
+              {
+                jsonObject,
+              },
+            );
+          } else {
+            const res = await axios.post(
+              process.env.REACT_API_BASE_URL + "/order",
+              {
+                jsonObject,
+              },
+            );
+          }
+        } catch (error) {
+          console.log(error, res.message);
+        }
     }
   };
   const requestPdfList = () => {

@@ -42,6 +42,7 @@ const BussinessLocation = () => {
   const [form] = Form.useForm();
   const [addForm] = Form.useForm();
   const [datas, setDatas] = useState([]);
+  const [selected, setSelected] = useState("取場所");
   const [editingKey, setEditingKey] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -62,7 +63,9 @@ const BussinessLocation = () => {
       });
     }
   };
-
+  const tableData = datas
+    .filter((item) => item[selected] !== null)
+    .sort((a, b) => (b[selected] = a[selected]));
   const isEditing = (record) => record._id === editingKey;
 
   const edit = (record) => {
@@ -141,27 +144,6 @@ const BussinessLocation = () => {
       editable: true,
     },
     {
-      title: "取場所",
-      dataIndex: "取場所",
-      editable: true,
-    },
-    {
-      title: "配達場所",
-      dataIndex: "配達場所",
-      editable: true,
-    },
-    {
-      title: "搬入返却場所",
-      dataIndex: "搬入返却場所",
-      editable: true,
-    },
-
-    {
-      title: "保管場所",
-      dataIndex: "保管場所",
-      editable: true,
-    },
-    {
       title: "住所",
       dataIndex: "住所",
       editable: true,
@@ -192,12 +174,12 @@ const BussinessLocation = () => {
               onClick={() => save(record._id)}
               type="link"
               style={{ marginRight: 8 }}>
-              Save
+              保存
             </Button>
             <Popconfirm
               title="キャンセルしてもよろしいですか？"
               onConfirm={cancel}>
-              <Button type="link">Cancel</Button>
+              <Button type="link">キャンセル</Button>
             </Popconfirm>
           </span>
         ) : (
@@ -206,13 +188,13 @@ const BussinessLocation = () => {
               type="link"
               disabled={editingKey !== ""}
               onClick={() => edit(record)}>
-              Edit
+              編集
             </Button>
             <Popconfirm
               title="Are you sure to delete?"
               onConfirm={() => handleDelete(record._id)}>
               <Button type="link" danger>
-                Delete
+                削除
               </Button>
             </Popconfirm>
           </>
@@ -246,19 +228,35 @@ const BussinessLocation = () => {
   };
 
   return (
-    <div className="flex flex-col gap-0">
-      <Select>
-        <option>aaa</option>
-        <option>aaa</option>
-        <option>aaa</option>
-      </Select>
-      <Form form={form} component={false}>
+    <div className="flex flex-col gap-0 items-center">
+      <div className="flex justify-between w-96">
+        <Select
+          value={selected}
+          onChange={setSelected}
+          className="w-32 flex justify-end">
+          <option key={"取場所"} value={"取場所"}>
+            取場所
+          </option>
+          <option key={"配達場所"} value={"配達場所"}>
+            配達場所
+          </option>
+          <option key={"搬入返却場所"} value={"搬入返却場所"}>
+            搬入返却場所
+          </option>
+          <option key={"保管場所"} value={"保管場所"}>
+            保管場所
+          </option>
+        </Select>
         <Button
           onClick={showAddModal}
           type="primary"
-          style={{ marginBottom: 16 }}>
-          Add Customer
+          style={{ marginBottom: 16 }}
+          className="w-32">
+          {selected}追加
         </Button>
+      </div>
+
+      <Form form={form} component={false}>
         <CTable
           components={{
             body: {
@@ -267,7 +265,7 @@ const BussinessLocation = () => {
           }}
           rowKey="_id"
           bordered
-          dataSource={datas}
+          dataSource={tableData}
           columns={mergedColumns}
           rowClassName="editable-row"
           pagination={true}
@@ -286,25 +284,11 @@ const BussinessLocation = () => {
             rules={[{ required: true, message: "Please input 作業地名称!" }]}>
             <Input placeholder="作業地名称" />
           </Form.Item>
+
           <Form.Item
-            name="取場所"
-            rules={[{ required: true, message: "Please input 取場所!" }]}>
-            <Input placeholder="取場所" />
-          </Form.Item>
-          <Form.Item
-            name="配達場所"
-            rules={[{ required: true, message: "Please input 配達場所!" }]}>
-            <Input placeholder="配達場所" />
-          </Form.Item>
-          <Form.Item
-            name="搬入返却場所"
-            rules={[{ required: true, message: "Please input 搬入返却場所!" }]}>
-            <Input placeholder="搬入返却場所" />
-          </Form.Item>
-          <Form.Item
-            name="保管場所"
-            rules={[{ required: true, message: "Please input 保管場所!" }]}>
-            <Input placeholder="保管場所" />
+            name={selected}
+            rules={[{ required: true, message: `Please input ${selected}!` }]}>
+            <Input placeholder={selected} />
           </Form.Item>
           <Form.Item
             name="住所"
