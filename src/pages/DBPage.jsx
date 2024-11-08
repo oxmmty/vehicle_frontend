@@ -632,9 +632,9 @@ const DBPage = () => {
         <Checkbox
           checked={record.ピックチェック || false}
           onChange={(e) => {
-            if (!record.ピックチェック) {
-              onCheckboxChange(record, "ピックチェック", e.target.checked);
-            }
+            // if (!record.ピックチェック) {
+            onCheckboxChange(record, "ピックチェック", e.target.checked);
+            // }
           }}
         />
       ),
@@ -647,9 +647,9 @@ const DBPage = () => {
         <Checkbox
           checked={record.配車組み || false}
           onChange={(e) => {
-            if (!record.配車組み) {
-              onCheckboxChange(record, "配車組み", e.target.checked);
-            }
+            // if (!record.配車組み) {
+            onCheckboxChange(record, "配車組み", e.target.checked);
+            // }
           }}
         />
       ),
@@ -662,9 +662,9 @@ const DBPage = () => {
         <Checkbox
           checked={record.空バン返却チェック || false}
           onChange={(e) => {
-            if (!record.空バン返却チェック) {
-              onCheckboxChange(record, "空バン返却チェック", e.target.checked);
-            }
+            // if (!record.空バン返却チェック) {
+            onCheckboxChange(record, "空バン返却チェック", e.target.checked);
+            // }
           }}
         />
       ),
@@ -677,9 +677,9 @@ const DBPage = () => {
         <Checkbox
           checked={record["送り状受領書作成"] || false}
           onChange={(e) => {
-            if (!record["送り状受領書作成"]) {
-              onCheckboxChange(record, "送り状受領書作成", e.target.checked);
-            }
+            // if (!record["送り状受領書作成"]) {
+            onCheckboxChange(record, "送り状受領書作成", e.target.checked);
+            // }
           }}
         />
       ),

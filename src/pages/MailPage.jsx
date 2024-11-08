@@ -135,7 +135,6 @@ const MailPage = () => {
           }} // Update selection handling
         />
       ),
-      fixed: "left",
     },
     {
       title: "ファイル名",
