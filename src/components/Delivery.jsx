@@ -417,7 +417,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
         <Form.Item required label={"配達時間"} className="grow">
           <TimePicker
             className="w-full"
-            value={dayjs(time1, "HH:MM")}
+            value={dayjs(time1 || "10:00", "HH:MM")}
             onChange={(time, timeString) => {
               setTime1(timeString);
             }}

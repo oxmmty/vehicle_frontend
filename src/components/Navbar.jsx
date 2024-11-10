@@ -31,7 +31,7 @@ const Navbar = ({ list, ...props }) => {
         title: (
           <div className="flex items-center h-[52px]">
             <div className="p-2 rounded-lg hover:bg-hover-primary">
-              {item.value}
+              {item.icon} {item.value}
             </div>
           </div>
         ),
