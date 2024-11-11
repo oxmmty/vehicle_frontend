@@ -4,21 +4,45 @@ import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { ThemeContext } from "src/components/Theme";
 import Navbar from "src/components/Navbar";
 import LogoMenu from "src/components/menu/LogoMenu";
-
+import {
+  DashboardOutlined,
+  FileTextOutlined,
+  ContainerOutlined,
+  DatabaseOutlined,
+  BarChartOutlined,
+  FileOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import { SunOutlined, MoonOutlined, MenuOutlined } from "@ant-design/icons";
 import { Avatar, Badge, Button, Drawer, Image, Menu, Typography } from "antd";
 const { Text } = Typography;
 
 const list = [
-  { key: "dashboard", value: "ダッシュボード" },
-  { key: "orders_invoices", value: "受注・請求書" },
-  { key: "containers", value: "コンテナ管理" },
-  { key: "masterDatas", value: "マスタデータ" },
-  { key: "analysis_reports", value: "分析・レポート" },
-  { key: "document_notes", value: "ドキュメント" },
-  { key: "settings_administration", value: "設定・管理" },
+  { key: "dashboard", value: "ダッシュボード", icon: <DashboardOutlined /> },
+  { key: "orders_invoices", value: "受注・請求書", icon: <FileTextOutlined /> },
+  { key: "containers", value: "コンテナ管理", icon: <ContainerOutlined /> },
+  { key: "masterDatas", value: "マスタデータ", icon: <DatabaseOutlined /> },
+  {
+    key: "analysis_reports",
+    value: "分析・レポート",
+    icon: <BarChartOutlined />,
+  },
+  { key: "document_notes", value: "ドキュメント", icon: <FileOutlined /> },
+  {
+    key: "settings_administration",
+    value: "設定・管理",
+    icon: <SettingOutlined />,
+  },
 ];
-
+const sectionIcons = {
+  dashboard: <DashboardOutlined />,
+  orders_invoices: <FileTextOutlined />,
+  containers: <ContainerOutlined />,
+  masterDatas: <DatabaseOutlined />,
+  analysis_reports: <BarChartOutlined />,
+  document_notes: <FileOutlined />,
+  settings_administration: <SettingOutlined />,
+};
 const Header = ({ items, ...props }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -154,6 +178,7 @@ const Header = ({ items, ...props }) => {
               {Object.entries(items).map(([section, sectionItems]) => (
                 <Menu.SubMenu
                   key={section}
+                  icon={sectionIcons[section]}
                   title={
                     list.find((item) => item.key === section)?.value || section
                   }>
