@@ -5,6 +5,7 @@ import { Line, Column } from "@ant-design/plots";
 import { ThemeContext } from "src/components/Theme";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import CTable from "src/components/CTable";
 dayjs.extend(isBetween);
 
 const MonthlyPartnerCompanyDBGraphPage = () => {
@@ -241,10 +242,11 @@ const MonthlyPartnerCompanyDBGraphPage = () => {
         />
       </div>
       <div className="mb-4">
-        <Table
+        <CTable
           dataSource={combined}
           columns={columns}
-          pagination={true}
+          // pagination={true}
+          ps={5}
           bordered
           scroll={{ x: "max-content" }}
         />
