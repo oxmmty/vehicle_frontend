@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import CTable from "src/components/CTable";
 
 const EditableCell = ({
   editing,
@@ -285,7 +286,7 @@ const UserManage = () => {
         </Button>
       )}
       <Form form={form} component={false}>
-        <Table
+        <CTable
           components={{
             body: {
               cell: EditableCell,
@@ -296,7 +297,8 @@ const UserManage = () => {
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          pagination={{ pageSize: 20 }}
+          // pagination={{ pageSize: 20 }}
+          ps={10}
         />
       </Form>
 

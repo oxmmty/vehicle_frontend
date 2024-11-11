@@ -2,6 +2,7 @@ import { DatePicker, Table, Typography, Input, Form, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import CTable from "src/components/CTable";
 
 const { Title } = Typography;
 
@@ -191,7 +192,7 @@ const CustomerListPage = () => {
   return (
     <div className="flex flex-col gap-0">
       <Form form={form} component={false}>
-        <Table
+        <CTable
           components={{
             body: {
               cell: EditableCell,
@@ -201,6 +202,7 @@ const CustomerListPage = () => {
           columns={mergedColumns}
           scroll={{ x: "max-content" }}
           pagination={false}
+          ps={10}
           className="w-full"
           rowClassName="editable-row"
           loading={loading} // Show loading spinner while saving

@@ -99,12 +99,16 @@ const DBSPage = () => {
       align: "center",
     },
     {
-      title: "支払日",
+      key: "max支払日",
+      title: "入金日",
       dataIndex: "max支払日",
       align: "center",
-      key: "max支払日",
-      render: (text) =>
-        dayjs(text).isValid() ? dayjs(text).format("YYYY-MM-DD") : "",
+      render: (text) => {
+        if (!text || !dayjs(text).isValid()) {
+          return ""; // Return an empty string for null, undefined, or invalid dates
+        }
+        return dayjs(text).format("YYYY-MM-DD");
+      },
     },
     {
       title: "前月比",

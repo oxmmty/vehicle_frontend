@@ -4,6 +4,7 @@ import axios from "axios";
 import { Line, Column } from "@ant-design/plots";
 import { ThemeContext } from "src/components/Theme";
 import dayjs from "dayjs";
+import CTable from "src/components/CTable";
 
 const MonthlyCustomerDBGraphPage = () => {
   const { theme } = useContext(ThemeContext);
@@ -226,10 +227,11 @@ const MonthlyCustomerDBGraphPage = () => {
       </div>
 
       <div className="mb-4">
-        <Table
+        <CTable
           dataSource={combined}
           columns={columns}
           pagination={false}
+          ps={5}
           bordered
           scroll={{ x: "max-content" }}
         />

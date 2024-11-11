@@ -9,14 +9,34 @@ const MonthlyPartnerCompanyPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY-MM"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await axios.get("/pdfList");
+  //     setDatas(res.data);
+  //     filterData(dayjs().format("YYYY-MM"), res.data);
+  //   };
+  //   fetchData();
+  // }, []);
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("/pdfList");
-      setDatas(res.data);
-      filterData(dayjs().format("YYYY-MM"), res.data);
+      try {
+        const res = await axios.get("/pdfList");
+        setDatas(res.data);
+        filterData(dayjs().format("YYYY-MM"), res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
     fetchData();
   }, []);
+
+  // const filterData = (selectedDate, dataToFilter) => {
+  //   const filtered = dataToFilter.filter((item) => {
+  //     const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
+  //     return invoiceDate === selectedDate;
+  //   });
+  //   setFilteredDatas(filtered);
+  // };
 
   const filterData = (selectedDate, dataToFilter) => {
     const filtered = dataToFilter.filter((item) => {
@@ -25,14 +45,20 @@ const MonthlyPartnerCompanyPage = () => {
     });
     setFilteredDatas(filtered);
   };
-
+  console.log(filteredDatas);
+  // const handleDateChange = (date) => {
+  //   if (date) {
+  //     setDate(date);
+  //     filterData(date.format("YYYY-MM"), datas);
+  //   }
+  // };
   const handleDateChange = (date) => {
     if (date) {
-      setDate(date);
-      filterData(date.format("YYYY-MM"), datas);
+      const formattedDate = date.format("YYYY-MM");
+      setDate(formattedDate);
+      filterData(formattedDate, datas);
     }
   };
-
   const a = filteredDatas.map((item) => ({
     companyName: item["下払会社名"],
     status: item["支払い確認"],
@@ -253,8 +279,12 @@ const MonthlyPartnerCompanyPage = () => {
       title: "入金日",
       dataIndex: "max支払日",
       align: "center",
-      render: (text) =>
-        dayjs(text).isValid() ? dayjs(text).format("YYYY-MM-DD") : "",
+      render: (text) => {
+        if (!text || !dayjs(text).isValid()) {
+          return ""; // Return an empty string for null, undefined, or invalid dates
+        }
+        return dayjs(text).format("YYYY-MM-DD");
+      },
     },
     {
       key: "lastMonthTotal支払合計",

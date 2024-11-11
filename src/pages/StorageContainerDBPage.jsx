@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { DatePicker, Table } from "antd";
 import { Line, Column } from "@ant-design/plots";
 import { ThemeContext } from "src/components/Theme";
+import CTable from "src/components/CTable";
 
 const StorageContainerDBPage = () => {
   const { theme } = useContext(ThemeContext);
@@ -71,9 +72,10 @@ const StorageContainerDBPage = () => {
 
   return (
     <div className="flex flex-col items-center w-full p-4">
-      <Table
+      <CTable
         columns={columns}
-        pagination={{ pageSize: 14, position: ["bottomCenter"] }}
+        // pagination={{ pageSize: 14, position: ["bottomCenter"] }}
+        ps={10}
         bordered
         scroll={({ x: "max-content" }, { y: 900 })}
       />
