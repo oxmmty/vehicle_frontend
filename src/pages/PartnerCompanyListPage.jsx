@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import CTable from "src/components/CTable";
 
-const { Title } = Typography;
-
 const PartnerCompanyListPage = () => {
-  const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [datas, setDatas] = useState([]);
   const [editingKey, setEditingKey] = useState(""); // Track which row is being edited
   const [loading, setLoading] = useState(false); // Loading state for saving data
@@ -151,12 +148,13 @@ const PartnerCompanyListPage = () => {
     const fetchData = async () => {
       const res = await axios.get("/companyPriceList");
       const dataWithKey = res.data.map((item) => ({ ...item, key: item._id })); // Ensure each row has a key as _id
-      setDatas(dataWithKey);
+      setDatas(
+        dataWithKey.sort((a, b) => a.協力会社名.localeCompare(b.協力会社名)),
+      );
     };
     fetchData();
   }, []);
 
-  // Editable cell component
   const EditableCell = ({
     editing,
     dataIndex,

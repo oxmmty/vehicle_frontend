@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import CTable from "src/components/CTable";
 
-const { Title } = Typography;
-
 const CustomerListPage = () => {
-  const [date, setDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [datas, setDatas] = useState([]);
   const [editingKey, setEditingKey] = useState(""); // Track which row is being edited
   const [loading, setLoading] = useState(false); // Loading state for saving data
@@ -39,7 +36,6 @@ const CustomerListPage = () => {
         setDatas(newData);
         setEditingKey(""); // Exit edit mode
         message.success("データが更新されました。");
-
         setLoading(false);
       }
     } catch (errInfo) {
@@ -114,21 +110,21 @@ const CustomerListPage = () => {
   ];
 
   // Define how editable cells are rendered
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
+  // const mergedColumns = columns.map((col) => {
+  //   if (!col.editable) {
+  //     return col;
+  //   }
+  //   return {
+  //     ...col,
+  //     onCell: (record) => ({
+  //       record,
+  //       editable: col.editable, // This can be used for internal logic but not passed to <td>
+  //       dataIndex: col.dataIndex,
+  //       title: col.title,
+  //       editing: isEditing(record),
+  //     }),
+  //   };
+  // });
 
   // Helper function to get row span for 顧客名
   const getRowSpan = (index, key) => {
@@ -144,7 +140,6 @@ const CustomerListPage = () => {
       }
       return rowSpan;
     }
-
     return 0;
   };
 
@@ -152,19 +147,62 @@ const CustomerListPage = () => {
     const fetchData = async () => {
       const res = await axios.get("/customerPriceList");
       const dataWithKey = res.data.map((item) => ({ ...item, key: item._id })); // Ensure each row has a key as _id
-      setDatas(dataWithKey);
+      setDatas(dataWithKey.sort((a, b) => a.顧客名.localeCompare(b.顧客名)));
     };
     fetchData();
   }, []);
+  // const EditableCell = ({
+  //   editing,
+  //   dataIndex,
+  //   title,
+  //   record,
+  //   children,
+  //   ...restProps
+  // }) => {
+  //   return (
+  //     <td {...restProps}>
+  //       {editing ? (
+  //         <Form.Item
+  //           name={dataIndex}
+  //           style={{ margin: 0 }}
+  //           rules={[
+  //             {
+  //               required: true,
+  //               message: `Please Input ${title}!`,
+  //             },
+  //           ]}>
+  //           <Input />
+  //         </Form.Item>
+  //       ) : (
+  //         children
+  //       )}
+  //     </td>
+  //   );
+  // };
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        editable: col.editable, // Use for internal logic only
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
 
-  // Editable cell component
+  // EditableCell component
   const EditableCell = ({
     editing,
     dataIndex,
     title,
     record,
     children,
-    ...restProps
+    ...restProps // Don't include editable here
   }) => {
     return (
       <td {...restProps}>
