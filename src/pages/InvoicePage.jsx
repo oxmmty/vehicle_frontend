@@ -58,31 +58,32 @@ const InvoicePage = () => {
   const [その他費用Price3, setその他費用Price3] = useState("");
 
   const { data } = location.state || {};
+  console.log(data);
   const invoiceRef = useRef();
   const today = dayjs().format("YYYY/MM/DD");
-  const dataSource = [
-    { key: "0", name: "課税（30％対象）", value: 8193 },
-    { key: "1", name: "消費税（10％）", value: 819 },
-    { key: "2", name: "非課税", value: 0 },
-    { key: "3", name: "御請求金額", value: 9012 },
-  ];
+  // const dataSource = [
+  //   { key: "0", name: "課税（30％対象）", value: 8193 },
+  //   { key: "1", name: "消費税（10％）", value: 819 },
+  //   { key: "2", name: "非課税", value: 0 },
+  //   { key: "3", name: "御請求金額", value: 9012 },
+  // ];
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("/order/invoice", { params: { data } });
+      const res = await axios.get(`/order/invoice/${data}`);
 
       setDatas(res.data);
     };
     fetchData();
   }, []);
-  const columns = [
-    { title: "Name", dataIndex: "name", key: "name" },
-    {
-      title: "Value",
-      dataIndex: "value",
-      key: "value",
-      render: (num) => `${num.toLocaleString()}円`,
-    },
-  ];
+  // const columns = [
+  //   { title: "Name", dataIndex: "name", key: "name" },
+  //   {
+  //     title: "Value",
+  //     dataIndex: "value",
+  //     key: "value",
+  //     render: (num) => `${num.toLocaleString()}円`,
+  //   },
+  // ];
 
   useEffect(() => {
     if (datas.基本課税1) {
