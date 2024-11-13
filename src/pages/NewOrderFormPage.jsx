@@ -1509,11 +1509,46 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.基本料金1 == "" ||
           jsonObject.下払会社名1 == "" ||
           jsonObject.下払料金1 == ""
-        )
-          return notification.error({
+        ) {
+          notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+              if (res) {
+                notification.success({
+                  message: "成功",
+                  description: "更新しました。",
+                });
+              }
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+              if (res) {
+                notification.success({
+                  message: "成功",
+                  description: "注文されました。",
+                });
+              }
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        break;
       case "空バン取り":
         if (
           jsonObject.顧客名 == "" ||
@@ -1530,34 +1565,78 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.基本料金1 == "" ||
           jsonObject.下払会社名1 == "" ||
           jsonObject.下払料金1 == ""
-        )
+        ) {
           return notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
-      case "実入り取りCRU":
-        if (
-          jsonObject.顧客名 == "" ||
-          jsonObject.取場所 == "" ||
-          jsonObject.CRU顧客名 == "" ||
-          jsonObject.搬入返却場所 !== "CRU" ||
-          jsonObject.コンテナNo == "" ||
-          jsonObject.コンテナサイズ == "" ||
-          jsonObject.コンテナタイプ == "" ||
-          jsonObject.コンテナ種類 == "" ||
-          jsonObject.配達先1 == "" ||
-          jsonObject.配達日1 == "" ||
-          jsonObject.配達時間1 == "" ||
-          jsonObject.積日1 == "" ||
-          jsonObject.基本料金1 == "" ||
-          jsonObject.下払会社名1 == "" ||
-          jsonObject.下払料金1 == ""
-        )
-          return notification.error({
-            message: "エラー",
-            description: "データを正確に入力してください。",
-          });
-
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        if (jsonObject.区分 == "実入り取りCRU") {
+          if (
+            jsonObject.顧客名 == "" ||
+            jsonObject.取場所 == "" ||
+            jsonObject.CRU顧客名 == "" ||
+            jsonObject.搬入返却場所 !== "CRU" ||
+            jsonObject.コンテナNo == "" ||
+            jsonObject.コンテナサイズ == "" ||
+            jsonObject.コンテナタイプ == "" ||
+            jsonObject.コンテナ種類 == "" ||
+            jsonObject.配達先1 == "" ||
+            jsonObject.配達日1 == "" ||
+            jsonObject.配達時間1 == "" ||
+            jsonObject.積日1 == "" ||
+            jsonObject.基本料金1 == "" ||
+            jsonObject.下払会社名1 == "" ||
+            jsonObject.下払料金1 == ""
+          )
+            notification.error({
+              message: "エラー",
+              description: "データを正確に入力してください。",
+            });
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        break;
       case "実入り取りFDR":
         if (
           jsonObject.顧客名 == "" ||
@@ -1584,11 +1663,34 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.下払保管料金1日 == "" ||
           jsonObject.下払保管料金リフトオフ == "" ||
           jsonObject.下払保管料金リフトオン == ""
-        )
-          return notification.error({
+        ) {
+          notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        break;
       case "実入り取りPIC":
         if (
           jsonObject.顧客名 == "" ||
@@ -1605,11 +1707,34 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.基本料金1 == "" ||
           jsonObject.下払会社名1 == "" ||
           jsonObject.下払料金1 == ""
-        )
-          return notification.error({
+        ) {
+          notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        break;
       case "保管":
         if (
           jsonObject.顧客名 == "" ||
@@ -1628,11 +1753,34 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.下払保管料金1日 == "" ||
           jsonObject.下払保管料金リフトオフ == "" ||
           jsonObject.下払保管料金リフトオン == ""
-        )
-          return notification.error({
+        ) {
+          notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        break;
       case "空バン在庫":
         if (
           jsonObject.顧客名 == "" ||
@@ -1651,11 +1799,34 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.下払保管料金1日 == "" ||
           jsonObject.下払保管料金リフトオフ == "" ||
           jsonObject.下払保管料金リフトオン == ""
-        )
-          return notification.error({
+        ) {
+          notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
+          }
+        }
+        break;
       case "船社請求":
         if (
           jsonObject.顧客名 == "" ||
@@ -1674,32 +1845,34 @@ const NewOrderFormPage = ({ title, start }) => {
           jsonObject.下払保管料金1日 == "" ||
           jsonObject.下払保管料金リフトオフ == "" ||
           jsonObject.下払保管料金リフトオン == ""
-        )
-          return notification.error({
+        ) {
+          notification.error({
             message: "エラー",
             description: "データを正確に入力してください。",
           });
-      default:
-        try {
-          if (title) {
-            const res = await axios.put(
-              process.env.REACT_API_BASE_URL +
-                `/order/edit/${"MA" + title.slice(2)}`,
-              {
-                jsonObject,
-              },
-            );
-          } else {
-            const res = await axios.post(
-              process.env.REACT_API_BASE_URL + "/order",
-              {
-                jsonObject,
-              },
-            );
+        } else {
+          try {
+            if (title) {
+              const res = await axios.put(
+                process.env.REACT_API_BASE_URL +
+                  `/order/edit/${"MA" + title.slice(2)}`,
+                {
+                  jsonObject,
+                },
+              );
+            } else {
+              const res = await axios.post(
+                process.env.REACT_API_BASE_URL + "/order",
+                {
+                  jsonObject,
+                },
+              );
+            }
+          } catch (error) {
+            console.log(error, res.message);
           }
-        } catch (error) {
-          console.log(error, res.message);
         }
+        break;
     }
   };
   const requestPdfList = () => {
