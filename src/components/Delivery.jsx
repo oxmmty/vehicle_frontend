@@ -429,6 +429,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
         <Form.Item required label={"基本料金"} className="grow">
           <Input
             required
+            type="number"
             className="w-full"
             value={basicFee1}
             onChange={(e) => {
@@ -448,6 +449,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
         </Radio.Group>
         <Form.Item label={"3軸料金"} className="grow">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -469,6 +471,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"CRU変更料金"} className="grow">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -488,6 +491,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
         </Radio.Group>
         <Form.Item label={"高速道路料金"} className="grow">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -499,6 +503,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -518,6 +523,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
         </Radio.Group>
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -539,6 +545,7 @@ const Delivery1 = ({ setDate, setDeliveryData1, editData }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -985,6 +992,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
         <Form.Item label={"基本料金"} className="grow" required>
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setBasicFee2(e.target.value);
@@ -1004,6 +1012,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
         <Form.Item label={"3軸料金"} className="grow">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setFee3Angle2(e.target.value);
@@ -1025,6 +1034,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
         <Form.Item label={"CRU変更料金"} className="grow">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setCRUFee2(e.target.value);
@@ -1043,6 +1053,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
         </Radio.Group>
         <Form.Item label={"高速道路料金"} className="grow">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -1055,6 +1066,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setScaleFee2(e.target.value);
@@ -1074,6 +1086,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setChassisFee2(e.target.value);
@@ -1094,6 +1107,7 @@ const Delivery2 = ({ setDate, setDeliveryData2, editData }) => {
       <div className="flex flex-wrap flex-row items-center gap-x-4">
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
+            type="number"
             required
             className="w-full"
             onChange={(e) => {
@@ -1539,6 +1553,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"基本料金"} className="grow" required>
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setBasicFee3(e.target.value);
@@ -1558,6 +1573,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"3軸料金"} className="grow">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setFee3Angle3(e.target.value);
@@ -1579,6 +1595,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"CRU変更料金"} className="grow">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setCRUFee3(e.target.value);
@@ -1598,6 +1615,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"高速道路料金"} className="grow">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setHighSpeedFee3(e.target.value);
@@ -1609,6 +1627,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"スケール費"} className="grow w-32">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setScaleFee3(e.target.value);
@@ -1628,6 +1647,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"シャーシ留置費"} className="grow w-32">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setChassisFee3(e.target.value);
@@ -1649,6 +1669,7 @@ const Delivery3 = ({ setDate, setDeliveryData3, editData }) => {
         <Form.Item label={"その他費用"} className="grow w-32">
           <Input
             required
+            type="number"
             className="w-full"
             onChange={(e) => {
               setOtherFee3(e.target.value);
