@@ -21,13 +21,10 @@ const MailPage = () => {
   const showModal = () => {
     setIsModalOpen(true);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  // Fetch data from backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,7 +39,6 @@ const MailPage = () => {
     fetchData();
   }, []);
 
-  // Fetch recipient email based on selected company
   const fetchRecipientEmail = async (companyName) => {
     try {
       const response = await axios.get("/partnerCompany/filter", {
@@ -50,14 +46,12 @@ const MailPage = () => {
           companyName,
         },
       });
-      // Assume the response contains the email address
       setRecipient(response.data.アドレス); // Adjust based on your actual API response structure
     } catch (error) {
       console.error("Error fetching recipient email:", error);
     }
   };
 
-  // Filter data based on date and company
   const filteredData = data.filter((item) => {
     const matchesDate = filterDate
       ? dayjs(item.updatedAt).format("YYYY-MM-DD") ===
@@ -89,10 +83,8 @@ const MailPage = () => {
 
     const mailtoLink = `mailto:${recipient}?subject=${encodedSubject}&body=${encodedBody}`;
 
-    // Open the email client
     window.location.href = mailtoLink;
 
-    // Update the delivery date after opening the email client
     const updatedDeliveryDate = dayjs().format("YYYY-MM-DD HH:mm:ss"); // Set the current date and time
 
     try {
@@ -101,7 +93,6 @@ const MailPage = () => {
         mail作成日: updatedDeliveryDate,
       });
 
-      // Optionally, update the state to reflect the change in the frontend
       setData((prevData) =>
         prevData.map((item) =>
           item.リクエスト番号 === selectedRow.リクエスト番号

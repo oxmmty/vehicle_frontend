@@ -56,7 +56,6 @@ const MonthlyCustomerDBGraphPage = () => {
     });
   };
 
-  // Calculate date ranges for the selected month or the current month by default
   const startOfSelectedMonth = selectedMonth.startOf("month");
   const endOfSelectedMonth = selectedMonth.endOf("month");
 
@@ -79,13 +78,11 @@ const MonthlyCustomerDBGraphPage = () => {
     .subtract(1, "month")
     .endOf("month");
 
-  // Format date values for year-month display (e.g., "2024-09")
   const selectedYearThisMonth = startOfSelectedMonth.format("YYYY-MM");
   const lastYearThisMonth = startOfSelectedMonthLastYear.format("YYYY-MM");
   const selectedYearLastMonth = startOfLastMonth.format("YYYY-MM");
   const lastYearLastMonth = startOfLastMonthLastYear.format("YYYY-MM");
 
-  // Calculate prices for each specific period
   const selectedYearThisMonthPrice = calculatePrices(
     startOfSelectedMonth,
     endOfSelectedMonth,
@@ -103,7 +100,6 @@ const MonthlyCustomerDBGraphPage = () => {
     endOfLastMonthLastYear,
   );
 
-  // Combine data for each customer and the respective prices for each period
   const combined = customers.map((customer, index) => {
     return {
       customer: customer,
@@ -216,7 +212,6 @@ const MonthlyCustomerDBGraphPage = () => {
     <div className="mx-auto p-4">
       <h1 className="text-center text-2xl font-bold mb-4">顧客別月次グラフ</h1>
 
-      {/* DatePicker for selecting month */}
       <div className="mb-4 text-center">
         <DatePicker
           picker="month"

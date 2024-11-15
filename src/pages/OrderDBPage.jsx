@@ -1,4 +1,4 @@
-import { Button, DatePicker, Table, Typography, Checkbox } from "antd";
+import { DatePicker, Table, Typography, Checkbox } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -7,8 +7,6 @@ const OrderDBPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY-MM"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
-  // const [toFirstPane, setToFirstPane] = useState(false);
-  // const [searchWord, setSearchWord] = useState("");
 
   const columns = [
     {
@@ -771,7 +769,6 @@ const OrderDBPage = () => {
         支払い確認: newValue,
       });
 
-      // Update local state after successful DB update
       setDatas((prevDatas) =>
         prevDatas
           .map((data) =>
@@ -794,21 +791,7 @@ const OrderDBPage = () => {
           />
         </Typography>
       </div>
-      {/* <div>
-        <div className="relative flex flex-wrap  items-stretch w-full ">
-          <input
-            autoFocus
-            type="search"
-            value={searchWord}
-            placeholder={"Search"}
-            onChange={(e) => {
-              setSearchWord(e.target.value);
-              setToFirstPane(true);
-            }}
-            className="input min-h-full p-1 h-full input-bordered w-full max-w-xs"
-          />
-        </div>
-      </div> */}
+
       <div className="w-full">
         <Table
           dataSource={datas}

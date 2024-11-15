@@ -116,8 +116,8 @@ const SeaComponent = ({ setData, title1 }) => {
   const [vehicle, setVehicle] = useState(false);
   const [blank, setBlank] = useState(false);
   const [invoice, setInvoice] = useState(false);
-  const [angle, setAngle] = useState(null);
-  const [risk, setRisk] = useState(null);
+  const [angle, setAngle] = useState(false);
+  const [risk, setRisk] = useState(false);
   const [no, setNo] = useState(null);
   const [size, setSize] = useState(null);
   const [type, setType] = useState(null);
@@ -152,7 +152,7 @@ const SeaComponent = ({ setData, title1 }) => {
       コンテナタイプ: type,
       コンテナサイズ: size,
       コンテナ種類: kinds,
-      軸3: angle,
+      "3軸数": angle,
       危険品: risk,
       BKNo: bk,
       BLNo: bl,
@@ -1901,10 +1901,6 @@ const NewOrderFormPage = ({ title, start }) => {
         })}
       />
       <div className="flex flex-row flex-wrap justify-center items-center gap-4 mb-[24px]">
-        {/* <Button>デバックボタン</Button> */}
-        {/* <Button>動作確認設定</Button>
-        <Button>画面リフレッシュ</Button>
-        <Button>記録データ削除</Button> */}
         <Button onClick={() => window.location.reload()}>初期化</Button>
 
         <Button onClick={sendData} type="primary">
@@ -1914,15 +1910,6 @@ const NewOrderFormPage = ({ title, start }) => {
         {title ? <Button onClick={requestList}>依頼リスト</Button> : <></>}
         {title ? <Button onClick={mail}>Mail</Button> : <></>}
         {title ? <Button onClick={billingList}>請求一覧</Button> : <></>}
-        {/* {title ? (
-          <Button onClick={navigate("/orders_invoices/invoice_receipt")}>
-            送り状・受領書
-          </Button>
-        ) : (
-          <></>
-        )} */}
-
-        {/* <Button>閉じる</Button> */}
       </div>
     </div>
   );

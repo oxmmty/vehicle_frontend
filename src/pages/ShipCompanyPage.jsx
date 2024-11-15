@@ -75,7 +75,6 @@ const ShipCompany = () => {
     fetchCustomers();
   }, []);
 
-  // Fetch customer data from the API
   const fetchCustomers = async () => {
     try {
       const res = await axios.get(process.env.REACT_API_BASE_URL + `/ship`);
@@ -99,13 +98,11 @@ const ShipCompany = () => {
     setEditingKey("");
   };
 
-  // Save changes to the customer
   const save = async (key) => {
     try {
       const row = await form.validateFields();
       const updatedCustomer = { ...row };
 
-      // Update customer via API
       await axios.put(
         process.env.REACT_API_BASE_URL + `/ship/${key}`,
         updatedCustomer,
@@ -142,7 +139,6 @@ const ShipCompany = () => {
     }
   };
 
-  // Add a new customer
   const handleAdd = async (values) => {
     try {
       await axios.post(process.env.REACT_API_BASE_URL + `/ship`, values);

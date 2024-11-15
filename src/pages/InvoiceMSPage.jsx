@@ -1,5 +1,4 @@
 import { Button, Divider, Select, Table, Typography } from "antd";
-import { useState } from "react";
 
 const { Title, Text } = Typography;
 
@@ -303,9 +302,6 @@ const InvoiceMSPage = () => {
         <Select options={option} defaultValue={1} className="max-w-72 grow" />
         <Button type="primary">PDF作成</Button>
       </div>
-      {/* <div className="flex w-full justify-center py-5">
-        <Table columns={columns2} scroll={{ x: 'max-content' }} className='w-full' />
-      </div> */}
     </div>
   );
 };

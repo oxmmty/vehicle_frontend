@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Table } from "antd";
-import Mail from "src/components/Mail";
+import { Table } from "antd";
 
 const ReleaseNotesPage = () => {
   const fileColumns = [

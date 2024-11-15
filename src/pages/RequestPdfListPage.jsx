@@ -5,8 +5,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-const { Title } = Typography;
-
 const RequestPdfListPage = () => {
   const [date, setDate] = useState(dayjs().startOf("month"));
   const [datas, setDatas] = useState([]);
@@ -25,7 +23,6 @@ const RequestPdfListPage = () => {
           type="checkbox"
           checked={selectedRowKeys.includes(record.リクエスト番号)}
           onChange={() => handleCheckboxChange(record.リクエスト番号)}
-          // disabled={record.選択} // Disable if record.選択 is true
         />
       ),
     },
@@ -349,7 +346,6 @@ const RequestPdfListPage = () => {
     },
   ];
 
-  // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -398,7 +394,6 @@ const RequestPdfListPage = () => {
   const handlePaymentConfirmationChange = async (record) => {
     const newValue = !record.支払い確認;
 
-    // Optimistically update UI
     setFilteredDatas((prevDatas) =>
       prevDatas.map((data) =>
         data._id === record._id ? { ...data, 支払い確認: newValue } : data,
@@ -412,7 +407,6 @@ const RequestPdfListPage = () => {
     } catch (error) {
       console.error("Error updating payment confirmation:", error);
 
-      // Revert UI change if error occurs
       setFilteredDatas((prevDatas) =>
         prevDatas.map((data) =>
           data._id === record._id ? { ...data, 支払い確認: !newValue } : data,

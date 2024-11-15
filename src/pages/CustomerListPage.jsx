@@ -1,7 +1,6 @@
-import { DatePicker, Table, Typography, Input, Form, message } from "antd";
+import { Input, Form, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import CTable from "src/components/CTable";
 
 const CustomerListPage = () => {
@@ -25,13 +24,10 @@ const CustomerListPage = () => {
         const item = newData[index];
         const updatedRow = { ...item, ...row };
 
-        // Set loading state during the update process
         setLoading(true);
 
-        // Send the updated row data to the backend using _id as the identifier
         await axios.put(`/customerPriceList/${_id}`, updatedRow);
 
-        // Update the local data
         newData.splice(index, 1, updatedRow);
         setDatas(newData);
         setEditingKey(""); // Exit edit mode
@@ -109,24 +105,6 @@ const CustomerListPage = () => {
     },
   ];
 
-  // Define how editable cells are rendered
-  // const mergedColumns = columns.map((col) => {
-  //   if (!col.editable) {
-  //     return col;
-  //   }
-  //   return {
-  //     ...col,
-  //     onCell: (record) => ({
-  //       record,
-  //       editable: col.editable, // This can be used for internal logic but not passed to <td>
-  //       dataIndex: col.dataIndex,
-  //       title: col.title,
-  //       editing: isEditing(record),
-  //     }),
-  //   };
-  // });
-
-  // Helper function to get row span for 顧客名
   const getRowSpan = (index, key) => {
     const currentData = datas[index];
     const previousData = index > 0 ? datas[index - 1] : null;
@@ -151,34 +129,7 @@ const CustomerListPage = () => {
     };
     fetchData();
   }, []);
-  // const EditableCell = ({
-  //   editing,
-  //   dataIndex,
-  //   title,
-  //   record,
-  //   children,
-  //   ...restProps
-  // }) => {
-  //   return (
-  //     <td {...restProps}>
-  //       {editing ? (
-  //         <Form.Item
-  //           name={dataIndex}
-  //           style={{ margin: 0 }}
-  //           rules={[
-  //             {
-  //               required: true,
-  //               message: `Please Input ${title}!`,
-  //             },
-  //           ]}>
-  //           <Input />
-  //         </Form.Item>
-  //       ) : (
-  //         children
-  //       )}
-  //     </td>
-  //   );
-  // };
+
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
@@ -195,7 +146,6 @@ const CustomerListPage = () => {
     };
   });
 
-  // EditableCell component
   const EditableCell = ({
     editing,
     dataIndex,

@@ -1,13 +1,4 @@
-import {
-  Table,
-  Button,
-  Form,
-  Input,
-  Select,
-  Popconfirm,
-  notification,
-  Modal,
-} from "antd";
+import { Button, Form, Input, Popconfirm, notification, Modal } from "antd";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CTable from "src/components/CTable";
@@ -102,7 +93,6 @@ const BusinessOffice = () => {
         });
       }
 
-      // Reload the data after successful update
       await loadData();
     } catch (errInfo) {
       notification.error({
@@ -122,7 +112,6 @@ const BusinessOffice = () => {
         description: `事業所 has been successfully deleted.`,
       });
 
-      // Reload the data after successful delete
       await loadData();
     } catch (error) {
       notification.error({
@@ -148,7 +137,6 @@ const BusinessOffice = () => {
       });
       setIsModalVisible(false);
 
-      // Reload the data after successful add
       await loadData();
     } catch (error) {
       notification.error({
@@ -273,7 +261,6 @@ const BusinessOffice = () => {
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          // pagination={{ pageSize: 20 }}
           ps={10}
         />
       </Form>

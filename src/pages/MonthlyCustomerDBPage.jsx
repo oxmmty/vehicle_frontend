@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Table } from "antd";
 import axios from "axios";
 import { Line, Column } from "@ant-design/plots";
 import { ThemeContext } from "src/components/Theme";
@@ -55,7 +54,6 @@ const MonthlyCustomerDBPage = () => {
     });
   };
 
-  // Calculate date ranges for each of the required periods
   const startOfCurrentMonth = dayjs().startOf("month");
   const endOfCurrentMonth = dayjs().endOf("month");
 
@@ -74,13 +72,11 @@ const MonthlyCustomerDBPage = () => {
     .subtract(1, "month")
     .endOf("month");
 
-  // Format date values for year-month display (e.g., "2024-09")
   const thisYearThisMonth = startOfCurrentMonth.format("YYYY-MM");
   const lastYearThisMonth = startOfThisMonthLastYear.format("YYYY-MM");
   const thisYearLastMonth = startOfLastMonth.format("YYYY-MM");
   const lastYearLastMonth = startOfLastMonthLastYear.format("YYYY-MM");
 
-  // Calculate prices for each specific period
   const thisYearThisMonthPrice = calculatePrices(
     startOfCurrentMonth,
     endOfCurrentMonth,
@@ -98,7 +94,6 @@ const MonthlyCustomerDBPage = () => {
     endOfLastMonthLastYear,
   );
 
-  // Combine data for each customer and the respective prices for each period
   const combined = customers.map((customer, index) => {
     return {
       customer: customer,
