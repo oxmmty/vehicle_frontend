@@ -82,7 +82,6 @@ const BussinessLocation = () => {
       const row = await form.validateFields();
       const updatedCustomer = { ...row };
 
-      // Update customer via API
       await axios.put(
         process.env.REACT_API_BASE_URL + `/workstation/${key}`,
         updatedCustomer,

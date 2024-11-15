@@ -61,12 +61,7 @@ const InvoicePage = () => {
   console.log(data);
   const invoiceRef = useRef();
   const today = dayjs().format("YYYY/MM/DD");
-  // const dataSource = [
-  //   { key: "0", name: "課税（30％対象）", value: 8193 },
-  //   { key: "1", name: "消費税（10％）", value: 819 },
-  //   { key: "2", name: "非課税", value: 0 },
-  //   { key: "3", name: "御請求金額", value: 9012 },
-  // ];
+
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`/order/invoice/${data}`);
@@ -75,15 +70,6 @@ const InvoicePage = () => {
     };
     fetchData();
   }, []);
-  // const columns = [
-  //   { title: "Name", dataIndex: "name", key: "name" },
-  //   {
-  //     title: "Value",
-  //     dataIndex: "value",
-  //     key: "value",
-  //     render: (num) => `${num.toLocaleString()}円`,
-  //   },
-  // ];
 
   useEffect(() => {
     if (datas.基本課税1) {
@@ -173,22 +159,6 @@ const InvoicePage = () => {
       setその他費用Price3(datas.その他費用3 / 10);
     }
   }, [datas]); // Only run this effect when 'datas' changes
-  // const columns2 = [
-  //   { key: "請求先", title: "請求先", dataIndex: "請求先" },
-  //   { key: "会社名", title: "会社名", dataIndex: "会社名" },
-  //   { key: "会社住所", title: "会社住所", dataIndex: "会社住所" },
-  //   {
-  //     key: "事業者登録番号",
-  //     title: "事業者登録番号",
-  //     dataIndex: "事業者登録番号",
-  //   },
-  //   { key: "タグ", title: "タグ", dataIndex: "タグ" },
-  //   { key: "銀行名", title: "銀行名", dataIndex: "銀行名" },
-  //   { key: "支店名", title: "支店名", dataIndex: "支店名" },
-  //   { key: "口座名", title: "口座名", dataIndex: "口座名" },
-  //   { key: "口座名義", title: "口座名義", dataIndex: "口座名義" },
-  //   { key: "件名", title: "件名", dataIndex: "件名" },
-  // ];
 
   const option = [
     { value: 0, label: "お客様" },
@@ -205,12 +175,9 @@ const InvoicePage = () => {
       const pageHeight = pdf.internal.pageSize.height;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
-
       let position = 0;
-
       pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
@@ -331,13 +298,6 @@ const InvoicePage = () => {
           </div>
         </div>
         <div className="flex w-full justify-center py-5">
-          {/* <Table
-          dataSource={orderData}
-          columns={orderColumns}
-          scroll={{ x: "max-content" }}
-          pagination={false}
-          className="w-full"
-        /> */}
           <table class="min-w-full table-auto border-collapse border border-black text-black">
             <thead>
               <tr class="bg-gray-200">
@@ -889,13 +849,6 @@ const InvoicePage = () => {
           PDF作成
         </Button>
       </div>
-      {/* <div className="flex w-full justify-center py-5">
-        <Table
-          columns={columns2}
-          scroll={{ x: "max-content" }}
-          className="w-full"
-        />
-      </div> */}
     </div>
   );
 };

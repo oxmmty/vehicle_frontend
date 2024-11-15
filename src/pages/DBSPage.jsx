@@ -8,7 +8,6 @@ const DBSPage = () => {
   const [date, setDate] = useState(dayjs().startOf("month"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get("/pdfList");
@@ -167,7 +166,6 @@ const DBSPage = () => {
         highSpeedValue += value * 1.1;
       }
     };
-    // Process each fee or cost
     addAmount(item.basicFee, item.basicFeeTaxable);
     addAmount(item.otherCosts, item.otherCostsTaxable);
     addAmount(item.chassisStorageFee, item.chassisStorageFeeTaxable);
@@ -189,12 +187,10 @@ const DBSPage = () => {
 
   const currentMonth = dayjs().format("YYYY-MM");
   const lastMonth = dayjs().subtract(1, "month").format("YYYY-MM");
-  // Filter data by current month
   const filteredData = updatedData.filter(
     (item) => dayjs(item.month).format("YYYY-MM") === currentMonth,
   );
 
-  // Group data by companyName
   const groupedByCompany = filteredData.reduce((acc, item) => {
     if (!acc[item.companyName]) {
       acc[item.companyName] = {
@@ -214,7 +210,6 @@ const DBSPage = () => {
       };
     }
 
-    // Aggregate values for current month
     acc[item.companyName].total支払合計 += item.支払合計;
     acc[item.companyName].課税 += item.課税;
     acc[item.companyName].非課税 += item.非課税;
@@ -233,7 +228,6 @@ const DBSPage = () => {
       acc[item.companyName].売掛計税抜 += item.支払合計;
     }
 
-    // Check if all statuses are true
     if (!item.status) {
       acc[item.companyName].allStatusTrue = false;
     }
@@ -241,7 +235,6 @@ const DBSPage = () => {
     return acc;
   }, {});
 
-  // Calculate last month's total 支払合計
   updatedData.forEach((item) => {
     if (dayjs(item.month).format("YYYY-MM") === lastMonth) {
       if (!groupedByCompany[item.companyName]) {
@@ -252,7 +245,6 @@ const DBSPage = () => {
     }
   });
 
-  // Calculate 支払い比率 for each company and determine overall status
   const result = Object.values(groupedByCompany).map((company) => ({
     ...company,
     支払い比率:

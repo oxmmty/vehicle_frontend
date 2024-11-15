@@ -9,14 +9,7 @@ const MonthlyCustomerPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY-MM"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get("/orderList");
-  //     setDatas(res.data);
-  //     filterData(dayjs().format("YYYY-MM"), res.data);
-  //   };
-  //   fetchData();
-  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,13 +22,7 @@ const MonthlyCustomerPage = () => {
     };
     fetchData();
   }, []);
-  // const filterData = (selectedDate, dataToFilter) => {
-  //   const filtered = dataToFilter.filter((item) => {
-  //     const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
-  //     return invoiceDate === selectedDate;
-  //   });
-  //   setFilteredDatas(filtered);
-  // };
+
   const filterData = (selectedDate, dataToFilter) => {
     const filtered = dataToFilter.filter((item) => {
       const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
@@ -43,13 +30,7 @@ const MonthlyCustomerPage = () => {
     });
     setFilteredDatas(filtered);
   };
-  console.log(filteredDatas);
-  // const handleDateChange = (date) => {
-  //   if (date) {
-  //     setDate(date);
-  //     filterData(date.format("YYYY-MM"), datas);
-  //   }
-  // };
+
   const handleDateChange = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM");
@@ -74,7 +55,6 @@ const MonthlyCustomerPage = () => {
     otherCostsTaxable3: item["その他課税3"],
     chassisStorageFee: item["シャーシ留置費"],
     chassisStorageFeeTaxable: item["シャーシ留置費課税1"],
-
     chassisStorageFee2: item["シャーシ留置費2"],
     chassisStorageFeeTaxable2: item["シャーシ留置費課税2"],
     chassisStorageFee3: item["シャーシ留置費3"],
@@ -126,7 +106,6 @@ const MonthlyCustomerPage = () => {
       }
     };
 
-    // Process each fee or cost
     addAmount(item.basicFee, item.basicFeeTaxable);
     addAmount(item.otherCosts, item.otherCostsTaxable);
     addAmount(item.chassisStorageFee, item.chassisStorageFeeTaxable);
@@ -359,13 +338,6 @@ const MonthlyCustomerPage = () => {
 
   return (
     <div className="flex flex-col gap-0">
-      {/* <DatePicker
-        onChange={handleDateChange}
-        defaultValue={dayjs(date, "YYYY-MM")}
-        className="grow max-w-96"
-        picker="month"
-      /> */}
-
       <DatePicker
         onChange={handleDateChange}
         value={dayjs(date, "YYYY-MM")}

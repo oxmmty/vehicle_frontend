@@ -75,7 +75,6 @@ const Dashboardpage = () => {
     });
   };
 
-  // Calculate prices based on selected date
   const startOfMonth = selectedDate.startOf("month");
   const endOfMonth = selectedDate.endOf("month");
   const lastYearStart = startOfMonth.subtract(1, "year");
@@ -83,7 +82,6 @@ const Dashboardpage = () => {
   const lastMonthStart = startOfMonth.subtract(1, "month");
   const lastMonthEnd = endOfMonth.subtract(1, "month");
 
-  // New date calculations
   const lastYearLastMonthStart = lastYearStart.subtract(1, "month");
   const lastYearLastMonthEnd = lastYearEnd.subtract(1, "month");
   const thisYearLastMonthStart = startOfMonth.subtract(1, "month");
@@ -189,23 +187,14 @@ const Dashboardpage = () => {
     },
   ];
 
-  const handleDateChange = (date) => {
-    if (date) {
-      setSelectedDate(date);
-    }
-  };
-
   const calculateTotalPricesForEachDay = () => {
     const today = dayjs().startOf("day");
 
-    // Get the last 7 days (including today)
     const last7Days = Array.from({ length: 7 }, (_, i) =>
       today.subtract(i, "day"),
     );
 
-    // Create an array of objects where each object holds the date and total price for all companies
     return last7Days.map((date) => {
-      // For each day, sum up the prices for all companies
       const totalPriceForDay = companyList.reduce((total, companyItem) => {
         const matchedPdfItem = pdfList.find(
           (pdfItem) =>
@@ -213,11 +202,9 @@ const Dashboardpage = () => {
             dayjs(pdfItem.updatedAt).isSame(date, "day"),
         );
 
-        // Add the company's price to the total for that day
         return total + (matchedPdfItem ? Number(matchedPdfItem.基本料金) : 0);
       }, 0); // Initial total is 0
 
-      // Return the date and the total price for that day
       return {
         date: date.format("YYYY-MM-DD"),
         totalPrice: totalPriceForDay,
@@ -231,19 +218,14 @@ const Dashboardpage = () => {
     .sort((a, b) => new Date(a.date) - new Date(b.date)) // Sort by date descending
     .map((item) => item.totalPrice); // Extract totalPrice values
 
-  /////////////////
-
   const calculateTotalPricesForEachDays = () => {
     const today = dayjs().startOf("day");
 
-    // Get the last 7 days (including today)
     const last7Days = Array.from({ length: 7 }, (_, i) =>
       today.subtract(i, "day"),
     );
 
-    // Create an array of objects where each object holds the date and total price for all companies
     return last7Days.map((date) => {
-      // For each day, sum up the prices for all companies
       const totalPriceForDay = customerList.reduce((total, customerItem) => {
         const matchedOrderItem = order.find(
           (orderItem) =>
@@ -279,7 +261,6 @@ const Dashboardpage = () => {
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .map((item) => item.totalPrice);
 
-  /////////////////
   return (
     <div className="flex flex-col xl:flex-col w-full gap-2">
       <div className="flex-col xl:h-96 xl:flex-row flex gap-2">

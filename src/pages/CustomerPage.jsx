@@ -42,7 +42,6 @@ export default function CustomerPage() {
     fetchCustomers();
   }, []);
 
-  // Fetch customer data from the API
   const fetchCustomers = async () => {
     try {
       const res = await axios.get(process.env.REACT_API_BASE_URL + `/customer`);
@@ -56,7 +55,6 @@ export default function CustomerPage() {
     }
   };
 
-  // Validators
   const addressValidator = (_, value) => {
     if (value && value.length < 10) {
       return Promise.reject(
@@ -336,7 +334,6 @@ export default function CustomerPage() {
             <Input placeholder="住所" />
           </Form.Item>
 
-          {/* Align submit button to the right */}
           <Form.Item>
             <div className="flex justify-end">
               <Button type="primary" htmlType="submit">

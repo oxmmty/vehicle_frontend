@@ -1,5 +1,4 @@
-import { Button, DatePicker, Form, Select, Table } from "antd";
-import { useState } from "react";
+import { Table } from "antd";
 
 const DepartmentProfitPage = () => {
   const columns = [

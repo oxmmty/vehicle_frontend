@@ -1,7 +1,6 @@
-import { DatePicker, Table, Typography, Input, Form, message } from "antd";
+import { Input, Form, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import CTable from "src/components/CTable";
 
 const PartnerCompanyListPage = () => {

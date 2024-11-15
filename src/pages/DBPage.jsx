@@ -1,4 +1,4 @@
-import { DatePicker, Table, Typography, Checkbox } from "antd";
+import { DatePicker, Typography, Checkbox } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -13,7 +13,6 @@ const DBPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch data from backend
   const fetchData = async () => {
     setLoading(true);
     try {
