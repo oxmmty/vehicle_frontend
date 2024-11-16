@@ -1,5 +1,4 @@
 import {
-  Table,
   Button,
   Form,
   Input,
@@ -131,7 +130,6 @@ const UserManage = () => {
         });
       }
 
-      // Reload the data after successful update
       await loadData();
     } catch (errInfo) {
       notification.error({
@@ -151,7 +149,6 @@ const UserManage = () => {
         description: `User has been successfully deleted.`,
       });
 
-      // Reload the data after successful delete
       await loadData();
     } catch (error) {
       notification.error({
@@ -177,7 +174,6 @@ const UserManage = () => {
       });
       setIsModalVisible(false);
 
-      // Reload the data after successful add
       await loadData();
     } catch (error) {
       notification.error({
@@ -297,12 +293,10 @@ const UserManage = () => {
           dataSource={datas}
           columns={mergedColumns}
           rowClassName="editable-row"
-          // pagination={{ pageSize: 20 }}
           ps={10}
         />
       </Form>
 
-      {/* Add User Modal */}
       <Modal
         title="Add User"
         visible={isModalVisible}

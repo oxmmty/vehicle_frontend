@@ -104,13 +104,11 @@ export default function PartnerCompanyPage() {
     fetchPartnerCompanies();
   }, []);
 
-  // Fetch partner company data from the API
   const fetchPartnerCompanies = async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_API_BASE_URL}/partnercompany`,
       );
-      // Sort data by カウント before setting it to state
       const sortedData = res.data.sort((a, b) => b.カウント - a.カウント);
       setDatas(sortedData);
     } catch (error) {
@@ -132,13 +130,11 @@ export default function PartnerCompanyPage() {
     setEditingKey("");
   };
 
-  // Save changes to the partner company
   const save = async (key) => {
     try {
       const row = await form.validateFields();
       const updatedCompany = { ...row };
 
-      // Update partner company via API
       await axios.put(
         `${process.env.REACT_API_BASE_URL}/partnercompany/${key}`,
         updatedCompany,
@@ -158,7 +154,6 @@ export default function PartnerCompanyPage() {
     }
   };
 
-  // Delete partner company
   const handleDelete = async (key) => {
     try {
       await axios.delete(
@@ -177,7 +172,6 @@ export default function PartnerCompanyPage() {
     }
   };
 
-  // Add a new partner company
   const handleAdd = async (values) => {
     try {
       await axios.post(

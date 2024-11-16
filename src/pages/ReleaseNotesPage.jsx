@@ -52,7 +52,6 @@ const ReleaseNotesPage = () => {
       align: "center",
     },
   ];
-
   const fileData = [
     {
       key: "1",
@@ -64,7 +63,6 @@ const ReleaseNotesPage = () => {
       transmissionDate: "4/25",
     },
   ];
-
   return (
     <div className="flex flex-col gap-2">
       <Table
