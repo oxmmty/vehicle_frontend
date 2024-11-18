@@ -122,7 +122,6 @@ const ShipCompany = () => {
     }
   };
 
-  // Delete customer
   const handleDelete = async (key) => {
     try {
       await axios.delete(process.env.REACT_API_BASE_URL + `/ship/${key}`);

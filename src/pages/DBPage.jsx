@@ -29,16 +29,17 @@ const DBPage = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
 
   const handleDateChange = (selectedDate) => {
     if (selectedDate) {
+      setDate(selectedDate);
       const formattedDate = selectedDate.format("YYYY-MM-DD");
-      setDate(formattedDate);
-      const filtered = allData.filter(date);
+      const filtered = allData.filter((item) =>
+        dayjs(item.createdAt).isSame(formattedDate, "day"),
+      );
       setFilteredData(filtered);
     } else {
       setFilteredData(allData);

@@ -9,14 +9,7 @@ const MonthlyPartnerCompanyPage = () => {
   const [date, setDate] = useState(dayjs().format("YYYY-MM"));
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const res = await axios.get("/pdfList");
-  //     setDatas(res.data);
-  //     filterData(dayjs().format("YYYY-MM"), res.data);
-  //   };
-  //   fetchData();
-  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -30,14 +23,6 @@ const MonthlyPartnerCompanyPage = () => {
     fetchData();
   }, []);
 
-  // const filterData = (selectedDate, dataToFilter) => {
-  //   const filtered = dataToFilter.filter((item) => {
-  //     const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
-  //     return invoiceDate === selectedDate;
-  //   });
-  //   setFilteredDatas(filtered);
-  // };
-
   const filterData = (selectedDate, dataToFilter) => {
     const filtered = dataToFilter.filter((item) => {
       const invoiceDate = dayjs(item.依頼日).format("YYYY-MM");
@@ -45,13 +30,6 @@ const MonthlyPartnerCompanyPage = () => {
     });
     setFilteredDatas(filtered);
   };
-  console.log(filteredDatas);
-  // const handleDateChange = (date) => {
-  //   if (date) {
-  //     setDate(date);
-  //     filterData(date.format("YYYY-MM"), datas);
-  //   }
-  // };
   const handleDateChange = (date) => {
     if (date) {
       const formattedDate = date.format("YYYY-MM");
@@ -96,7 +74,6 @@ const MonthlyPartnerCompanyPage = () => {
         highSpeedValue += value * 1.1;
       }
     };
-    // Process each fee or cost
     addAmount(item.basicFee, item.basicFeeTaxable);
     addAmount(item.otherCosts, item.otherCostsTaxable);
     addAmount(item.chassisStorageFee, item.chassisStorageFeeTaxable);
@@ -118,12 +95,9 @@ const MonthlyPartnerCompanyPage = () => {
 
   const currentMonth = dayjs().format("YYYY-MM");
   const lastMonth = dayjs().subtract(1, "month").format("YYYY-MM");
-  // Filter data by current month
   const filteredData = updatedData.filter(
     (item) => dayjs(item.month).format("YYYY-MM") === currentMonth,
   );
-
-  // Group data by companyName
   const groupedByCompany = filteredData.reduce((acc, item) => {
     if (!acc[item.companyName]) {
       acc[item.companyName] = {
@@ -142,8 +116,6 @@ const MonthlyPartnerCompanyPage = () => {
         高速代消費税: 0,
       };
     }
-
-    // Aggregate values for current month
     acc[item.companyName].total支払合計 += item.支払合計;
     acc[item.companyName].課税 += item.課税;
     acc[item.companyName].非課税 += item.非課税;
@@ -161,16 +133,12 @@ const MonthlyPartnerCompanyPage = () => {
     if (item.status) {
       acc[item.companyName].売掛計税抜 += item.支払合計;
     }
-
-    // Check if all statuses are true
     if (!item.status) {
       acc[item.companyName].allStatusTrue = false;
     }
 
     return acc;
   }, {});
-
-  // Calculate last month's total 支払合計
   updatedData.forEach((item) => {
     if (dayjs(item.month).format("YYYY-MM") === lastMonth) {
       if (!groupedByCompany[item.companyName]) {
@@ -180,8 +148,6 @@ const MonthlyPartnerCompanyPage = () => {
         item.支払合計;
     }
   });
-
-  // Calculate 支払い比率 for each company and determine overall status
   const result = Object.values(groupedByCompany).map((company) => ({
     ...company,
     支払い比率:
@@ -190,8 +156,6 @@ const MonthlyPartnerCompanyPage = () => {
         : 0 + " %",
     status: company.allStatusTrue,
   }));
-
-  console.log(result);
 
   const len = result.length;
   const columns = [

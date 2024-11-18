@@ -23,14 +23,8 @@ const PartnerCompanyListPage = () => {
       if (index > -1) {
         const item = newData[index];
         const updatedRow = { ...item, ...row };
-
-        // Set loading state during the update process
         setLoading(true);
-
-        // Send the updated row data to the backend using _id as the identifier
         await axios.put(`/companyPriceList/${_id}`, updatedRow);
-
-        // Update the local data
         newData.splice(index, 1, updatedRow);
         setDatas(newData);
         setEditingKey(""); // Exit edit mode
@@ -48,8 +42,6 @@ const PartnerCompanyListPage = () => {
   const cancel = () => {
     setEditingKey(""); // Exit edit mode without saving
   };
-
-  // Merge row span for the specified field
 
   const columns = [
     {
@@ -111,7 +103,6 @@ const PartnerCompanyListPage = () => {
     },
   ];
 
-  // Define how editable cells are rendered
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;

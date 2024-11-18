@@ -6,7 +6,6 @@ import { UserOutlined, MailOutlined, KeyOutlined } from "@ant-design/icons";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-
   const onFinish = async (values) => {
     const res = await axios.post("/register", values);
     if (res.status == 200) {
@@ -14,7 +13,6 @@ const RegisterPage = () => {
       navigate("/login");
     }
   };
-
   return (
     <div className="w-full flex justify-center items-center p-2  bg-[url('./background.webp')] bg-cover bg-center h-screen ">
       <Form

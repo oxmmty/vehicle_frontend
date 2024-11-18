@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Tag } from "antd";
+import { Table } from "antd";
 import moment from "moment";
 
 const TransportCompanyRequestPage = () => {
@@ -170,7 +170,6 @@ const TransportCompanyRequestPage = () => {
   ];
 
   const getRowClassName = (record) => {
-    const currentDate = moment().format("YYYY-MM-DD");
     const updatedDate = moment("2024-08-31", "YYYY-MM-DD").format("YYYY-MM-DD");
 
     const recordDeliveryDate = moment(record.deliveryDate, "M月D日").format(

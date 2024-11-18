@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 
 const OrderDBPage = () => {
-  const [date, setDate] = useState(dayjs().format("YYYY-MM"));
+  const [date, setDate] = useState(dayjs());
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
 
@@ -28,9 +28,9 @@ const OrderDBPage = () => {
       dataIndex: "請求日",
       align: "center",
       key: "請求日",
-      sorter: function (a, b) {
-        return b.請求日.localeCompare(a.請求日);
-      },
+      render: (record) => dayjs(record).format("YYYY-MM-DD"),
+
+      sorter: (a, b) => new Date(b.請求日) - new Date(a.請求日),
     },
     {
       title: "部署コード",
@@ -750,16 +750,26 @@ const OrderDBPage = () => {
   }, []);
 
   const filterData = (selectedDate, dataToFilter) => {
-    const filtered = dataToFilter.filter((item) => {
-      const invoiceDate = dayjs(item.請求日).format("YYYY-MM"); // Assuming '
-      return invoiceDate === selectedDate;
-    });
-    setFilteredDatas(filtered);
+    if (selectedDate) {
+      const filtered = dataToFilter.filter((item) => {
+        const invoiceDate = dayjs(item.請求日).format("YYYY-MM"); // Assuming '
+        return invoiceDate === selectedDate;
+      });
+      setFilteredDatas(filtered);
+    } else {
+      const filtered = dataToFilter;
+      setFilteredDatas(filtered);
+    }
   };
 
-  const handleDateChange = (date, dateString) => {
-    setDate(dateString);
-    filterData(dateString, datas);
+  const handleDateChange = (dateValue, dateString) => {
+    if (dateValue) {
+      setDate(dateValue); // Set the selected date
+      filterData(dateValue.format("YYYY-MM"), datas); // Filter based on selected date
+    } else {
+      setDate(dayjs()); // Reset to today's date if cleared
+      setFilteredDatas(datas); // Show all data if no date is selected
+    }
   };
   const handleCheckboxChange = async (e, record) => {
     const newValue = e.target.checked;
@@ -786,7 +796,7 @@ const OrderDBPage = () => {
         <Typography className="ml-10 mt-5 justify-center">
           <DatePicker
             picker="month"
-            value={dayjs(date, "YYYY-MM")}
+            defaultValue={dayjs(date, "YYYY-MM")}
             onChange={handleDateChange}
           />
         </Typography>
@@ -794,7 +804,7 @@ const OrderDBPage = () => {
 
       <div className="w-full">
         <Table
-          dataSource={datas}
+          dataSource={filteredDatas}
           columns={columns}
           scroll={{ x: "max-content" }}
           size="small"

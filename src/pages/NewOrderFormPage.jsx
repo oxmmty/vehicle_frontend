@@ -629,14 +629,11 @@ const SeaComponent = ({ setData, title1 }) => {
       setFilteredCustomerData(customerData);
     } else {
       const filtered = customerData.filter((option) => {
-        // Check if option is a string
         if (typeof option === "string") {
           return option
             .toLowerCase()
             .includes(inputValueCustomer.toLowerCase());
-        }
-        // Check if option is an object with a 'value' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.value === "string"
@@ -644,9 +641,7 @@ const SeaComponent = ({ setData, title1 }) => {
           return option.value
             .toLowerCase()
             .includes(inputValueCustomer.toLowerCase());
-        }
-        // Check if option is an object with a 'label' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.label === "string"
@@ -655,7 +650,6 @@ const SeaComponent = ({ setData, title1 }) => {
             .toLowerCase()
             .includes(inputValueCustomer.toLowerCase());
         }
-        // If none of the above, log the unexpected option and return false
         console.log("Unexpected option structure:", option);
         return false;
       });
@@ -698,12 +692,9 @@ const SeaComponent = ({ setData, title1 }) => {
       setFilteredCompanyData(companyData);
     } else {
       const filtered = companyData.filter((option) => {
-        // Check if option is a string
         if (typeof option === "string") {
           return option.toLowerCase().includes(inputValueCompany.toLowerCase());
-        }
-        // Check if option is an object with a 'value' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.value === "string"
@@ -711,9 +702,7 @@ const SeaComponent = ({ setData, title1 }) => {
           return option.value
             .toLowerCase()
             .includes(inputValueCompany.toLowerCase());
-        }
-        // Check if option is an object with a 'label' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.label === "string"
@@ -722,7 +711,6 @@ const SeaComponent = ({ setData, title1 }) => {
             .toLowerCase()
             .includes(inputValueCompany.toLowerCase());
         }
-        // If none of the above, log the unexpected option and return false
         console.log("Unexpected option structure:", option);
         return false;
       });
@@ -765,14 +753,11 @@ const SeaComponent = ({ setData, title1 }) => {
       setFilteredLocationData(locationData);
     } else {
       const filtered = locationData.filter((option) => {
-        // Check if option is a string
         if (typeof option === "string") {
           return option
             .toLowerCase()
             .includes(inputValueLocation.toLowerCase());
-        }
-        // Check if option is an object with a 'value' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.value === "string"
@@ -780,9 +765,7 @@ const SeaComponent = ({ setData, title1 }) => {
           return option.value
             .toLowerCase()
             .includes(inputValueLocation.toLowerCase());
-        }
-        // Check if option is an object with a 'label' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.label === "string"
@@ -791,7 +774,6 @@ const SeaComponent = ({ setData, title1 }) => {
             .toLowerCase()
             .includes(inputValueLocation.toLowerCase());
         }
-        // If none of the above, log the unexpected option and return false
         console.log("Unexpected option structure:", option);
         return false;
       });
@@ -835,12 +817,9 @@ const SeaComponent = ({ setData, title1 }) => {
       setFilteredShipperData(shipperData);
     } else {
       const filtered = shipperData.filter((option) => {
-        // Check if option is a string
         if (typeof option === "string") {
           return option.toLowerCase().includes(inputValueShipper.toLowerCase());
-        }
-        // Check if option is an object with a 'value' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.value === "string"
@@ -848,9 +827,7 @@ const SeaComponent = ({ setData, title1 }) => {
           return option.value
             .toLowerCase()
             .includes(inputValueShipper.toLowerCase());
-        }
-        // Check if option is an object with a 'label' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.label === "string"
@@ -859,7 +836,6 @@ const SeaComponent = ({ setData, title1 }) => {
             .toLowerCase()
             .includes(inputValueShipper.toLowerCase());
         }
-        // If none of the above, log the unexpected option and return false
         console.log("Unexpected option structure:", option);
         return false;
       });
@@ -902,12 +878,9 @@ const SeaComponent = ({ setData, title1 }) => {
       setFilteredShipData(shipData);
     } else {
       const filtered = shipData.filter((option) => {
-        // Check if option is a string
         if (typeof option === "string") {
           return option.toLowerCase().includes(inputValueShip.toLowerCase());
-        }
-        // Check if option is an object with a 'value' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.value === "string"
@@ -915,9 +888,7 @@ const SeaComponent = ({ setData, title1 }) => {
           return option.value
             .toLowerCase()
             .includes(inputValueShip.toLowerCase());
-        }
-        // Check if option is an object with a 'label' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.label === "string"
@@ -926,7 +897,6 @@ const SeaComponent = ({ setData, title1 }) => {
             .toLowerCase()
             .includes(inputValueShip.toLowerCase());
         }
-        // If none of the above, log the unexpected option and return false
         console.log("Unexpected option structure:", option);
         return false;
       });
@@ -969,12 +939,9 @@ const SeaComponent = ({ setData, title1 }) => {
       setFilteredLoadData(loadData);
     } else {
       const filtered = loadData.filter((option) => {
-        // Check if option is a string
         if (typeof option === "string") {
           return option.toLowerCase().includes(inputValueLoad.toLowerCase());
-        }
-        // Check if option is an object with a 'value' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.value === "string"
@@ -982,9 +949,7 @@ const SeaComponent = ({ setData, title1 }) => {
           return option.value
             .toLowerCase()
             .includes(inputValueLoad.toLowerCase());
-        }
-        // Check if option is an object with a 'label' property
-        else if (
+        } else if (
           typeof option === "object" &&
           option !== null &&
           typeof option.label === "string"
@@ -993,7 +958,6 @@ const SeaComponent = ({ setData, title1 }) => {
             .toLowerCase()
             .includes(inputValueLoad.toLowerCase());
         }
-        // If none of the above, log the unexpected option and return false
         console.log("Unexpected option structure:", option);
         return false;
       });

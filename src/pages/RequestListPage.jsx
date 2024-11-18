@@ -53,14 +53,11 @@ const RequestListPage = () => {
         setCompanies(companyList);
       });
   }, []);
-
   useEffect(() => {
     filterData();
   }, [selectedCompany, selectedDate, data]);
-
   const filterData = () => {
     let filtered = data;
-
     if (selectedCompany) {
       filtered = filtered.filter((item) =>
         [
@@ -73,11 +70,9 @@ const RequestListPage = () => {
         ].includes(selectedCompany),
       );
     }
-
     if (datas) {
       handleDateChange(datas);
     }
-
     if (selectedDate) {
       const formattedDate = moment(selectedDate).format("MM-DD");
       filtered = filtered.filter(
@@ -87,15 +82,12 @@ const RequestListPage = () => {
     }
     setFilteredData(filtered);
   };
-
   const handleCompanyChange = (value) => {
     setSelectedCompany(value);
   };
-
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
   const handleDownloadPDF = () => {
     if (pdfDate == null && selectedCompany == null) {
     }
@@ -106,19 +98,15 @@ const RequestListPage = () => {
       const pageHeight = pdf.internal.pageSize.height;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
-
       let position = 0;
-
       pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
         pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
-
       pdf.save(`${selectedCompany} ${moment(pdfDate).format("YYMMDD")}.pdf`);
     });
   };

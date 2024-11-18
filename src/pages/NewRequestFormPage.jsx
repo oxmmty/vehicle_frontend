@@ -24,7 +24,6 @@ const NewRequestFormPage = () => {
       .then((response) => {
         console.log("Database updated successfully", response);
 
-        // Generate the PDF after the database is successfully updated
         html2canvas(componentRef.current, { scale: 2 }).then((canvas) => {
           const imgData = canvas.toDataURL("image/png");
           const pdf = new jsPDF("p", "mm", "a4");
