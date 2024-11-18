@@ -67,9 +67,9 @@ const EditableCell = ({
       case "CC":
         return [{ validator: validateCC }];
       case "TEL":
-        return [{ validator: validatePhoneNumber }];
+        return [{ validator: phoneNumberValidator }];
       case "FAX":
-        return [{ validator: validateFaxNumber }];
+        return [{ validator: faxNumberValidator }];
       case "住所":
         return [{ validator: validateAddress }];
       default:
