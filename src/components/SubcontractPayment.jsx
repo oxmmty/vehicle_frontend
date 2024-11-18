@@ -224,7 +224,7 @@ const SubcontractPayment1 = ({ setSubPayData1, editData }) => {
         <Radio.Group defaultValue={true} value={driver1}>
           <div className="flex flex-col">
             <Radio value={true}>自車</Radio>
-            <Radio value={false}>平凡な車</Radio>
+            <Radio value={false}>庸車</Radio>
           </div>
         </Radio.Group>
       </div>
@@ -569,7 +569,7 @@ const SubcontractPayment2 = ({ setSubPayData2, editData }) => {
         <Radio.Group defaultValue={true} value={driver2}>
           <div className="flex flex-col">
             <Radio value={true}>自車</Radio>
-            <Radio value={false}>平凡な車</Radio>
+            <Radio value={false}>庸車</Radio>
           </div>
         </Radio.Group>
       </div>
@@ -911,7 +911,7 @@ const SubcontractPayment3 = ({ setSubPayData3, editData }) => {
         <Radio.Group defaultValue={true} value={driver3}>
           <div className="flex flex-col">
             <Radio value={true}>自車</Radio>
-            <Radio value={false}>平凡な車</Radio>
+            <Radio value={false}>庸車</Radio>
           </div>
         </Radio.Group>
       </div>
@@ -1253,7 +1253,7 @@ const SubcontractPayment4 = ({ setSubPayData4, editData }) => {
         <Radio.Group defaultValue={true} value={driver4}>
           <div className="flex flex-col">
             <Radio value={true}>自車</Radio>
-            <Radio value={false}>平凡な車</Radio>
+            <Radio value={false}>庸車</Radio>
           </div>
         </Radio.Group>
       </div>
@@ -1595,7 +1595,7 @@ const SubcontractPayment5 = ({ setSubPayData5, editData }) => {
         <Radio.Group defaultValue={true} value={driver5}>
           <div className="flex flex-col">
             <Radio value={true}>自車</Radio>
-            <Radio value={false}>平凡な車</Radio>
+            <Radio value={false}>庸車</Radio>
           </div>
         </Radio.Group>
       </div>
@@ -1937,7 +1937,7 @@ const SubcontractPayment6 = ({ setSubPayData6, editData }) => {
         <Radio.Group defaultValue={true} value={driver6}>
           <div className="flex flex-col">
             <Radio value={true}>自車</Radio>
-            <Radio value={false}>平凡な車</Radio>
+            <Radio value={false}>庸車</Radio>
           </div>
         </Radio.Group>
       </div>
