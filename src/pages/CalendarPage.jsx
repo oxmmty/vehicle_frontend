@@ -116,13 +116,13 @@ const CalendarPage = () => {
       let borderColor;
       let textColor = "#ffffff";
 
-      if (type === "error") {
+      if (type === "success") {
         backgroundColor = "#f44336";
         borderColor = "#f44336";
       } else if (type === "warning") {
         backgroundColor = "#ff9800";
         borderColor = "#ff9800";
-      } else if (type === "success") {
+      } else if (type === "error") {
         backgroundColor = "#4caf50";
         borderColor = "#4caf50";
       }
