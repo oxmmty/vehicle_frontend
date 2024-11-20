@@ -30,7 +30,7 @@ const Navbar = ({ list, ...props }) => {
         href: item.key,
         title: (
           <div className="flex items-center h-[52px]">
-            <div className="p-2 rounded-lg hover:bg-hover-primary">
+            <div className="p-2 rounded-lg ">
               {item.icon} {item.value}
             </div>
           </div>
@@ -39,7 +39,6 @@ const Navbar = ({ list, ...props }) => {
     });
     setNavbar(items);
   }, []);
-
   return (
     <div className={`${props.className} flex items-center`}>
       <Anchor

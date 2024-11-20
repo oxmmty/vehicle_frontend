@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 
 const Sidebar = ({ items, ...props }) => {
@@ -13,9 +12,10 @@ const Sidebar = ({ items, ...props }) => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+
   const handleSubmenu = (e) => {
     let parts = location.pathname.split("/");
-    parts[parts.length - 1] = e.key;
+    parts[parts.length - 1] = e.key; // Replace last part with selected key
     navigate(parts.join("/"));
   };
 
@@ -23,12 +23,18 @@ const Sidebar = ({ items, ...props }) => {
     const paths = location.pathname.split("/").filter(Boolean);
     if (paths.length < 2) {
       navigate(`${location.pathname}/${items[paths[0]][0]["key"]}`);
-    } else setCurrent(paths[1]);
+    } else {
+      setCurrent(paths[1]); // Set current to match the second part of URL
+    }
   }, [location.pathname]);
 
   if (currentPath === "/dashboard/overview") {
-    return null;
+    return null; // Don't render sidebar for this path
   }
+
+  // Get the relevant items based on the current path
+  const menuItems = items[location.pathname.split("/")[1]] || [];
+
   return (
     <aside className={props.className}>
       <div
@@ -38,13 +44,14 @@ const Sidebar = ({ items, ...props }) => {
         <Menu
           className="font-bold"
           onSelect={handleSubmenu}
-          selectedKeys={[currentPath]}
-          mode="inline"
-          items={items[location.pathname.split("/")[1]]}
-        />
-        {/* <div onClick={toggleCollapsed} className='absolute top-4 right-[-10px] p-1 text-center bg-bg-light-dark rounded-full cursor-pointer z-50'>
-          {collapsed ? <RightOutlined className='w-4' /> : <LeftOutlined className='w-4' />}
-        </div> */}
+          selectedKeys={[current]}
+          mode="inline">
+          {menuItems.map((item) => (
+            <Menu.Item key={item.key} icon={item.icon}>
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
       </div>
     </aside>
   );

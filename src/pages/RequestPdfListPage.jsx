@@ -375,7 +375,6 @@ const RequestPdfListPage = () => {
       align: "center",
     },
   ];
-  console.log(filteredDatas);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -404,7 +403,6 @@ const RequestPdfListPage = () => {
       setFilteredDatas(filtered);
     }
   };
-  console.log(filteredDatas);
   const handleDateChange = (date) => {
     if (date) {
       setDate(date);
@@ -413,7 +411,6 @@ const RequestPdfListPage = () => {
   };
 
   const handleCheckboxChange = (リクエスト番号) => {
-    console.log("Checkbox changed for:", リクエスト番号); // Log which checkbox was changed
     setSelectedRowKeys((prevKeys) =>
       prevKeys.includes(リクエスト番号)
         ? prevKeys.filter((key) => key !== リクエスト番号)

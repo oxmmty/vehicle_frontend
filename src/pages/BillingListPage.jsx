@@ -142,7 +142,6 @@ const BillingListPage = () => {
   };
 
   const handleCreateButton = () => {
-    console.log("Selected Rows' 識別コード:", selectedRows);
     if (selectedRows.length > 0) {
       navigate("/orders_invoices/invoice", {
         state: { data: selectedRows },
