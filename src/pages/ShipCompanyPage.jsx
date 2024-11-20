@@ -193,7 +193,7 @@ const ShipCompany = () => {
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span className="flex-wrap">
             <Button
               onClick={() => save(record._id)}
               type="link"
@@ -207,7 +207,7 @@ const ShipCompany = () => {
             </Popconfirm>
           </span>
         ) : (
-          <>
+          <span className="flex-wrap">
             <Button
               type="link"
               disabled={editingKey !== ""}
@@ -221,7 +221,7 @@ const ShipCompany = () => {
                 削除
               </Button>
             </Popconfirm>
-          </>
+          </span>
         );
       },
     },

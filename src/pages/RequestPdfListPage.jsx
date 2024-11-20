@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import CTable from "src/components/CTable";
 const RequestPdfListPage = () => {
   const [date, setDate] = useState(dayjs().startOf("month"));
   const [datas, setDatas] = useState([]);
@@ -127,12 +127,22 @@ const RequestPdfListPage = () => {
       dataIndex: "積日1",
       key: "積日1",
       align: "center",
+      render: (text, record) => {
+        if (record.積日1) {
+          return dayjs(record.積日1).format("YYYY-MM-DD");
+        }
+      },
     },
     {
       title: "配達日1",
       dataIndex: "配達日1",
       key: "配達日1",
       align: "center",
+      render: (text, record) => {
+        if (record.配達日1) {
+          return dayjs(record.配達日1).format("YYYY-MM-DD");
+        }
+      },
     },
     {
       title: "配達時間1",
@@ -175,12 +185,22 @@ const RequestPdfListPage = () => {
       dataIndex: "積日2",
       key: "積日2",
       align: "center",
+      render: (text, record) => {
+        if (record.積日2) {
+          return dayjs(record.積日2).format("YYYY-MM-DD");
+        }
+      },
     },
     {
       title: "配達日2",
       dataIndex: "配達日2",
       key: "配達日2",
       align: "center",
+      render: (text, record) => {
+        if (record.配達日2) {
+          return dayjs(record.配達日2).format("YYYY-MM-DD");
+        }
+      },
     },
     {
       title: "配達時間2",
@@ -217,12 +237,22 @@ const RequestPdfListPage = () => {
       dataIndex: "積日3",
       key: "積日3",
       align: "center",
+      render: (text, record) => {
+        if (record.積日3) {
+          return dayjs(record.積日3).format("YYYY-MM-DD");
+        }
+      },
     },
     {
       title: "配達日3",
       dataIndex: "配達日3",
       key: "配達日3",
       align: "center",
+      render: (text, record) => {
+        if (record.配達日3) {
+          return dayjs(record.配達日3).format("YYYY-MM-DD");
+        }
+      },
     },
     {
       title: "配達時間3",
@@ -345,7 +375,7 @@ const RequestPdfListPage = () => {
       align: "center",
     },
   ];
-
+  console.log(filteredDatas);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -440,13 +470,14 @@ const RequestPdfListPage = () => {
       </div>
 
       <div className="w-full">
-        <Table
+        <CTable
           dataSource={filteredDatas}
           columns={columns}
           scroll={{ x: "max-content" }}
           size="small"
           className="table-fixed"
-          pagination={{ pageSize: 12, position: ["bottomCenter"] }}
+          // pagination={{ pageSize: 12, position: ["bottomCenter"] }}
+          ps={12}
         />
       </div>
     </div>

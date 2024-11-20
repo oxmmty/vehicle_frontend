@@ -2,7 +2,7 @@ import { DatePicker, Table, Typography, Checkbox } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
-
+import CTable from "src/components/CTable";
 const OrderDBPage = () => {
   const [date, setDate] = useState(dayjs());
   const [datas, setDatas] = useState([]);
@@ -803,13 +803,14 @@ const OrderDBPage = () => {
       </div>
 
       <div className="w-full">
-        <Table
+        <CTable
           dataSource={filteredDatas}
           columns={columns}
           scroll={{ x: "max-content" }}
           size="small"
           className="table-fixed"
-          pagination={{ pageSize: 14, position: ["bottomCenter"] }}
+          // pagination={{ pageSize: 14, position: ["bottomCenter"] }}
+          ps={14}
         />
       </div>
     </div>

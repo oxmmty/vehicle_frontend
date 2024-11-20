@@ -174,7 +174,7 @@ const BussinessLocation = () => {
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span className="flex-wrap">
             <Button
               onClick={() => save(record._id)}
               type="link"
@@ -188,7 +188,7 @@ const BussinessLocation = () => {
             </Popconfirm>
           </span>
         ) : (
-          <>
+          <span className="flex-wrap">
             <Button
               type="link"
               disabled={editingKey !== ""}
@@ -202,7 +202,7 @@ const BussinessLocation = () => {
                 削除
               </Button>
             </Popconfirm>
-          </>
+          </span>
         );
       },
     },

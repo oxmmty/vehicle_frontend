@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Assuming react-router-dom is used for navigation
 import axios from "axios";
 import dayjs from "dayjs";
+import CTable from "src/components/CTable";
 
 const BillingListPage = () => {
   const [datas, setDatas] = useState([]);
@@ -178,14 +179,17 @@ const BillingListPage = () => {
           </Button>
         </div>
       </Form>
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        scroll={{ x: "max-content" }}
-        className="w-full"
-        rowKey="識別コード"
-        pagination={{ position: ["bottomCenter"] }}
-      />
+      <div className="w-full">
+        <CTable
+          columns={columns}
+          dataSource={filteredData}
+          scroll={{ x: "max-content" }}
+          rowKey="識別コード"
+          className="table-fixed"
+          size="small"
+          ps={12}
+        />
+      </div>
     </div>
   );
 };
