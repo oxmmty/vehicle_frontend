@@ -106,9 +106,9 @@ const CalendarPage = () => {
     if (!existingEvent) {
       const type = item["送り状受領書作成"]
         ? "error"
-        : item["ピックチェック"] && !item["配車組み"]
+        : item["ピックチェック"] == true && item["配車組み"] !== true
         ? "warning"
-        : item["ピックチェック"] && item["配車組み"]
+        : item["ピックチェック"] == true && item["配車組み"] == true
         ? "success"
         : null;
 

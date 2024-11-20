@@ -18,10 +18,7 @@ const EditableCell = ({
   return (
     <td {...restProps}>
       {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{ margin: 0 }}
-          rules={[...validationRules]}>
+        <Form.Item name={dataIndex} rules={[...validationRules]}>
           {inputNode}
         </Form.Item>
       ) : (
@@ -201,7 +198,7 @@ export default function CustomerPage() {
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span className="flex-wrap">
             <Button
               onClick={() => save(record._id)}
               type="link"
@@ -215,7 +212,7 @@ export default function CustomerPage() {
             </Popconfirm>
           </span>
         ) : (
-          <>
+          <span className=" flex-wrap">
             <Button
               type="link"
               disabled={editingKey !== ""}
@@ -229,7 +226,7 @@ export default function CustomerPage() {
                 削除
               </Button>
             </Popconfirm>
-          </>
+          </span>
         );
       },
     },
@@ -263,7 +260,6 @@ export default function CustomerPage() {
   return (
     <div className="flex flex-col gap-0">
       <Form form={form} component={false}>
-        {/* Wrap the button in a div with flexbox and justify-content */}
         <div className="flex justify-end p-4">
           <Button
             onClick={showAddModal}
@@ -272,7 +268,6 @@ export default function CustomerPage() {
             顧客を追加
           </Button>
         </div>
-
         <CTable
           components={{
             body: {
@@ -291,7 +286,7 @@ export default function CustomerPage() {
 
       <Modal
         title="顧客を追加"
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancelModal}
         footer={null}>
         <Form form={addForm} onFinish={handleAdd}>
