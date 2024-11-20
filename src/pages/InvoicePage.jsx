@@ -58,7 +58,6 @@ const InvoicePage = () => {
   const [その他費用Price3, setその他費用Price3] = useState("");
 
   const { data } = location.state || {};
-  console.log(data);
   const invoiceRef = useRef();
   const today = dayjs().format("YYYY/MM/DD");
 

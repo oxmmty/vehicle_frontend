@@ -147,7 +147,7 @@ const Header = ({ items, ...props }) => {
                         ? "text-colorLink"
                         : ""
                     }>
-                    {item.label}
+                    {item.icon} {item.label}
                   </Typography>
                 </div>
               ))}
@@ -196,7 +196,7 @@ const Header = ({ items, ...props }) => {
                             ? "text-colorLink"
                             : ""
                         }>
-                        {item.label}
+                        {item.icon} {item.label}
                       </Text>
                     </Menu.Item>
                   ))}
