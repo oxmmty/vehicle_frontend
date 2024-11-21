@@ -174,7 +174,7 @@ const CustomerListPage = () => {
       </td>
     );
   };
-
+  console.log(datas);
   const [form] = Form.useForm();
 
   return (

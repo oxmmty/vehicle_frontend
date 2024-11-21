@@ -1,4 +1,4 @@
-import { DatePicker, Table, Typography, Checkbox } from "antd";
+import { DatePicker, Button, Typography, Checkbox } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -737,6 +737,17 @@ const OrderDBPage = () => {
       key: "案件コード",
       align: "center",
     },
+    {
+      title: "削除",
+      key: "actions",
+      align: "center",
+      fixed: "right",
+      render: (text, record) => (
+        <Button type="primary" danger onClick={() => handleDelete(record._id)}>
+          削除
+        </Button>
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -748,6 +759,17 @@ const OrderDBPage = () => {
     };
     fetchData();
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/orderlist/${id}`); // Send DELETE request
+      setDatas(datas.filter((item) => item._id !== id)); // Update local state
+      setFilteredDatas(filteredDatas.filter((item) => item._id !== id)); // Update filtered data
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      alert("Failed to delete item");
+    }
+  };
 
   const filterData = (selectedDate, dataToFilter) => {
     if (selectedDate) {
@@ -809,7 +831,6 @@ const OrderDBPage = () => {
           scroll={{ x: "max-content" }}
           size="small"
           className="table-fixed"
-          // pagination={{ pageSize: 14, position: ["bottomCenter"] }}
           ps={14}
         />
       </div>
