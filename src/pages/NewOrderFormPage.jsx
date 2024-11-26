@@ -1851,6 +1851,11 @@ const NewOrderFormPage = ({ title, start }) => {
   const billingList = () => {
     navigate("/orders_invoices/billingList");
   };
+  const cancelOrder = async () => {
+    const res = await axios.delete(
+      process.env.REACT_API_BASE_URL + `/order/cancel/${"MA" + title.slice(2)}`,
+    );
+  };
   return (
     <div className="flex flex-col justify-center items-center w-full">
       <Tabs
@@ -1874,6 +1879,7 @@ const NewOrderFormPage = ({ title, start }) => {
         {title ? <Button onClick={requestList}>依頼リスト</Button> : <></>}
         {title ? <Button onClick={mail}>Mail</Button> : <></>}
         {title ? <Button onClick={billingList}>請求一覧</Button> : <></>}
+        {title ? <Button onClick={cancelOrder}>注文キャンセル</Button> : <></>}
       </div>
     </div>
   );
