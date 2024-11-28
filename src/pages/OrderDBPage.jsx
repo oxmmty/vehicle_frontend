@@ -1,4 +1,4 @@
-import { DatePicker, Button, Typography, Checkbox } from "antd";
+import { DatePicker, Button, Typography, Checkbox, notification } from "antd";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
@@ -7,7 +7,6 @@ const OrderDBPage = () => {
   const [date, setDate] = useState(dayjs());
   const [datas, setDatas] = useState([]);
   const [filteredDatas, setFilteredDatas] = useState([]);
-
   const columns = [
     {
       title: "No",
@@ -743,7 +742,10 @@ const OrderDBPage = () => {
       align: "center",
       fixed: "right",
       render: (text, record) => (
-        <Button type="primary" danger onClick={() => handleDelete(record._id)}>
+        <Button
+          type="primary"
+          danger
+          onClick={() => handleDelete(record.識別コード)}>
           削除
         </Button>
       ),
@@ -763,11 +765,26 @@ const OrderDBPage = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/orderlist/${id}`); // Send DELETE request
-      setDatas(datas.filter((item) => item._id !== id)); // Update local state
-      setFilteredDatas(filteredDatas.filter((item) => item._id !== id)); // Update filtered data
+      setDatas((prevDatas) =>
+        prevDatas.map((item) =>
+          item.識別コード === id ? { ...item, delete: true } : item,
+        ),
+      );
+      setFilteredDatas((prevFilteredDatas) =>
+        prevFilteredDatas.map((item) =>
+          item.識別コード === id ? { ...item, delete: true } : item,
+        ),
+      );
+      notification.success({
+        message: "成功",
+        description: `注文「${id}」がキャンセルされました。`,
+      });
     } catch (error) {
       console.error("Error deleting item:", error);
-      alert("Failed to delete item");
+      notification.error({
+        message: "エラー",
+        description: `注文「${id}」のキャンセルに失敗しました。`,
+      });
     }
   };
 
