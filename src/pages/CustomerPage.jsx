@@ -51,6 +51,14 @@ export default function CustomerPage() {
       });
     }
   };
+  const validateEmail = (_, value) => {
+    if (value && !/\S+@\S+\.\S+/.test(value)) {
+      return Promise.reject(
+        new Error("有効なメールアドレスを入力してください！"),
+      );
+    }
+    return Promise.resolve();
+  };
 
   const addressValidator = (_, value) => {
     if (value && value.length < 10) {
@@ -70,6 +78,22 @@ export default function CustomerPage() {
       );
     }
     return Promise.resolve();
+  };
+
+  const validateCC = (_, value) => {
+    if (value) {
+      const emails = value.split(",");
+      const emailRegex = /\S+@\S+\.\S+/;
+      const isValid = emails.every((email) => emailRegex.test(email.trim()));
+      return isValid
+        ? Promise.resolve()
+        : Promise.reject(
+            new Error(
+              "有効なメールアドレスをカンマで区切って入力してください！",
+            ),
+          );
+    }
+    return Promise.resolve(); // Allow empty value
   };
 
   const faxNumberValidator = (_, value) => {
@@ -169,6 +193,20 @@ export default function CustomerPage() {
       editable: true,
       align: "center",
       validationRules: [], // No required validation here
+    },
+    {
+      title: "アドレス",
+      dataIndex: "アドレス",
+      editable: true,
+      align: "center",
+      validationRules: [{ validator: validateEmail }],
+    },
+    {
+      title: "CC",
+      dataIndex: "CC",
+      editable: true,
+      align: "center",
+      validationRules: [{ validator: validateCC }],
     },
     {
       title: "TEL",
@@ -303,6 +341,13 @@ export default function CustomerPage() {
             rules={[{ required: true, message: "担当を入力してください！" }]}>
             <Input placeholder="担当" />
           </Form.Item>
+          <Form.Item name="アドレス" rules={[{ validator: validateEmail }]}>
+            <Input placeholder="アドレス" />
+          </Form.Item>
+          <Form.Item name="CC" rules={[{ validator: validateCC }]}>
+            <Input placeholder="CC" />
+          </Form.Item>
+
           <Form.Item
             name="TEL"
             rules={[

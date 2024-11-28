@@ -1,4 +1,4 @@
-import { DatePicker, Typography, Checkbox } from "antd";
+import { DatePicker, Typography, Checkbox, Button, notification } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -32,7 +32,6 @@ const DBPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
   const handleDateChange = (selectedDate) => {
     if (selectedDate) {
       setDate(selectedDate);
@@ -67,6 +66,31 @@ const DBPage = () => {
     } catch (err) {
       console.error("Error updating data:", err);
       setError("Failed to update data. Please try again.");
+    }
+  };
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/order/cancel/${id}`);
+      setAllData((prevDatas) =>
+        prevDatas.map((item) =>
+          item.識別コード === id ? { ...item, delete: true } : item,
+        ),
+      );
+      setFilteredData((prevFilteredDatas) =>
+        prevFilteredDatas.map((item) =>
+          item.識別コード === id ? { ...item, delete: true } : item,
+        ),
+      );
+      notification.success({
+        message: "成功",
+        description: `注文「${id}」がキャンセルされました。`,
+      });
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      notification.error({
+        message: "エラー",
+        description: `注文「${id}」のキャンセルに失敗しました。`,
+      });
     }
   };
 
@@ -631,16 +655,23 @@ const DBPage = () => {
       dataIndex: "ピックチェック",
       align: "center",
 
-      render: (text, record) => (
-        <Checkbox
-          checked={record.ピックチェック || false}
-          onChange={(e) => {
-            // if (!record.ピックチェック) {
-            onCheckboxChange(record, "ピックチェック", e.target.checked);
-            // }
-          }}
-        />
-      ),
+      render: (text, record) =>
+        record.delete == true ? (
+          <Checkbox
+            disabled
+            checked={record.ピックチェック || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "ピックチェック", e.target.checked);
+            }}
+          />
+        ) : (
+          <Checkbox
+            checked={record.ピックチェック || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "ピックチェック", e.target.checked);
+            }}
+          />
+        ),
     },
     {
       key: "配車組み",
@@ -648,16 +679,23 @@ const DBPage = () => {
       dataIndex: "配車組み",
       align: "center",
 
-      render: (text, record) => (
-        <Checkbox
-          checked={record.配車組み || false}
-          onChange={(e) => {
-            // if (!record.配車組み) {
-            onCheckboxChange(record, "配車組み", e.target.checked);
-            // }
-          }}
-        />
-      ),
+      render: (text, record) =>
+        record.delete == true ? (
+          <Checkbox
+            disabled
+            checked={record.配車組み || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "配車組み", e.target.checked);
+            }}
+          />
+        ) : (
+          <Checkbox
+            checked={record.配車組み || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "配車組み", e.target.checked);
+            }}
+          />
+        ),
     },
     {
       key: "空バン返却チェック",
@@ -665,16 +703,23 @@ const DBPage = () => {
       dataIndex: "空バン返却チェック",
       align: "center",
 
-      render: (text, record) => (
-        <Checkbox
-          checked={record.空バン返却チェック || false}
-          onChange={(e) => {
-            // if (!record.空バン返却チェック) {
-            onCheckboxChange(record, "空バン返却チェック", e.target.checked);
-            // }
-          }}
-        />
-      ),
+      render: (text, record) =>
+        record.delete == true ? (
+          <Checkbox
+            disabled
+            checked={record.空バン返却チェック || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "空バン返却チェック", e.target.checked);
+            }}
+          />
+        ) : (
+          <Checkbox
+            checked={record.空バン返却チェック || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "空バン返却チェック", e.target.checked);
+            }}
+          />
+        ),
     },
     {
       key: "送り状受領書作成",
@@ -682,16 +727,23 @@ const DBPage = () => {
       dataIndex: "送り状・受領書作成",
       align: "center",
 
-      render: (text, record) => (
-        <Checkbox
-          checked={record["送り状受領書作成"] || false}
-          onChange={(e) => {
-            // if (!record["送り状受領書作成"]) {
-            onCheckboxChange(record, "送り状受領書作成", e.target.checked);
-            // }
-          }}
-        />
-      ),
+      render: (text, record) =>
+        record.delete == true ? (
+          <Checkbox
+            disabled
+            checked={record["送り状受領書作成"] || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "送り状受領書作成", e.target.checked);
+            }}
+          />
+        ) : (
+          <Checkbox
+            checked={record["送り状受領書作成"] || false}
+            onChange={(e) => {
+              onCheckboxChange(record, "送り状受領書作成", e.target.checked);
+            }}
+          />
+        ),
     },
     {
       key: "部署コード",
@@ -988,7 +1040,20 @@ const DBPage = () => {
       dataIndex: "下払自車6",
       align: "center",
     },
-    { key: "空冷", title: "空冷", dataIndex: "空冷", align: "center" },
+    {
+      title: "削除",
+      key: "actions",
+      align: "center",
+      fixed: "right",
+      render: (text, record) => (
+        <Button
+          type="primary"
+          danger
+          onClick={() => handleDelete(record.識別コード)}>
+          削除
+        </Button>
+      ),
+    },
   ];
 
   return (

@@ -1855,6 +1855,17 @@ const NewOrderFormPage = ({ title, start }) => {
     const res = await axios.delete(
       process.env.REACT_API_BASE_URL + `/order/cancel/${"MA" + title.slice(2)}`,
     );
+    if ((res.status = 200)) {
+      notification.success({
+        message: "成功",
+        description: "注文されました。",
+      });
+    } else {
+      notification.success({
+        message: "エラー",
+        description: "項目は削除されていません。",
+      });
+    }
   };
   return (
     <div className="flex flex-col justify-center items-center w-full">

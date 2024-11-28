@@ -36,7 +36,9 @@ const CTable = (props) => {
         pagination={false}
         style={{ width: "100%" }}
         tableLayout="fixed"
-        // scroll={{ x: "max-content" }}
+        rowClassName={(record) =>
+          record.delete === true ? "bg-[#48445E]" : ""
+        }
         className="w-full h-full"
       />
       <div className="flex justify-center w-full bg-bg-light rounded-md ">
