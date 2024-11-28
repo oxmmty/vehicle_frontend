@@ -57,7 +57,7 @@ const RequestListPage = () => {
     filterData();
   }, [selectedCompany, selectedDate, data]);
   const filterData = () => {
-    let filtered = data;
+    let filtered = data.filter((item) => item.delete !== true);
     if (selectedCompany) {
       filtered = filtered.filter((item) =>
         [
