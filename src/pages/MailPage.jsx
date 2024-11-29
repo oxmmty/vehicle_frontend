@@ -87,10 +87,12 @@ const MailPage = () => {
     const updatedDeliveryDate = dayjs().format("YYYY-MM-DD HH:mm:ss"); // Set the current date and time
 
     try {
-      await axios.put(`/order/update`, {
-        selectedRowKey: selectedRowKey,
-        mail作成日: updatedDeliveryDate,
-      });
+      await axios.put(
+        process.env.REACT_API_BASE_URL + `/order/update/${selectedRowKey}`,
+        {
+          mail作成日: updatedDeliveryDate,
+        },
+      );
 
       setData((prevData) =>
         prevData.map((item) =>
