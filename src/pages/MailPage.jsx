@@ -29,7 +29,9 @@ const MailPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("/pdfList");
-        const responseData = response.data.filter((item) => item.選択 === true);
+        const responseData = response.data.filter((item) => {
+          item.選択 === true;
+        });
         setData(responseData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -40,6 +42,7 @@ const MailPage = () => {
   }, []);
 
   const fetchRecipientEmail = async (companyName) => {
+    console.log(companyName);
     try {
       const response = await axios.get("/partnerCompany/filter", {
         params: {

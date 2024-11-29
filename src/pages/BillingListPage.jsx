@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Select, Table, Checkbox } from "antd";
+import { Button, DatePicker, Form, Select, Table, Checkbox, Input } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Assuming react-router-dom is used for navigation
 import axios from "axios";
@@ -10,6 +10,7 @@ const BillingListPage = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
   const [selectedRows, setSelectedRows] = useState([]); // State for storing selected rows
+  const [customerFilter, setCustomerFilter] = useState(""); // State for customer name filter
   const navigate = useNavigate(); // Navigation hook
 
   const columns = [
@@ -17,12 +18,19 @@ const BillingListPage = () => {
       title: "選択",
       key: "select",
       align: "center",
-      render: (_, record) => (
-        <Checkbox
-          checked={selectedRows.includes(record.識別コード)}
-          onChange={(e) => handleRowSelection(e.target.checked, record)}
-        />
-      ),
+      render: (_, record) =>
+        record.delete == true ? (
+          <Checkbox
+            disabled
+            checked={selectedRows.includes(record.識別コード)}
+            onChange={(e) => handleRowSelection(e.target.checked, record)}
+          />
+        ) : (
+          <Checkbox
+            checked={selectedRows.includes(record.識別コード)}
+            onChange={(e) => handleRowSelection(e.target.checked, record)}
+          />
+        ),
     },
     {
       title: "受注コード",
@@ -117,6 +125,7 @@ const BillingListPage = () => {
       setDatas(res.data);
       filterDataByMonth(dayjs(), res.data); // Initialize with current month data
     };
+
     fetchData();
   }, []);
 
@@ -125,11 +134,20 @@ const BillingListPage = () => {
     filterDataByMonth(date, datas);
   };
 
-  const filterDataByMonth = (month, data) => {
+  const handleCustomerFilterChange = (e) => {
+    setCustomerFilter(e.target.value);
+    filterDataByMonth(selectedMonth, datas, e.target.value); // Re-filter when customer name changes
+  };
+
+  const filterDataByMonth = (month, data, customerName = "") => {
     const filtered = data.filter((item) => {
       const orderDate = dayjs(item.配達日1).format("YYYY-MM");
-      return orderDate === month.format("YYYY-MM");
+      const matchesMonth = orderDate === month.format("YYYY-MM");
+      const matchesCustomerName = item.顧客名.includes(customerName); // Filter by customer name
+
+      return matchesMonth && matchesCustomerName; // Combine filters
     });
+
     setFilteredData(filtered);
   };
 
@@ -143,9 +161,7 @@ const BillingListPage = () => {
 
   const handleCreateButton = () => {
     if (selectedRows.length > 0) {
-      navigate("/orders_invoices/invoice", {
-        state: { data: selectedRows },
-      });
+      navigate("/orders_invoices/invoice", { state: { data: selectedRows } });
     } else {
       alert("Please select at least one row.");
     }
@@ -162,6 +178,13 @@ const BillingListPage = () => {
               picker="month"
               value={selectedMonth}
               onChange={handleDateChange}
+            />
+          </Form.Item>
+          <Form.Item label={"顧客名"} className="grow">
+            <Input
+              placeholder="顧客名でフィルタ"
+              value={customerFilter}
+              onChange={handleCustomerFilterChange}
             />
           </Form.Item>
           <Form.Item label={"請求状況"} className="grow">
