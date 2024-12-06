@@ -1,4 +1,11 @@
-import { DatePicker, Typography, Checkbox, Button, notification } from "antd";
+import {
+  DatePicker,
+  Typography,
+  Checkbox,
+  Button,
+  notification,
+  Modal,
+} from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -67,6 +74,15 @@ const DBPage = () => {
       console.error("Error updating data:", err);
       setError("Failed to update data. Please try again.");
     }
+  };
+  const confirmDelete = (id) => {
+    Modal.confirm({
+      title: "削除確認",
+      content: `本当に注文「${id}」をキャンセルしますか？`,
+      okText: "はい",
+      cancelText: "いいえ",
+      onOk: () => handleDelete(id),
+    });
   };
   const handleDelete = async (id) => {
     try {
@@ -1045,14 +1061,23 @@ const DBPage = () => {
       key: "actions",
       align: "center",
       fixed: "right",
-      render: (text, record) => (
-        <Button
-          type="primary"
-          danger
-          onClick={() => handleDelete(record.識別コード)}>
-          削除
-        </Button>
-      ),
+      render: (text, record) =>
+        record.delete == true ? (
+          <Button
+            type="primary"
+            danger
+            disabled
+            onClick={() => confirmDelete(record.識別コード)}>
+            削除
+          </Button>
+        ) : (
+          <Button
+            type="primary"
+            danger
+            onClick={() => confirmDelete(record.識別コード)}>
+            削除
+          </Button>
+        ),
     },
   ];
 

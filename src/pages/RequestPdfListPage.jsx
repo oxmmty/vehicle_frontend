@@ -442,14 +442,21 @@ const RequestPdfListPage = () => {
     }
   };
 
-  const handlePdfButtonClick = () => {
+  const handlePdfButtonClick = (param) => {
+    console.log(param);
     const selectedRows = filteredDatas.filter((row) =>
       selectedRowKeys.includes(row.リクエスト番号),
     );
     if (selectedRows.length > 0) {
-      navigate("/orders_invoices/newRequestForm", {
-        state: { data: selectedRows },
-      });
+      if (param == "依頼書") {
+        navigate("/orders_invoices/newRequestForm", {
+          state: { data: selectedRows, req: "real" },
+        });
+      } else if (param == "仮依頼書") {
+        navigate("/orders_invoices/newRequestForm", {
+          state: { data: selectedRows, req: "fake" },
+        });
+      }
     } else {
       alert("Please select at least one request.");
     }
@@ -461,9 +468,20 @@ const RequestPdfListPage = () => {
         <Typography className="ml-10 mt-5 justify-center">
           <DatePicker picker="month" value={date} onChange={handleDateChange} />
         </Typography>
-        <Button type="primary" onClick={handlePdfButtonClick} className="mt-5">
-          PDF
-        </Button>
+        <div className="ml-4 flex-row flex gap-4">
+          <Button
+            type="primary"
+            onClick={(e) => handlePdfButtonClick("仮依頼書")}
+            className="mt-5">
+            仮依頼書
+          </Button>
+          <Button
+            type="primary"
+            onClick={(e) => handlePdfButtonClick("依頼書")}
+            className="mt-5">
+            依頼書
+          </Button>
+        </div>
       </div>
 
       <div className="w-full">

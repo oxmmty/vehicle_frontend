@@ -12,6 +12,10 @@ const { Title, Text } = Typography;
 const NewRequestFormPage = () => {
   const location = useLocation();
   const { data } = location.state || {};
+  const req = location.state.req;
+
+  console.log(req);
+  console.log(data);
 
   const componentRef = useRef();
 
@@ -79,7 +83,7 @@ const NewRequestFormPage = () => {
         ref={componentRef}>
         <Typography>
           <Title level={2} className="text-black">
-            依頼書
+            {req == "real" ? "依頼書" : "仮依頼書"}
           </Title>
         </Typography>
         <div className="flex justify-between w-full text-black">
